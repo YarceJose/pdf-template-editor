@@ -1,0 +1,213 @@
+// ============================================
+// PROPERTIES PANEL - Enterprise Flat Design
+// ============================================
+:host {
+  display: block;
+  height: 100%;
+}
+
+.props-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--surface-panel-alt);
+    border-radius: 3px;
+  }
+}
+
+// ============================================
+// HEADER
+// ============================================
+.props-header {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.props-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--theme-font-color);
+}
+
+.props-field-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--btw-text-dark);
+}
+
+// ============================================
+// SECTIONS
+// ============================================
+.props-section {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.section-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--theme-font-color);
+}
+
+// ============================================
+// GRID
+// ============================================
+.props-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.props-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-label {
+  font-size: var(--font-size-xs);
+  color: var(--theme-font-color);
+  font-weight: var(--font-weight-medium);
+}
+
+.field-input {
+  height: 32px;
+  padding: 0 var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background: var(--white);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-mono);
+  color: var(--btw-text-dark);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: var(--accent-action);
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    opacity: 1;
+  }
+}
+
+// ============================================
+// FORMAT BUTTONS
+// ============================================
+.props-format-row {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+.btn-format {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background: var(--white);
+  color: var(--btw-text-dark);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--surface-base);
+    border-color: var(--accent-action);
+  }
+
+  &.active {
+    background: var(--accent-action);
+    border-color: var(--accent-action);
+    color: var(--white);
+  }
+
+  &.italic {
+    font-style: italic;
+  }
+
+  &.underline-text {
+    text-decoration: underline;
+  }
+}
+
+// ============================================
+// DELETE
+// ============================================
+.props-section-footer {
+  border-bottom: none;
+  margin-top: auto;
+}
+
+.btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--danger-color);
+  border-radius: var(--border-radius-sm);
+  background: transparent;
+  color: var(--danger-color);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--danger-color);
+    color: var(--white);
+  }
+}
+
+// ============================================
+// EMPTY STATE
+// ============================================
+.props-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--spacing-xl);
+  text-align: center;
+  gap: var(--spacing-sm);
+}
+
+.props-empty-icon {
+  font-size: 32px;
+  color: var(--surface-panel-alt);
+}
+
+.props-empty-text {
+  font-size: var(--font-size-sm);
+  color: var(--theme-font-color);
+  line-height: 1.5;
+}

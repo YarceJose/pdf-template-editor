@@ -1,1 +1,32 @@
-<p>canvas works!</p>
+<div class="canvas-viewport">
+  <div
+    class="a4-page"
+    [style.width.px]="pageWidthPx()"
+    [style.height.px]="pageHeightPx()"
+    cdkDropList
+    id="canvas-drop-list"
+    (cdkDropListDropped)="onDrop($event)"
+    (click)="onPageClick()"
+  >
+    <!-- Section labels + dividers -->
+    @for (section of sections; track trackBySection($index, section)) {
+      <div class="section-zone" [style]="sectionStyle(section)">
+        <div class="section-divider" [style.borderTopColor]="section.color + '40'"></div>
+      </div>
+      <div class="section-label-tag" [style]="sectionLabelStyle(section)" [style.backgroundColor]="section.color">
+        {{ section.label }}
+      </div>
+    }
+
+    <!-- Placed fields -->
+    @for (field of placedFields(); track trackByFieldId($index, field)) {
+      <app-field-item
+        [field]="field"
+        [selected]="isSelected(field.id)"
+        [zoom]="zoom()"
+        (fieldSelected)="onFieldSelected($event)"
+        (fieldMoved)="onFieldMoved($event)"
+      />
+    }
+  </div>
+</div>

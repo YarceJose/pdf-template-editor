@@ -1,1 +1,61 @@
-<p>editor-page works!</p>
+<div class="editor-container">
+  <!-- Fila 1: Toolbar superior -->
+  <header class="editor-toolbar">
+    <app-toolbar
+      [canUndo]="canUndo()"
+      [canRedo]="canRedo()"
+      [fieldCount]="fieldCount()"
+      [zoomPercent]="zoomPercent"
+      (undoClicked)="onUndo()"
+      (redoClicked)="onRedo()"
+      (zoomInClicked)="onZoomIn()"
+      (zoomOutClicked)="onZoomOut()"
+      (previewClicked)="onPreview()"
+      (exportClicked)="onExport()"
+      (deleteFieldClicked)="onDeleteField()"
+      (templateLoaded)="onTemplateLoaded($event)"
+      (addTextClicked)="onAddText($event)"
+      (addTableClicked)="onAddTable($event)"
+      (addElementClicked)="onAddElement($event)"
+      (alignClicked)="onAlign($event)"
+      (gridToggleClicked)="onGridToggle()"
+      (snapToggleClicked)="onSnapToggle()"
+    />
+  </header>
+
+  <!-- Fila 2, Columna 1: Sidebar izquierdo -->
+  <aside class="editor-sidebar">
+    <app-sidebar-fields />
+  </aside>
+
+  <!-- Fila 2, Columna 2: Canvas central -->
+  <main class="editor-canvas">
+    <app-canvas
+      [placedFields]="placedFields()"
+      [selectedFieldId]="selectedFieldId()"
+      [zoom]="zoom()"
+      (fieldDropped)="onFieldDropped($event)"
+      (fieldSelected)="onFieldSelected($event)"
+      (fieldMoved)="onFieldMoved($event)"
+      (pageClicked)="onPageClicked()"
+    />
+  </main>
+
+  <!-- Fila 2, Columna 3: Panel de propiedades -->
+  <aside class="editor-properties">
+    <app-properties-panel
+      [field]="selectedField()"
+      (fieldUpdated)="onFieldUpdated($event)"
+      (fieldDeleted)="onFieldDeleted($event)"
+    />
+  </aside>
+</div>
+
+<!-- Modal de Preview -->
+@if (showPreview()) {
+  <app-preview-modal
+    [fields]="placedFields()"
+    [templateName]="'Factura Electrónica v1.0'"
+    (closed)="onClosePreview()"
+  />
+}

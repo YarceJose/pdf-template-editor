@@ -1,1 +1,56 @@
-<p>sidebar-fields works!</p>
+<div class="sidebar-inner">
+  <!-- Search -->
+  <div class="sidebar-search">
+    <div class="search-wrapper">
+      <span class="search-icon">&#128269;</span>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar campo..."
+        (input)="onSearchInput($event)"
+      />
+    </div>
+  </div>
+
+  <!-- Field groups -->
+  <div class="sidebar-groups" cdkDropList id="sidebar-field-list" [cdkDropListConnectedTo]="['canvas-drop-list']">
+    @for (group of filteredCategories(); track trackByGroup($index, group)) {
+      <div class="field-group">
+        <button
+          class="group-header"
+          (click)="toggleSection(group.key)"
+        >
+          <span class="group-arrow" [class.collapsed]="isSectionCollapsed(group.key)">&#9660;</span>
+          <span class="group-label">{{ group.label }}</span>
+          <span class="group-count">{{ group.fields.length }}</span>
+        </button>
+
+        @if (!isSectionCollapsed(group.key)) {
+          <div class="group-fields">
+            @for (field of group.fields; track trackByField($index, field)) {
+              <div
+                class="field-item"
+                cdkDrag
+                [cdkDragData]="field"
+                (cdkDragStarted)="onDragStarted($event)"
+              >
+                <span class="field-drag-icon">&#8942;&#8942;</span>
+                <div class="field-info">
+                  <span class="field-label">{{ field.label }}</span>
+                  <span class="field-placeholder">{{ field.placeholder }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (filteredCategories().length === 0) {
+      <div class="no-results">
+        <span class="no-results-icon">&#128270;</span>
+        <span class="no-results-text">No se encontraron campos</span>
+      </div>
+    }
+  </div>
+</div>
