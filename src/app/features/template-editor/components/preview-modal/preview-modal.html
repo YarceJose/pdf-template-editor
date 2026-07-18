@@ -1,0 +1,41 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-container">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="modal-title">Vista Previa — TemplateDefinition</span>
+        <span class="modal-subtitle">{{ templateName() }}</span>
+      </div>
+      <button class="modal-close" (click)="onClose()">&#10005;</button>
+    </div>
+
+    <!-- Validation badges -->
+    @if (errors().length > 0) {
+      <div class="modal-validation">
+        @if (errorCount() > 0) {
+          <span class="badge badge-error">{{ errorCount() }} error(es)</span>
+        }
+        @if (warningCount() > 0) {
+          <span class="badge badge-warning">{{ warningCount() }} advertencia(s)</span>
+        }
+      </div>
+    }
+
+    <!-- JSON preview -->
+    <div class="modal-body">
+      <pre class="json-preview"><code>{{ templateJson() }}</code></pre>
+    </div>
+
+    <!-- Actions -->
+    <div class="modal-footer">
+      <button class="btn-modal btn-copy" (click)="onCopyJson()">
+        <span class="btn-icon">&#128203;</span>
+        Copiar JSON
+      </button>
+      <button class="btn-modal btn-download" (click)="onDownloadJson()">
+        <span class="btn-icon">&#11015;</span>
+        Descargar JSON
+      </button>
+    </div>
+  </div>
+</div>

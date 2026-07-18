@@ -1,1 +1,123 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  // ============================================
+  // PALETA OLIMPIADAS BTW 2026
+  // ============================================
+
+  // --- Tonos Cálidos ---
+  --btw-orange-main: #E35E14;
+  --btw-orange-light: #F17E38;
+  --btw-red-dark: #7D091B;
+
+  // --- Contrastes ---
+  --btw-white-card: #FFFFFF;
+  --btw-cream-bg: #FFF8F5;
+  --btw-text-dark: #1E1E1E;
+
+  // --- Semánticos ---
+  --primary-color: #7D091B;
+  --accent-action: #E35E14;
+  --brand-background: #2D3539;
+  --light-color: #FFF8F5;
+
+  // --- Superficies ---
+  --surface-base: #FFF8F5;
+  --surface-panel: #FFFFFF;
+  --surface-panel-alt: #F0E6E2;
+
+  // --- Fondos ---
+  --theme-background: #FFF8F5;
+  --white: #FFFFFF;
+
+  // --- Texto ---
+  --theme-font-color: #888;
+  --theme-heading-color: #1E1E1E;
+
+  // --- Estados ---
+  --success-color: #16A34A;
+  --danger-color: #7D091B;
+
+  // --- Bordes ---
+  --border-color: #F0E6E2;
+
+  // --- Bordes y sombras ---
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  // --- Tipografía ---
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-lg: 14px;
+  --font-size-xl: 16px;
+  --font-size-2xl: 20px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  // --- Espaciado ---
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  // --- Layout ---
+  --sidebar-width: 280px;
+  --properties-panel-width: 320px;
+  --toolbar-height-1: 48px;
+  --toolbar-height-2: 36px;
+  --toolbar-height: 84px;
+
+  // --- Campos ---
+  --field-min-width: 20mm;
+  --field-max-width: 190mm;
+  --field-min-height: 5mm;
+  --field-max-height: 277mm;
+
+  // --- Paquetes ---
+  --basic-max-templates: 5;
+}
+
+// ============================================
+// ESTILOS GLOBALES
+// ============================================
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--theme-font-color);
+  background-color: var(--theme-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ============================================
+// UTILIDADES GLOBALES
+// ============================================
+
+.text-primary { color: var(--primary-color); }
+.text-accent { color: var(--accent-action); }
+.text-dark { color: var(--btw-text-dark); }
+.text-muted { color: var(--theme-font-color); }
+
+.bg-primary { background-color: var(--primary-color); }
+.bg-accent { background-color: var(--accent-action); }
+.bg-surface { background-color: var(--white); }
+.bg-cream { background-color: var(--btw-cream-bg); }

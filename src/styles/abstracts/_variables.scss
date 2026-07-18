@@ -1,0 +1,156 @@
+// ============================================
+// PALETA DE COLORES - PDF Template Editor
+// Herramienta profesional de facturación DIAN
+// ============================================
+
+// ============================================
+// DESIGN TOKENS (Plan de diseño aprobado)
+// ============================================
+
+// --- Superficies ---
+$surface-base: #F5F7FA;        // Fondo del workspace (canvas area)
+$surface-panel: #FFFFFF;       // Fondos de paneles (aside, propiedades, toolbar)
+$surface-panel-alt: #E8ECF0;   // Bordes separadores, reglas del canvas, guías
+
+// --- Acción primaria ---
+$accent-action: #2563EB;       // Acciones primarias (Guardar, Upload Logo, botón activo)
+
+// --- Campo obligatorio (DIAN) ---
+$mandatory-badge: #DC2626;     // Borde punteado, badge "R" rojo
+
+// --- Estado de éxito ---
+$success-state: #16A34A;       // Guardado exitoso, estado válido
+
+// ============================================
+// COLORES DE MARCA (logo EPICOR)
+// ============================================
+$logo-red: #A01127;           // Clase .st0 del logo
+$logo-orange: #CB6120;        // Clase .st1 del logo
+
+// ============================================
+// UI PRINCIPALES
+// ============================================
+$primary-color: #004894;      // Azul profundo - botones principales, versión
+$brand-background: #3f4d67;   // Azul-gris oscuro - Sidebar
+$secondary-color: #748892;    // Gris - bordes secundarios
+$danger-color: #DC2626;       // Rojo - eliminar (mismo que mandatory-badge)
+
+// ============================================
+// FONDOS
+// ============================================
+$light-color: #f2f2f2;        // Fondos de Toolbar y Propiedades
+$theme-background: #F5F7FA;   // Fondo general (= surface-base)
+$white: #ffffff;              // Fondo de tarjetas/paneles
+
+// ============================================
+// TEXTO
+// ============================================
+$theme-font-color: #888;      // Textos secundarios/reglas
+$theme-heading-color: #111;   // Títulos
+
+// ============================================
+// ESTADOS
+// ============================================
+$success-color: #16A34A;      // Verde - éxito (= success-state)
+$warning-color: #f8af05;      // Amarillo - advertencia
+$info-color: #2563EB;         // Azul - información (= accent-action)
+
+// ============================================
+// BORDES
+// ============================================
+$border-color: #E8ECF0;       // (= surface-panel-alt)
+
+// ============================================
+// ESCALA DE GRISES
+// ============================================
+$gray-50: #f8f9fa;
+$gray-100: #f1f3f5;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #868e96;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+// ============================================
+// BORDES Y SOMBRAS
+// ============================================
+$border-radius-sm: 4px;
+$border-radius-md: 6px;
+$border-radius-lg: 8px;
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+// ============================================
+// TIPOGRAFÍA
+// ============================================
+$font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+$font-size-xs: 11px;
+$font-size-sm: 12px;
+$font-size-base: 13px;
+$font-size-lg: 14px;
+$font-size-xl: 16px;
+$font-size-2xl: 20px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-tight: 1.25;
+$line-height-base: 1.5;
+$line-height-relaxed: 1.75;
+
+// ============================================
+// ESPACIADO
+// ============================================
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+
+// ============================================
+// TRANSICIONES
+// ============================================
+$transition-fast: 150ms ease;
+$transition-base: 200ms ease;
+$transition-slow: 300ms ease;
+
+// ============================================
+// Z-INDEX
+// ============================================
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-fixed: 300;
+$z-modal-backdrop: 400;
+$z-modal: 500;
+$z-tooltip: 600;
+
+// ============================================
+// LAYOUT
+// ============================================
+$sidebar-width: 280px;
+$properties-panel-width: 320px;
+$toolbar-height-1: 48px;
+$toolbar-height-2: 36px;
+$toolbar-height: 84px;  // 48 + 36
+
+// ============================================
+// CAMPOS - Límites de tamaño (en mm)
+// ============================================
+$field-min-width: 20mm;
+$field-max-width: 190mm;   // A4 = 210mm - 10mm margen c/u
+$field-min-height: 5mm;
+$field-max-height: 277mm;  // A4 = 297mm - 10mm margen c/u
+
+// ============================================
+// PAQUETES
+// ============================================
+$basic-max-templates: 5;

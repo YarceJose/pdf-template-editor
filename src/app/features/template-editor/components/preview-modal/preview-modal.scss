@@ -1,0 +1,194 @@
+// ============================================
+// PREVIEW MODAL - Enterprise Flat Design
+// ============================================
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  max-width: 800px;
+  max-height: 85vh;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+// ============================================
+// HEADER
+// ============================================
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modal-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--btw-text-dark);
+}
+
+.modal-subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--theme-font-color);
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: transparent;
+  color: var(--theme-font-color);
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--surface-base);
+    color: var(--btw-text-dark);
+  }
+}
+
+// ============================================
+// VALIDATION
+// ============================================
+.modal-validation {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--surface-base);
+  flex-shrink: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.badge-error {
+  background: rgba(125, 9, 27, 0.1);
+  color: var(--primary-color);
+}
+
+.badge-warning {
+  background: rgba(227, 94, 20, 0.1);
+  color: var(--accent-action);
+}
+
+// ============================================
+// BODY
+// ============================================
+.modal-body {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+
+.json-preview {
+  margin: 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--btw-text-dark);
+  color: #e0e0e0;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  line-height: 1.6;
+  overflow-x: auto;
+  min-height: 200px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+  }
+
+  code {
+    white-space: pre;
+  }
+}
+
+// ============================================
+// FOOTER
+// ============================================
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.btn-modal {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  height: 36px;
+  padding: 0 var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+
+  .btn-icon {
+    font-size: var(--font-size-base);
+  }
+}
+
+.btn-copy {
+  background: var(--surface-base);
+  color: var(--btw-text-dark);
+  border: 1px solid var(--border-color);
+
+  &:hover {
+    background: var(--border-color);
+  }
+}
+
+.btn-download {
+  background: var(--primary-color);
+  color: var(--white);
+
+  &:hover {
+    background: #5a0a14;
+  }
+}

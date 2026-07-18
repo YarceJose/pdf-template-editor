@@ -1,1 +1,117 @@
-<p>properties-panel works!</p>
+@if (hasField(); as has) {
+  <div class="props-inner">
+    <!-- Header -->
+    <div class="props-header">
+      <span class="props-title">Propiedades</span>
+      <span class="props-field-name">{{ field()!.label }}</span>
+    </div>
+
+    <!-- Position -->
+    <div class="props-section">
+      <span class="section-label">Posición (mm)</span>
+      <div class="props-grid-2">
+        <div class="props-field">
+          <label class="field-label">X</label>
+          <input
+            class="field-input"
+            type="number"
+            [value]="field()!.x"
+            (change)="updateNumberProperty('x', $any($event.target).value)"
+            min="0"
+            step="0.5"
+          />
+        </div>
+        <div class="props-field">
+          <label class="field-label">Y</label>
+          <input
+            class="field-input"
+            type="number"
+            [value]="field()!.y"
+            (change)="updateNumberProperty('y', $any($event.target).value)"
+            min="0"
+            step="0.5"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Size -->
+    <div class="props-section">
+      <span class="section-label">Tamaño (mm)</span>
+      <div class="props-grid-2">
+        <div class="props-field">
+          <label class="field-label">Ancho</label>
+          <input
+            class="field-input"
+            type="number"
+            [value]="field()!.width"
+            (change)="updateNumberProperty('width', $any($event.target).value)"
+            min="20"
+            step="1"
+          />
+        </div>
+        <div class="props-field">
+          <label class="field-label">Alto</label>
+          <input
+            class="field-input"
+            type="number"
+            [value]="field()!.height"
+            (change)="updateNumberProperty('height', $any($event.target).value)"
+            min="5"
+            step="1"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="props-section">
+      <span class="section-label">Tipografía</span>
+      <div class="props-field">
+        <label class="field-label">Tamaño (pt)</label>
+        <input
+          class="field-input"
+          type="number"
+          [value]="field()!.fontSize"
+          (change)="updateNumberProperty('fontSize', $any($event.target).value)"
+          min="6"
+          max="72"
+          step="0.5"
+        />
+      </div>
+      <div class="props-format-row">
+        <button
+          class="btn-format"
+          [class.active]="field()!.bold"
+          (click)="toggleBold()"
+          title="Negrita"
+        >B</button>
+        <button
+          class="btn-format italic"
+          [class.active]="field()!.italic"
+          (click)="toggleItalic()"
+          title="Cursiva"
+        >I</button>
+        <button
+          class="btn-format underline-text"
+          [class.active]="field()!.underline"
+          (click)="toggleUnderline()"
+          title="Subrayado"
+        >U</button>
+      </div>
+    </div>
+
+    <!-- Delete -->
+    <div class="props-section props-section-footer">
+      <button class="btn-delete" (click)="onDelete()">
+        <span class="btn-delete-icon">&#128465;</span>
+        Eliminar campo
+      </button>
+    </div>
+  </div>
+} @else {
+  <div class="props-empty">
+    <span class="props-empty-icon">&#9998;</span>
+    <span class="props-empty-text">Selecciona un campo en el canvas para ver sus propiedades</span>
+  </div>
+}

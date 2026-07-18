@@ -1,1 +1,18 @@
-<p>field-item works!</p>
+<div
+  class="field-canvas-item"
+  [class.selected]="selected()"
+  [style.left]="styleLeft()"
+  [style.top]="styleTop()"
+  [style.width]="styleWidth()"
+  [style.height]="styleHeight()"
+  [style.fontSize]="styleFontSize()"
+  [style.fontWeight]="field().bold ? 'bold' : 'normal'"
+  [style.fontStyle]="field().italic ? 'italic' : 'normal'"
+  [style.textDecoration]="field().underline ? 'underline' : 'none'"
+  (click)="onSelect(); $event.stopPropagation()"
+  cdkDrag
+  [cdkDragFreeDragPosition]="{ x: 0, y: 0 }"
+  (cdkDragEnded)="onDragEnded($event)"
+>
+  {{ field().placeholder }}
+</div>
