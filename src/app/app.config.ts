@@ -10,7 +10,7 @@ import {
   Building2, User, ShoppingCart, Calculator, PenTool, Pencil,
   Copy, AlertTriangle, AlertCircle, FileText,
   ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock,
-  RotateCcw, Check
+  RotateCcw, Check, FileJson2
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
         Building2, User, ShoppingCart, Calculator, PenTool, Pencil,
         Copy, AlertTriangle, AlertCircle, FileText,
         ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock,
-        RotateCcw, Check
+        RotateCcw, Check, FileJson2
       })
     )
   ]

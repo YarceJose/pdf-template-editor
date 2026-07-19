@@ -8,6 +8,8 @@
       [zoomPercent]="zoomPercent"
       [hasUnsavedChanges]="hasUnsavedChanges()"
       [saveStatus]="saveStatus()"
+      [showAdvancedJson]="showAdvancedJson()"
+      (advancedJsonToggleClicked)="onToggleAdvancedJson()"
       (undoClicked)="onUndo()"
       (redoClicked)="onRedo()"
       (zoomInClicked)="onZoomIn()"
@@ -34,18 +36,33 @@
 
   <!-- Fila 2, Columna 2: Canvas central -->
   <main class="editor-canvas">
-    <app-canvas
-      [placedFields]="placedFields()"
-      [selectedFieldId]="selectedFieldId()"
-      [zoom]="zoom()"
-      [showGrid]="showGrid()"
-      [snapEnabled]="snapEnabled()"
-      (fieldDropped)="onFieldDropped($event)"
-      (fieldSelected)="onFieldSelected($event)"
-      (fieldMoved)="onFieldMoved($event)"
-      (pageClicked)="onPageClicked()"
-      (detailTableSelected)="onDetailTableSelected()"
-    />
+    @if (showAdvancedJson()) {
+      <div class="advanced-json-viewport">
+        <div
+          class="advanced-json-page"
+          [style.width.px]="advancedPageWidthPx()"
+          [style.height.px]="advancedPageHeightPx()"
+          (click)="onAdvancedPageClicked()"
+        >
+          @for (section of advancedSections(); track section.id) {
+            <app-section-renderer [section]="section" [zoom]="zoom()" />
+          }
+        </div>
+      </div>
+    } @else {
+      <app-canvas
+        [placedFields]="placedFields()"
+        [selectedFieldId]="selectedFieldId()"
+        [zoom]="zoom()"
+        [showGrid]="showGrid()"
+        [snapEnabled]="snapEnabled()"
+        (fieldDropped)="onFieldDropped($event)"
+        (fieldSelected)="onFieldSelected($event)"
+        (fieldMoved)="onFieldMoved($event)"
+        (pageClicked)="onPageClicked()"
+        (detailTableSelected)="onDetailTableSelected()"
+      />
+    }
   </main>
 
   <!-- Fila 2, Columna 3: Panel de propiedades -->
