@@ -1,4 +1,18 @@
-@if (hasField(); as has) {
+@if (isDetailTableSelected()) {
+  <div class="props-inner props-detail-table">
+    <div class="props-header">
+      <div class="props-header-top">
+        <span class="props-title">Tabla de Detalle</span>
+        <span class="badge-locked">
+          <lucide-angular name="Table" [size]="10"></lucide-angular>
+          Columnas
+        </span>
+      </div>
+      <span class="props-field-name">Configurar columnas de la tabla dinámica</span>
+    </div>
+    <app-detail-table />
+  </div>
+} @else if (hasField(); as has) {
   <div class="props-inner">
     <!-- Header -->
     <div class="props-header">

@@ -131,3 +131,183 @@ describe('TemplateStateService — Positioning', () => {
     });
   });
 });
+
+// ============================================
+// DETAIL TABLE — Columnas dinámicas
+// ============================================
+describe('TemplateStateService — Detail Table Columns', () => {
+  let state: TemplateStateService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    state = TestBed.inject(TemplateStateService);
+  });
+
+  it('should add a column and update detailTableComponent with full contract structure', () => {
+    state.addDetailColumn({
+      header: 'Codigo',
+      bindingSource: 'PartNum',
+      bindingDataType: 'String',
+      width: 65,
+      align: 'Left',
+      fieldKey: 'PartNum',
+      requiredTier: 'opcional',
+    });
+
+    const cols = state.detailTableColumns();
+    expect(cols.length).toBe(1);
+    expect(cols[0].header).toBe('Codigo');
+    expect(cols[0].bindingSource).toBe('PartNum');
+
+    // Verify detailTableComponent produces valid TableComponent
+    const tbl = state.detailTableComponent();
+    expect(tbl.type).toBe('Table');
+    expect(tbl.columns.length).toBe(1);
+    expect(tbl.columns[0].header).toBe('Codigo');
+    expect(tbl.columns[0].binding?.source).toBe('PartNum');
+    expect(tbl.columns[0].binding?.dataType).toBe('String');
+    expect(tbl.columns[0].width).toBe(65);
+    expect(tbl.columns[0].align).toBe('Left');
+  });
+
+  it('should reject column with duplicate bindingSource', () => {
+    state.addDetailColumn({
+      header: 'Codigo',
+      bindingSource: 'PartNum',
+      bindingDataType: 'String',
+      width: 65,
+      align: 'Left',
+      fieldKey: 'PartNum',
+      requiredTier: 'opcional',
+    });
+    const result = state.addDetailColumn({
+      header: 'Codigo Dup',
+      bindingSource: 'PartNum',
+      bindingDataType: 'String',
+      width: 40,
+      align: 'Left',
+      fieldKey: 'PartNum',
+      requiredTier: 'opcional',
+    });
+    expect(result.success).toBeFalsy();
+    expect(result.reason).toContain('ya existe');
+    expect(state.detailTableColumns().length).toBe(1);
+  });
+
+  it('should block removal of obligatorio_siempre column', () => {
+    state.addDetailColumn({
+      header: 'Linea',
+      bindingSource: 'InvoiceLine',
+      bindingDataType: 'Integer',
+      width: 24,
+      align: 'Center',
+      fieldKey: 'InvoiceLine',
+      requiredTier: 'obligatorio_siempre',
+    });
+    const col = state.detailTableColumns()[0];
+    const result = state.removeDetailColumn(col.id);
+    expect(result.success).toBeFalsy();
+    expect(result.reason).toContain('obligatoria');
+    expect(state.detailTableColumns().length).toBe(1);
+  });
+
+  it('should allow removal of opcional column', () => {
+    state.addDetailColumn({
+      header: 'Descripcion',
+      bindingSource: 'LineDesc',
+      bindingDataType: 'String',
+      width: 150,
+      align: 'Left',
+      fieldKey: 'LineDesc',
+      requiredTier: 'opcional',
+    });
+    const col = state.detailTableColumns()[0];
+    const result = state.removeDetailColumn(col.id);
+    expect(result.success).toBeTruthy();
+    expect(state.detailTableColumns().length).toBe(0);
+  });
+
+  it('should clamp column width between 20 and 200', () => {
+    state.addDetailColumn({
+      header: 'Test',
+      bindingSource: 'TestCol',
+      bindingDataType: 'String',
+      width: 65,
+      align: 'Left',
+      fieldKey: 'TestCol',
+      requiredTier: 'opcional',
+    });
+    const col = state.detailTableColumns()[0];
+    state.updateColumnWidth(col.id, 5);
+    expect(state.detailTableColumns()[0].width).toBe(20);
+    state.updateColumnWidth(col.id, 300);
+    expect(state.detailTableColumns()[0].width).toBe(200);
+  });
+});
+
+// ============================================
+// DISCARD DRAFT — Restaurar snapshot
+// ============================================
+describe('TemplateStateService — Discard Draft', () => {
+  let state: TemplateStateService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    state = TestBed.inject(TemplateStateService);
+  });
+
+  it('should restore state to last snapshot after discard', () => {
+    // Initial state: empty, save snapshot
+    state.saveSnapshot();
+    expect(state.hasUnsavedChanges()).toBeFalsy();
+
+    // Make changes
+    state.addField(baseDef, 20, 30);
+    state.addDetailColumn({
+      header: 'Test',
+      bindingSource: 'TestCol',
+      bindingDataType: 'String',
+      width: 65,
+      align: 'Left',
+      fieldKey: 'TestCol',
+      requiredTier: 'opcional',
+    });
+    expect(state.placedFields().length).toBe(1);
+    expect(state.detailTableColumns().length).toBe(1);
+    expect(state.hasUnsavedChanges()).toBeTruthy();
+
+    // Discard
+    state.discardDraft();
+    expect(state.placedFields().length).toBe(0);
+    expect(state.detailTableColumns().length).toBe(0);
+    expect(state.hasUnsavedChanges()).toBeFalsy();
+  });
+
+  it('should restore to empty state when discarding a new template (no prior snapshot)', () => {
+    // Never called saveSnapshot — savedSnapshot is null
+    state.addField(baseDef, 20, 30);
+    expect(state.placedFields().length).toBe(1);
+
+    // Discard with no snapshot → calls reset()
+    state.discardDraft();
+    expect(state.placedFields().length).toBe(0);
+    expect(state.detailTableColumns().length).toBe(0);
+  });
+
+  it('should not call any delete endpoint on discard', () => {
+    state.saveSnapshot();
+    state.addField(baseDef, 20, 30);
+    state.discardDraft();
+    // No error thrown, no endpoint invoked — state simply restored
+    expect(state.placedFields().length).toBe(0);
+  });
+
+  it('should restore userRequiredKeys on discard', () => {
+    state.saveSnapshot();
+    state.toggleUserRequired('TestField');
+    expect(state.isUserRequired('TestField')).toBeTruthy();
+
+    state.discardDraft();
+    expect(state.isUserRequired('TestField')).toBeFalsy();
+  });
+});

@@ -11,6 +11,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { PlacedField, clampToSection, getSectionZone } from '../../../../shared/models/placed-field.model';
 import { FieldValidationService, ValidationError } from '../../services/field-validation';
 import { TemplateStateService } from '../../services/template-state';
+import { DetailTableComponent } from '../detail-table/detail-table';
 
 const A4_W = 210;
 const A4_H = 297;
@@ -22,7 +23,7 @@ const MAX_H = 277;
 
 @Component({
   selector: 'app-properties-panel',
-  imports: [FormsModule, LucideAngularModule],
+  imports: [FormsModule, LucideAngularModule, DetailTableComponent],
   templateUrl: './properties-panel.html',
   styleUrl: './properties-panel.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +33,7 @@ export class PropertiesPanel {
   private state = inject(TemplateStateService);
 
   field = input<PlacedField | null>(null);
+  isDetailTableSelected = input<boolean>(false);
   fieldUpdated = output<PlacedField>();
   fieldDeleted = output<string>();
 

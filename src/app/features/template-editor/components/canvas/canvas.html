@@ -18,11 +18,16 @@
       </div>
     }
 
-    <!-- Detail Table (in the Detalle section) -->
+    <!-- Detail Table (in the Detalle section) — uses TableRenderer from contract JSON -->
     @if (hasDetailTable()) {
-      <div [style]="detailTableStyle()">
-        <app-detail-table />
-      </div>
+      <app-table-renderer
+        [component]="detailTableComponent()"
+        [zoom]="zoom()"
+        [style.left]="detailTableLeft()"
+        [style.top]="detailTableTop()"
+        [style.width]="detailTableWidth()"
+        (clicked)="detailTableSelected.emit()"
+      />
     }
 
     <!-- Placed fields (non-detalle sections only) -->

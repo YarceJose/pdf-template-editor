@@ -8,14 +8,14 @@ import {
 } from '@angular/core';
 import { CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { FieldItem, MM_TO_PX } from '../field-item/field-item';
-import { DetailTableComponent } from '../detail-table/detail-table';
+import { TableRenderer } from '../renderers/table-renderer';
 import { PlacedField, PAGE_SECTIONS, PageSectionZone } from '../../../../shared/models/placed-field.model';
 import { FieldDefinition } from '../../../../shared/models/field.model';
 import { TemplateStateService } from '../../services/template-state';
 
 @Component({
   selector: 'app-canvas',
-  imports: [CdkDropList, FieldItem, DetailTableComponent],
+  imports: [CdkDropList, FieldItem, TableRenderer],
   templateUrl: './canvas.html',
   styleUrl: './canvas.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,6 +31,7 @@ export class Canvas {
   fieldMoved = output<{ id: string; x: number; y: number }>();
   fieldDropped = output<{ def: FieldDefinition; x: number; y: number }>();
   pageClicked = output<void>();
+  detailTableSelected = output<void>();
 
   readonly A4_WIDTH_MM = 210;
   readonly A4_HEIGHT_MM = 297;
@@ -41,6 +42,7 @@ export class Canvas {
   });
 
   hasDetailTable = computed(() => this.state.detailTableColumns().length > 0);
+  detailTableComponent = this.state.detailTableComponent;
 
   detalleZone = PAGE_SECTIONS.find((s) => s.key === 'detalle')!;
 
@@ -62,16 +64,9 @@ export class Canvas {
     return { top: `${topPx}px` };
   }
 
-  detailTableStyle() {
-    const z = this.zoom();
-    const zone = this.detalleZone;
-    return {
-      position: 'absolute' as const,
-      top: `${(zone.yStart + 5) * MM_TO_PX * z}px`,
-      left: `${10 * MM_TO_PX * z}px`,
-      right: `${10 * MM_TO_PX * z}px`,
-    };
-  }
+  detailTableLeft = computed(() => `${10 * MM_TO_PX * this.zoom()}px`);
+  detailTableTop = computed(() => `${(this.detalleZone.yStart + 5) * MM_TO_PX * this.zoom()}px`);
+  detailTableWidth = computed(() => `${(this.A4_WIDTH_MM - 20) * MM_TO_PX * this.zoom()}px`);
 
   onDrop(event: CdkDragDrop<unknown, unknown>): void {
     const def = event.item.data as FieldDefinition;

@@ -31,6 +31,7 @@ export class EditorPage implements OnInit {
   canRedo = this.state.canRedo;
   fieldCount = this.state.fieldCount;
   hasUnsavedChanges = this.state.hasUnsavedChanges;
+  isDetailTableSelected = this.state.selectedDetailTable;
 
   showPreview = signal(false);
   showGrid = signal(false);
@@ -66,6 +67,10 @@ export class EditorPage implements OnInit {
 
   onPageClicked(): void {
     this.state.selectField(null);
+  }
+
+  onDetailTableSelected(): void {
+    this.state.selectDetailTable();
   }
 
   onUndo(): void {

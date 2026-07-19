@@ -2,6 +2,7 @@ import { Injectable, signal, computed } from '@angular/core';
 import { PlacedField, getSectionForY, clampToSection, PageSection } from '../../../shared/models/placed-field.model';
 import { FieldDefinition } from '../../../shared/models/field.model';
 import { DesignTemplate } from '../../../shared/models/design-templates.model';
+import { TableComponent } from '../../../shared/models/template-json.model';
 
 let nextId = 1;
 
@@ -39,6 +40,39 @@ export class TemplateStateService {
 
   /** Columnas de la tabla de detalle */
   detailTableColumns = signal<DetailTableColumn[]>([]);
+
+  /** Tabla de detalle seleccionada (para mostrar editor de columnas en properties panel) */
+  selectedDetailTable = signal<boolean>(false);
+
+  /** TableComponent del contrato JSON, derivado de detailTableColumns */
+  detailTableComponent = computed<TableComponent>(() => {
+    const cols = this.detailTableColumns();
+    return {
+      id: 'tbl-detail',
+      type: 'Table',
+      position: { x: 40, y: 142 },
+      size: { width: 515.28, height: 380 },
+      headerStyleRef: 'f-th',
+      rowStyleRef: 'f-body',
+      headerBackground: '#1A3A5C',
+      rowAltBackground: '#EEF3F9',
+      borderColor: '#CCCCCC',
+      borderWidth: 0.5,
+      repeatHeaderOnNewPage: true,
+      rowHeight: 15,
+      columns: cols.map((c) => ({
+        id: c.id,
+        header: c.header,
+        width: c.width,
+        align: c.align,
+        binding: {
+          source: c.bindingSource,
+          dataType: c.bindingDataType as 'String' | 'Decimal' | 'DateTime' | 'Integer',
+          format: c.format,
+        },
+      })),
+    };
+  });
 
   /** Snapshot del último estado guardado (para descartar boceto) */
   private savedSnapshot = signal<SnapshotEntry | null>(null);
@@ -117,6 +151,12 @@ export class TemplateStateService {
 
   selectField(id: string | null): void {
     this.selectedFieldId.set(id);
+    if (id) this.selectedDetailTable.set(false);
+  }
+
+  selectDetailTable(): void {
+    this.selectedFieldId.set(null);
+    this.selectedDetailTable.set(true);
   }
 
   /**
