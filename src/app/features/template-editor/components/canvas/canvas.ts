@@ -4,20 +4,25 @@ import {
   input,
   output,
   computed,
+  inject,
 } from '@angular/core';
 import { CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { FieldItem, MM_TO_PX } from '../field-item/field-item';
+import { DetailTableComponent } from '../detail-table/detail-table';
 import { PlacedField, PAGE_SECTIONS, PageSectionZone } from '../../../../shared/models/placed-field.model';
 import { FieldDefinition } from '../../../../shared/models/field.model';
+import { TemplateStateService } from '../../services/template-state';
 
 @Component({
   selector: 'app-canvas',
-  imports: [CdkDropList, FieldItem],
+  imports: [CdkDropList, FieldItem, DetailTableComponent],
   templateUrl: './canvas.html',
   styleUrl: './canvas.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Canvas {
+  private state = inject(TemplateStateService);
+
   placedFields = input<PlacedField[]>([]);
   selectedFieldId = input<string | null>(null);
   zoom = input(1);
@@ -30,6 +35,14 @@ export class Canvas {
   readonly A4_WIDTH_MM = 210;
   readonly A4_HEIGHT_MM = 297;
   sections = PAGE_SECTIONS;
+
+  nonDetalleFields = computed(() => {
+    return this.placedFields().filter((f) => f.section !== 'detalle');
+  });
+
+  hasDetailTable = computed(() => this.state.detailTableColumns().length > 0);
+
+  detalleZone = PAGE_SECTIONS.find((s) => s.key === 'detalle')!;
 
   pageWidthPx = computed(() => this.A4_WIDTH_MM * MM_TO_PX * this.zoom());
   pageHeightPx = computed(() => this.A4_HEIGHT_MM * MM_TO_PX * this.zoom());
@@ -47,6 +60,17 @@ export class Canvas {
     const z = this.zoom();
     const topPx = section.yStart * MM_TO_PX * z;
     return { top: `${topPx}px` };
+  }
+
+  detailTableStyle() {
+    const z = this.zoom();
+    const zone = this.detalleZone;
+    return {
+      position: 'absolute' as const,
+      top: `${(zone.yStart + 5) * MM_TO_PX * z}px`,
+      left: `${10 * MM_TO_PX * z}px`,
+      right: `${10 * MM_TO_PX * z}px`,
+    };
   }
 
   onDrop(event: CdkDragDrop<unknown, unknown>): void {

@@ -2,9 +2,99 @@
   <div class="props-inner">
     <!-- Header -->
     <div class="props-header">
-      <span class="props-title">Propiedades</span>
+      <div class="props-header-top">
+        <span class="props-title">Propiedades</span>
+        @if (isLocked()) {
+          <span class="badge-locked">
+            <lucide-angular name="Lock" [size]="10"></lucide-angular>
+            Bloqueado
+          </span>
+        }
+      </div>
       <span class="props-field-name">{{ field()!.label }}</span>
     </div>
+
+    <!-- Identidad del campo -->
+    <div class="props-section">
+      <span class="section-label">Identidad</span>
+      <div class="props-field">
+        <label class="field-label">fieldKey (mapeo XML)</label>
+        <input
+          class="field-input field-input-readonly"
+          type="text"
+          [value]="field()!.fieldKey"
+          readonly
+          title="Nombre técnico inmutable — no se puede editar"
+        />
+      </div>
+      <div class="props-field">
+        <label class="field-label">Label (visible en canvas)</label>
+        <input
+          class="field-input"
+          type="text"
+          [value]="field()!.label"
+          (change)="updateLabel($any($event.target).value)"
+          [disabled]="!isEditable()"
+          title="Título visible — editable"
+        />
+      </div>
+    </div>
+
+    <!-- Metadatos -->
+    <div class="props-section">
+      <span class="section-label">Metadatos</span>
+      <div class="props-meta-grid">
+        <div class="props-meta-item">
+          <span class="meta-label">Sección</span>
+          <span class="meta-value meta-badge">{{ sectionLabel(field()!.section) }}</span>
+        </div>
+        <div class="props-meta-item">
+          <span class="meta-label">Origen</span>
+          <span class="meta-value meta-badge" [class.meta-system]="field()!.origin === 'system'">
+            {{ field()!.origin === 'system' ? 'Sistema' : 'XML' }}
+          </span>
+        </div>
+        <div class="props-meta-item">
+          <span class="meta-label">Tipo</span>
+          <span class="meta-value meta-badge">{{ typeLabel(field()!.type) }}</span>
+        </div>
+        <div class="props-meta-item">
+          <span class="meta-label">Obligatoriedad</span>
+          <span class="meta-value meta-badge" [class.meta-required]="field()!.requiredTier === 'obligatorio_siempre'" [class.meta-conditional]="field()!.requiredTier === 'obligatorio_validacion'" [class.meta-optional]="field()!.requiredTier === 'opcional'">
+            {{ field()!.requiredTier === 'obligatorio_siempre' ? 'Siempre' : field()!.requiredTier === 'obligatorio_validacion' ? 'Validación' : 'Opcional' }}
+          </span>
+        </div>
+        @if (field()!.sourceNode) {
+          <div class="props-meta-item">
+            <span class="meta-label">Nodo XML</span>
+            <span class="meta-value meta-code">{{ field()!.sourceNode }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Validación -->
+    @if (fieldErrors().length > 0) {
+      <div class="props-section props-validation">
+        <span class="section-label">
+          Validación
+          @if (fieldErrorCount() > 0) {
+            <span class="validation-badge validation-error">{{ fieldErrorCount() }}</span>
+          }
+          @if (fieldWarningCount() > 0) {
+            <span class="validation-badge validation-warning">{{ fieldWarningCount() }}</span>
+          }
+        </span>
+        <div class="validation-list">
+          @for (err of fieldErrors(); track err.code) {
+            <div class="validation-item" [class.is-error]="err.severity === 'error'" [class.is-warning]="err.severity === 'warning'">
+              <lucide-angular [name]="err.severity === 'error' ? 'AlertCircle' : 'AlertTriangle'" [size]="12"></lucide-angular>
+              <span class="validation-message">{{ err.message }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
 
     <!-- Position -->
     <div class="props-section">
@@ -17,8 +107,10 @@
             type="number"
             [value]="field()!.x"
             (change)="updateNumberProperty('x', $any($event.target).value)"
-            min="0"
+            [min]="10"
+            [max]="200 - field()!.width"
             step="0.5"
+            [disabled]="isSystem()"
           />
         </div>
         <div class="props-field">
@@ -28,11 +120,14 @@
             type="number"
             [value]="field()!.y"
             (change)="updateNumberProperty('y', $any($event.target).value)"
-            min="0"
+            [min]="sectionBounds().yStart"
+            [max]="sectionBounds().yEnd - field()!.height"
             step="0.5"
+            [disabled]="isSystem()"
           />
         </div>
       </div>
+      <span class="field-hint">{{ sectionBounds().label }}: {{ sectionBounds().yStart }}–{{ sectionBounds().yEnd }}mm</span>
     </div>
 
     <!-- Size -->
@@ -46,7 +141,7 @@
             type="number"
             [value]="field()!.width"
             (change)="updateNumberProperty('width', $any($event.target).value)"
-            min="20"
+            min="10"
             step="1"
           />
         </div>
@@ -85,33 +180,46 @@
           [class.active]="field()!.bold"
           (click)="toggleBold()"
           title="Negrita"
-        >B</button>
+        >
+          <lucide-angular name="Bold" [size]="14"></lucide-angular>
+        </button>
         <button
-          class="btn-format italic"
+          class="btn-format"
           [class.active]="field()!.italic"
           (click)="toggleItalic()"
           title="Cursiva"
-        >I</button>
+        >
+          <lucide-angular name="Italic" [size]="14"></lucide-angular>
+        </button>
         <button
-          class="btn-format underline-text"
+          class="btn-format"
           [class.active]="field()!.underline"
           (click)="toggleUnderline()"
           title="Subrayado"
-        >U</button>
+        >
+          <lucide-angular name="Underline" [size]="14"></lucide-angular>
+        </button>
       </div>
     </div>
 
     <!-- Delete -->
     <div class="props-section props-section-footer">
-      <button class="btn-delete" (click)="onDelete()">
-        <span class="btn-delete-icon">&#128465;</span>
-        Eliminar campo
+      <button
+        class="btn-delete"
+        (click)="onDelete()"
+        [disabled]="!isEditable()"
+        [title]="isLocked() ? 'Campo obligatorio — no se puede eliminar' : 'Eliminar campo'"
+      >
+        <lucide-angular name="Trash2" [size]="14"></lucide-angular>
+        {{ isLocked() ? 'Campo bloqueado' : 'Eliminar campo' }}
       </button>
     </div>
   </div>
 } @else {
   <div class="props-empty">
-    <span class="props-empty-icon">&#9998;</span>
+    <div class="props-empty-icon-wrapper">
+      <lucide-angular name="MousePointer2" [size]="24" class="props-empty-icon"></lucide-angular>
+    </div>
     <span class="props-empty-text">Selecciona un campo en el canvas para ver sus propiedades</span>
   </div>
 }

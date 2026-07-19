@@ -2,6 +2,7 @@
   <!-- NIVEL 1: Documento + Tipografía + Acciones -->
   <div class="toolbar-level-1">
     <div class="toolbar-section toolbar-doc-name">
+      <lucide-angular name="FileText" [size]="16" class="doc-icon"></lucide-angular>
       <span class="doc-name">{{ documentName() }}</span>
     </div>
 
@@ -16,9 +17,14 @@
       </select>
 
       <div class="font-size-control">
-        <button class="btn-icon-sm" title="Reducir tamaño">&#8722;</button>
+        <button class="btn-icon-sm" title="Reducir tamaño">
+          <lucide-angular name="Minus" [size]="14"></lucide-angular>
+        </button>
         <span class="font-size-value">10</span>
-        <button class="btn-icon-sm" title="Aumentar tamaño">+</button>
+        <button class="btn-icon-sm" title="Aumentar tamaño">
+          <lucide-angular name="Plus" [size]="14" style="display:none"></lucide-angular>
+          <span>+</span>
+        </button>
       </div>
 
       <span class="toolbar-separator"></span>
@@ -31,12 +37,41 @@
     <!-- Acciones -->
     <div class="toolbar-section toolbar-actions">
       <button class="btn-action btn-danger" (click)="deleteFieldClicked.emit()" title="Borrar campo seleccionado">
-        <span class="btn-icon">&#10005;</span>
+        <lucide-angular name="Trash2" [size]="14"></lucide-angular>
         <span class="btn-label">Borrar</span>
       </button>
-      <button class="btn-action btn-primary" (click)="exportClicked.emit()" title="Exportar JSON">
-        <span class="btn-icon">&#11015;</span>
+      @if (hasUnsavedChanges()) {
+        <button class="btn-action btn-secondary" (click)="discardDraftClicked.emit()" title="Descartar cambios no guardados — vuelve al último estado guardado">
+          <lucide-angular name="RotateCcw" [size]="14"></lucide-angular>
+          <span class="btn-label">Descartar</span>
+        </button>
+      }
+      <button class="btn-action btn-secondary" (click)="exportClicked.emit()" title="Exportar JSON">
+        <lucide-angular name="Download" [size]="14"></lucide-angular>
         <span class="btn-label">Exportar</span>
+      </button>
+      <button
+        class="btn-action btn-primary"
+        [class.btn-saving]="saveStatus() === 'saving'"
+        [class.btn-saved]="saveStatus() === 'saved'"
+        [class.btn-error]="saveStatus() === 'error'"
+        [disabled]="saveStatus() === 'saving'"
+        (click)="saveClicked.emit()"
+        title="Guardar template en servidor"
+      >
+        @if (saveStatus() === 'saving') {
+          <lucide-angular name="Loader2" [size]="14" class="spin-icon"></lucide-angular>
+          <span class="btn-label">Guardando...</span>
+        } @else if (saveStatus() === 'saved') {
+          <lucide-angular name="CheckCircle" [size]="14"></lucide-angular>
+          <span class="btn-label">Guardado</span>
+        } @else if (saveStatus() === 'error') {
+          <lucide-angular name="AlertCircle" [size]="14"></lucide-angular>
+          <span class="btn-label">Error</span>
+        } @else {
+          <lucide-angular name="Save" [size]="14"></lucide-angular>
+          <span class="btn-label">Guardar</span>
+        }
       </button>
     </div>
   </div>
@@ -48,7 +83,7 @@
     <div class="toolbar-section toolbar-template-type">
       <span class="template-label">Plantilla:</span>
       <select class="template-selector" (change)="onTemplateChange($event)">
-        <option value="">— Seleccionar —</option>
+        <option value="">Seleccionar</option>
         @for (tpl of templates; track tpl.id) {
           <option [value]="tpl.id">{{ tpl.name }}</option>
         }
@@ -65,15 +100,15 @@
         <span class="tool-group-label">Texto</span>
         <div class="tool-buttons">
           <button class="btn-tool" (click)="addTextClicked.emit('text')" title="Agregar texto plano">
-            <span class="tool-icon">T</span>
+            <lucide-angular name="Type" [size]="14"></lucide-angular>
             <span class="tool-name">Texto</span>
           </button>
           <button class="btn-tool" (click)="addTextClicked.emit('heading')" title="Agregar encabezado">
-            <span class="tool-icon">H1</span>
+            <lucide-angular name="Heading" [size]="14"></lucide-angular>
             <span class="tool-name">Título</span>
           </button>
           <button class="btn-tool" (click)="addTextClicked.emit('label')" title="Agregar etiqueta/label">
-            <span class="tool-icon">Lb</span>
+            <lucide-angular name="Tags" [size]="14"></lucide-angular>
             <span class="tool-name">Label</span>
           </button>
         </div>
@@ -86,15 +121,15 @@
         <span class="tool-group-label">Datos</span>
         <div class="tool-buttons">
           <button class="btn-tool" (click)="addTextClicked.emit('field')" title="Campo de datos dinámico">
-            <span class="tool-icon">[x]</span>
+            <lucide-angular name="Variable" [size]="14"></lucide-angular>
             <span class="tool-name">Campo</span>
           </button>
           <button class="btn-tool" (click)="addTextClicked.emit('number')" title="Campo numérico">
-            <span class="tool-icon">#</span>
+            <lucide-angular name="Hash" [size]="14"></lucide-angular>
             <span class="tool-name">Número</span>
           </button>
           <button class="btn-tool" (click)="addTextClicked.emit('date')" title="Campo de fecha">
-            <span class="tool-icon">📅</span>
+            <lucide-angular name="Calendar" [size]="14"></lucide-angular>
             <span class="tool-name">Fecha</span>
           </button>
         </div>
@@ -107,15 +142,15 @@
         <span class="tool-group-label">Tablas</span>
         <div class="tool-buttons">
           <button class="btn-tool" (click)="addTableClicked.emit({ cols: 3, rows: 3 })" title="Tabla 3×3">
-            <span class="tool-icon">⊞</span>
+            <lucide-angular name="Table" [size]="14"></lucide-angular>
             <span class="tool-name">3×3</span>
           </button>
           <button class="btn-tool" (click)="addTableClicked.emit({ cols: 5, rows: 3 })" title="Tabla 5×3">
-            <span class="tool-icon">⊞</span>
+            <lucide-angular name="Table" [size]="14"></lucide-angular>
             <span class="tool-name">5×3</span>
           </button>
           <button class="btn-tool" (click)="addTableClicked.emit({ cols: 4, rows: 5 })" title="Tabla 4×5">
-            <span class="tool-icon">⊞</span>
+            <lucide-angular name="Table" [size]="14"></lucide-angular>
             <span class="tool-name">4×5</span>
           </button>
         </div>
@@ -128,19 +163,19 @@
         <span class="tool-group-label">Elementos</span>
         <div class="tool-buttons">
           <button class="btn-tool" (click)="addElementClicked.emit('line')" title="Línea horizontal">
-            <span class="tool-icon">—</span>
+            <lucide-angular name="Minus" [size]="14"></lucide-angular>
             <span class="tool-name">Línea</span>
           </button>
           <button class="btn-tool" (click)="addElementClicked.emit('rectangle')" title="Rectángulo">
-            <span class="tool-icon">▭</span>
+            <lucide-angular name="Square" [size]="14"></lucide-angular>
             <span class="tool-name">Caja</span>
           </button>
           <button class="btn-tool" (click)="addElementClicked.emit('image')" title="Imagen/Logo">
-            <span class="tool-icon">🖼</span>
+            <lucide-angular name="Image" [size]="14"></lucide-angular>
             <span class="tool-name">Imagen</span>
           </button>
           <button class="btn-tool" (click)="addElementClicked.emit('qr')" title="Código QR">
-            <span class="tool-icon">二维码</span>
+            <lucide-angular name="QrCode" [size]="14"></lucide-angular>
             <span class="tool-name">QR</span>
           </button>
         </div>
@@ -152,13 +187,25 @@
       <div class="tool-group">
         <span class="tool-group-label">Alinear</span>
         <div class="tool-buttons">
-          <button class="btn-tool-icon" (click)="alignClicked.emit('left')" title="Alinear izquierda">&#8676;</button>
-          <button class="btn-tool-icon" (click)="alignClicked.emit('center-horizontal')" title="Centrar horizontalmente">&#8596;</button>
-          <button class="btn-tool-icon" (click)="alignClicked.emit('right')" title="Alinear derecha">&#8677;</button>
+          <button class="btn-tool-icon" (click)="alignClicked.emit('left')" title="Alinear izquierda">
+            <lucide-angular name="AlignLeft" [size]="14"></lucide-angular>
+          </button>
+          <button class="btn-tool-icon" (click)="alignClicked.emit('center-horizontal')" title="Centrar horizontalmente">
+            <lucide-angular name="AlignCenterHorizontal" [size]="14"></lucide-angular>
+          </button>
+          <button class="btn-tool-icon" (click)="alignClicked.emit('right')" title="Alinear derecha">
+            <lucide-angular name="AlignRight" [size]="14"></lucide-angular>
+          </button>
           <span class="tool-sep-v"></span>
-          <button class="btn-tool-icon" (click)="alignClicked.emit('top')" title="Alinear arriba">&#8673;</button>
-          <button class="btn-tool-icon" (click)="alignClicked.emit('center-vertical')" title="Centrar verticalmente">&#8597;</button>
-          <button class="btn-tool-icon" (click)="alignClicked.emit('bottom')" title="Alinear abajo">&#8675;</button>
+          <button class="btn-tool-icon" (click)="alignClicked.emit('top')" title="Alinear arriba">
+            <lucide-angular name="AlignVerticalJustifyStart" [size]="14"></lucide-angular>
+          </button>
+          <button class="btn-tool-icon" (click)="alignClicked.emit('center-vertical')" title="Centrar verticalmente">
+            <lucide-angular name="AlignVerticalJustifyCenter" [size]="14"></lucide-angular>
+          </button>
+          <button class="btn-tool-icon" (click)="alignClicked.emit('bottom')" title="Alinear abajo">
+            <lucide-angular name="AlignVerticalJustifyEnd" [size]="14"></lucide-angular>
+          </button>
         </div>
       </div>
 
@@ -167,10 +214,10 @@
       <!-- Cuadrícula -->
       <div class="tool-group">
         <button class="btn-tool-icon" (click)="gridToggleClicked.emit()" title="Mostrar/ocultar cuadrícula">
-          <span class="tool-icon">#</span>
+          <lucide-angular name="Grid3x3" [size]="14"></lucide-angular>
         </button>
         <button class="btn-tool-icon" (click)="snapToggleClicked.emit()" title="Snap a cuadrícula">
-          <span class="tool-icon">🧲</span>
+          <lucide-angular name="Magnet" [size]="14"></lucide-angular>
         </button>
       </div>
     </div>
@@ -179,9 +226,13 @@
 
     <!-- Zoom -->
     <div class="toolbar-section toolbar-zoom">
-      <button class="btn-icon-sm" (click)="zoomOutClicked.emit()" title="Alejar">&#8722;</button>
+      <button class="btn-icon-sm" (click)="zoomOutClicked.emit()" title="Alejar">
+        <lucide-angular name="ZoomOut" [size]="14"></lucide-angular>
+      </button>
       <span class="zoom-value">{{ zoomPercent() }}%</span>
-      <button class="btn-icon-sm" (click)="zoomInClicked.emit()" title="Acercar">+</button>
+      <button class="btn-icon-sm" (click)="zoomInClicked.emit()" title="Acercar">
+        <lucide-angular name="ZoomIn" [size]="14"></lucide-angular>
+      </button>
     </div>
 
     <span class="toolbar-divider"></span>
@@ -189,13 +240,13 @@
     <!-- Undo/Redo/Preview -->
     <div class="toolbar-section toolbar-utilities">
       <button class="btn-utility" [disabled]="!canUndo()" (click)="undoClicked.emit()" title="Deshacer (Ctrl+Z)">
-        &#8630;
+        <lucide-angular name="Undo2" [size]="14"></lucide-angular>
       </button>
       <button class="btn-utility" [disabled]="!canRedo()" (click)="redoClicked.emit()" title="Rehacer (Ctrl+Y)">
-        &#8631;
+        <lucide-angular name="Redo2" [size]="14"></lucide-angular>
       </button>
       <button class="btn-utility" (click)="previewClicked.emit()" title="Vista previa JSON">
-        <span class="btn-icon">&#128065;</span>
+        <lucide-angular name="Eye" [size]="14"></lucide-angular>
         <span class="btn-label">Preview</span>
       </button>
     </div>

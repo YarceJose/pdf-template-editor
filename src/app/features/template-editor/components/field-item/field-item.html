@@ -1,8 +1,8 @@
 <div
   class="field-canvas-item"
   [class.selected]="selected()"
-  [style.left]="styleLeft()"
-  [style.top]="styleTop()"
+  [class.locked]="isLocked()"
+  [class.system]="isSystem()"
   [style.width]="styleWidth()"
   [style.height]="styleHeight()"
   [style.fontSize]="styleFontSize()"
@@ -11,8 +11,12 @@
   [style.textDecoration]="field().underline ? 'underline' : 'none'"
   (click)="onSelect(); $event.stopPropagation()"
   cdkDrag
-  [cdkDragFreeDragPosition]="{ x: 0, y: 0 }"
+  [cdkDragDisabled]="!canDrag()"
+  [cdkDragFreeDragPosition]="freePosition()"
   (cdkDragEnded)="onDragEnded($event)"
 >
-  {{ field().placeholder }}
+  @if (isLocked()) {
+    <span class="field-lock-badge" title="Campo obligatorio — no se puede mover ni eliminar">🔒</span>
+  }
+  <span class="field-label-text">{{ field().label }}</span>
 </div>

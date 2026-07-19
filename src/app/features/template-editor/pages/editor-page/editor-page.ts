@@ -30,6 +30,7 @@ export class EditorPage implements OnInit {
   canUndo = this.state.canUndo;
   canRedo = this.state.canRedo;
   fieldCount = this.state.fieldCount;
+  hasUnsavedChanges = this.state.hasUnsavedChanges;
 
   showPreview = signal(false);
   showGrid = signal(false);
@@ -88,6 +89,10 @@ export class EditorPage implements OnInit {
     if (id) this.state.deleteField(id);
   }
 
+  onDiscardDraft(): void {
+    this.state.discardDraft();
+  }
+
   onPreview(): void {
     this.showPreview.set(true);
   }
@@ -122,9 +127,15 @@ export class EditorPage implements OnInit {
     };
     const def: FieldDefinition = {
       id: `custom-${type}-${Date.now()}`,
+      fieldKey: `Custom_${type}_${Date.now()}`,
       label: labelMap[type],
       placeholder: `[${labelMap[type]}]`,
       category: 'custom',
+      section: 'encabezado',
+      origin: 'xml-mapping',
+      sourceNode: null,
+      type: 'text-block',
+      requiredTier: 'opcional',
       defaultWidthMm: type === 'heading' ? 80 : 50,
       defaultHeightMm: type === 'heading' ? 12 : 6,
     };
@@ -135,9 +146,15 @@ export class EditorPage implements OnInit {
     const { cols, rows } = event;
     const def: FieldDefinition = {
       id: `table-${cols}x${rows}-${Date.now()}`,
+      fieldKey: `Table_${cols}x${rows}_${Date.now()}`,
       label: `Tabla ${cols}×${rows}`,
       placeholder: `[Tabla ${cols}×${rows}]`,
       category: 'table',
+      section: 'detalle',
+      origin: 'xml-mapping',
+      sourceNode: null,
+      type: 'text-block',
+      requiredTier: 'opcional',
       defaultWidthMm: cols * 30,
       defaultHeightMm: rows * 8,
     };
@@ -154,9 +171,15 @@ export class EditorPage implements OnInit {
     const cfg = configMap[type];
     const def: FieldDefinition = {
       id: `element-${type}-${Date.now()}`,
+      fieldKey: `Element_${type}_${Date.now()}`,
       label: cfg.label,
       placeholder: `[${cfg.label}]`,
       category: 'element',
+      section: 'encabezado',
+      origin: 'xml-mapping',
+      sourceNode: null,
+      type: type === 'image' ? 'image' : type === 'qr' ? 'qrcode' : 'text-block',
+      requiredTier: 'opcional',
       defaultWidthMm: cfg.w,
       defaultHeightMm: cfg.h,
     };

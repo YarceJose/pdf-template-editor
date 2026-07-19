@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TemplateSerializer } from './template-serializer';
+import { TemplateSerializerService } from './template-serializer';
 
-describe('TemplateSerializer', () => {
-  let service: TemplateSerializer;
+describe('TemplateSerializerService', () => {
+  let service: TemplateSerializerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TemplateSerializer);
+    service = TestBed.inject(TemplateSerializerService);
   });
 
   it('should be created', () => {

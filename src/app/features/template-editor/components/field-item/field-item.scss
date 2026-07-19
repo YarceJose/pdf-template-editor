@@ -1,5 +1,5 @@
 // ============================================
-// FIELD ITEM - Canvas placed field
+// FIELD ITEM - Canvas Placed Field
 // ============================================
 :host {
   position: absolute;
@@ -11,10 +11,11 @@
   height: 100%;
   display: flex;
   align-items: center;
+  gap: 2px;
   padding: 2px 4px;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(148, 163, 184, 0.4);
   border-radius: 2px;
-  color: var(--btw-text-dark);
+  color: var(--text-primary);
   font-family: var(--font-family-base);
   overflow: hidden;
   white-space: nowrap;
@@ -22,13 +23,41 @@
   cursor: move;
 
   &:hover {
-    border-color: var(--btw-orange-main);
+    border-color: rgba(30, 64, 175, 0.5);
   }
 
   &.selected {
-    border-color: var(--accent-action);
+    border-color: var(--primary-color);
     border-style: solid;
-    box-shadow: 0 0 0 2px rgba(227, 94, 20, 0.2);
+    box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.15);
     z-index: 10;
   }
+
+  &.locked {
+    border-color: var(--text-secondary);
+    border-style: solid;
+    background-color: rgba(226, 232, 240, 0.3);
+    cursor: default;
+
+    &:hover {
+      border-color: var(--text-secondary);
+    }
+  }
+
+  &.system {
+    border-color: var(--accent-color);
+    border-style: dashed;
+    background-color: rgba(37, 99, 235, 0.04);
+  }
+}
+
+.field-lock-badge {
+  font-size: 8px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.field-label-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

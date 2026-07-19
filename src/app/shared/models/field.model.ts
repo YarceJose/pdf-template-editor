@@ -1,20 +1,50 @@
+// ============================================
+// FIELD MODELS — DIAN Electronic Invoicing
+// Extended with fieldKey, section, origin, type, requiredTier
+// ============================================
+
+import { PageSection } from './placed-field.model';
+
 export type FieldCategory =
-  | 'company'
-  | 'customer'
-  | 'items'
-  | 'totals'
-  | 'dates'
-  | 'qr'
-  | 'signature'
+  | 'encabezado'
+  | 'cliente'
+  | 'detalle'
+  | 'totales'
+  | 'pie'
   | 'custom'
   | 'table'
   | 'element';
 
+export type FieldOrigin = 'xml-mapping' | 'system';
+export type FieldType = 'string' | 'decimal' | 'date' | 'integer' | 'qrcode' | 'text-block' | 'image';
+
+export type RequiredTier =
+  | 'obligatorio_siempre'      // Sin color — no se puede eliminar ni modificar
+  | 'obligatorio_validacion'   // Amarillo — obligatorio pero condicional
+  | 'opcional';                // Verde — eliminable, configurable
+
 export interface FieldDefinition {
+  /** ID interno del campo */
   id: string;
+  /** Nombre técnico inmutable (mapeo XML), nunca se edita desde UI */
+  fieldKey: string;
+  /** Título visible, editable desde panel de propiedades */
   label: string;
+  /** Categoría visual del campo */
   category: FieldCategory;
+  /** Sección del canvas donde DEBE ir (debe coincidir con PageSection) */
+  section: PageSection;
+  /** Origen del dato */
+  origin: FieldOrigin;
+  /** Nodo XML de origen (null para campos de sistema) */
+  sourceNode: string | null;
+  /** Tipo de dato */
+  type: FieldType;
+  /** Nivel de obligatoriedad */
+  requiredTier: RequiredTier;
+  /** Texto placeholder en canvas */
   placeholder: string;
+  /** Dimensiones por defecto */
   defaultWidthMm?: number;
   defaultHeightMm?: number;
 }
@@ -25,72 +55,150 @@ export interface FieldCategoryGroup {
   fields: FieldDefinition[];
 }
 
+// ============================================
+// DICcionario de campos DIAN — Facturación Electrónica
+// Basado en DiccionarioDeDatosFE + XML de ejemplo
+// ============================================
+
 export const FIELD_CATEGORIES: FieldCategoryGroup[] = [
+  // ============================================
+  // ENCABEZADO — Datos del emisor + identidad documento
+  // ============================================
   {
-    key: 'company',
-    label: 'Datos de la Empresa',
+    key: 'encabezado',
+    label: 'Encabezado',
     fields: [
-      { id: 'company_name', label: 'Nombre Empresa', category: 'company', placeholder: '[Nombre Empresa]' },
-      { id: 'company_nit', label: 'NIT', category: 'company', placeholder: '[NIT]' },
-      { id: 'company_address', label: 'Dirección', category: 'company', placeholder: '[Dirección]' },
-      { id: 'company_phone', label: 'Teléfono', category: 'company', placeholder: '[Teléfono]' },
-      { id: 'company_email', label: 'Correo', category: 'company', placeholder: '[Correo]' },
-      { id: 'company_logo', label: 'Logo', category: 'company', placeholder: '[Logo]' },
+      // --- Emisor (Company) ---
+      { id: 'company_name', fieldKey: 'CompanyName', label: 'Razón Social', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Company', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Razón Social]' },
+      { id: 'company_nit', fieldKey: 'TaxID', label: 'NIT Emisor', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Company', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[NIT Emisor]' },
+      { id: 'company_address', fieldKey: 'Address1', label: 'Dirección Emisor', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Company', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Dirección Emisor]' },
+      { id: 'company_city', fieldKey: 'City', label: 'Ciudad Emisor', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Company', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Ciudad Emisor]' },
+      { id: 'company_logo', fieldKey: 'Logo', label: 'Logo Empresa', category: 'encabezado', section: 'encabezado', origin: 'system', sourceNode: null, type: 'image', requiredTier: 'obligatorio_siempre', placeholder: '[Logo]', defaultWidthMm: 35, defaultHeightMm: 25 },
+
+      // --- Identidad del documento (InvcHead) ---
+      { id: 'invoice_type', fieldKey: 'InvoiceType', label: 'Tipo de Documento', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Tipo Doc]' },
+      { id: 'invoice_num', fieldKey: 'InvoiceNum', label: 'Número de Factura', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Nro Factura]' },
+      { id: 'legal_number', fieldKey: 'LegalNumber', label: 'Número Legal', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Nro Legal]' },
+      { id: 'invoice_date', fieldKey: 'InvoiceDate', label: 'Fecha de Emisión', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'date', requiredTier: 'obligatorio_siempre', placeholder: '[Fecha Emisión]' },
+      { id: 'due_date', fieldKey: 'DueDate', label: 'Fecha de Vencimiento', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'date', requiredTier: 'obligatorio_siempre', placeholder: '[Fecha Vencimiento]' },
+      { id: 'resolution', fieldKey: 'Resolution1', label: 'Resolución DIAN', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Resolución]' },
+      { id: 'currency', fieldKey: 'CurrencyCode', label: 'Moneda', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Moneda]' },
+      { id: 'invoice_comment', fieldKey: 'InvoiceComment', label: 'Observaciones', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'opcional', placeholder: '[Observaciones]' },
+      { id: 'invoice_period', fieldKey: 'InvoicePeriod', label: 'Periodo Facturado', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Periodo]' },
+      { id: 'legends', fieldKey: 'Legends1', label: 'Leyendas', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Leyendas]' },
+
+      // --- Forma de pago (obligatorio validación) ---
+      { id: 'payment_means_id', fieldKey: 'PaymentMeansID_c', label: 'Medio de Pago', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_validacion', placeholder: '[Medio Pago]' },
+      { id: 'payment_means_desc', fieldKey: 'PaymentMeansDescription', label: 'Descripción Medio Pago', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Desc Medio Pago]' },
+      { id: 'payment_means_code', fieldKey: 'PaymentMeansCode_c', label: 'Código Medio Pago', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'obligatorio_validacion', placeholder: '[Cód Medio Pago]' },
+      { id: 'payment_duration', fieldKey: 'PaymentDurationMeasure', label: 'Plazo de Pago', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'integer', requiredTier: 'obligatorio_validacion', placeholder: '[Plazo Pago]' },
+      { id: 'payment_due_date', fieldKey: 'PaymentDueDate', label: 'Fecha Límite de Pago', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'date', requiredTier: 'obligatorio_validacion', placeholder: '[Fecha Límite Pago]' },
+
+      // --- Motivo NC/DC ---
+      { id: 'cm_reason_code', fieldKey: 'CMReasonCode_c', label: 'Código Motivo NC', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'opcional', placeholder: '[Cód Motivo NC]' },
+      { id: 'cm_reason_desc', fieldKey: 'CMReasonDesc_c', label: 'Descripción Motivo NC', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'opcional', placeholder: '[Desc Motivo NC]' },
+      { id: 'dm_reason_code', fieldKey: 'DMReasonCode_c', label: 'Código Motivo ND', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'opcional', placeholder: '[Cód Motivo ND]' },
+      { id: 'dm_reason_desc', fieldKey: 'DMReasonDesc_c', label: 'Descripción Motivo ND', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'opcional', placeholder: '[Desc Motivo ND]' },
+
+      // --- Referencia (anulación) ---
+      { id: 'invoice_ref', fieldKey: 'InvoiceRef', label: 'Factura Referencia', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'opcional', placeholder: '[Factura Ref]' },
+      { id: 'invoice_ref_cufe', fieldKey: 'InvoiceRefCufe', label: 'CUFE Referencia', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'string', requiredTier: 'opcional', placeholder: '[CUFE Ref]' },
+      { id: 'invoice_ref_date', fieldKey: 'InvoiceRefDate', label: 'Fecha Ref', category: 'encabezado', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'date', requiredTier: 'opcional', placeholder: '[Fecha Ref]' },
     ],
   },
+
+  // ============================================
+  // CLIENTE — Datos del adquirente
+  // ============================================
   {
-    key: 'customer',
-    label: 'Datos del Cliente',
+    key: 'cliente',
+    label: 'Cliente',
     fields: [
-      { id: 'customer_name', label: 'Nombre Cliente', category: 'customer', placeholder: '[Nombre Cliente]' },
-      { id: 'customer_nit', label: 'NIT Cliente', category: 'customer', placeholder: '[NIT Cliente]' },
-      { id: 'customer_address', label: 'Dirección Cliente', category: 'customer', placeholder: '[Dirección Cliente]' },
-      { id: 'customer_phone', label: 'Teléfono Cliente', category: 'customer', placeholder: '[Teléfono Cliente]' },
-      { id: 'customer_email', label: 'Correo Cliente', category: 'customer', placeholder: '[Correo Cliente]' },
+      { id: 'customer_name', fieldKey: 'CustomerName', label: 'Nombre Cliente', category: 'cliente', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Customer', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Nombre Cliente]' },
+      { id: 'customer_nit', fieldKey: 'TaxID', label: 'NIT Cliente', category: 'cliente', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Customer', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[NIT Cliente]' },
+      { id: 'customer_address', fieldKey: 'Address1', label: 'Dirección Cliente', category: 'cliente', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Customer', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Dirección Cliente]' },
+      { id: 'customer_city', fieldKey: 'City', label: 'Ciudad Cliente', category: 'cliente', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Customer', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Ciudad Cliente]' },
+      { id: 'customer_phone', fieldKey: 'PhoneNum', label: 'Teléfono Cliente', category: 'cliente', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Customer', type: 'string', requiredTier: 'opcional', placeholder: '[Teléfono Cliente]' },
+      { id: 'customer_email', fieldKey: 'EmailAddress', label: 'Correo Cliente', category: 'cliente', section: 'encabezado', origin: 'xml-mapping', sourceNode: 'Customer', type: 'string', requiredTier: 'opcional', placeholder: '[Correo Cliente]' },
     ],
   },
+
+  // ============================================
+  // DETALLE — Líneas de producto/servicio
+  // ============================================
   {
-    key: 'items',
-    label: 'Detalle de Ítems',
+    key: 'detalle',
+    label: 'Detalle',
     fields: [
-      { id: 'item_code', label: 'Código', category: 'items', placeholder: '[Código]' },
-      { id: 'item_description', label: 'Descripción', category: 'items', placeholder: '[Descripción]' },
-      { id: 'item_quantity', label: 'Cantidad', category: 'items', placeholder: '[Cantidad]' },
-      { id: 'item_unit_price', label: 'Valor Unitario', category: 'items', placeholder: '[Valor Unitario]' },
-      { id: 'item_total', label: 'Valor Total', category: 'items', placeholder: '[Valor Total]' },
+      { id: 'item_code', fieldKey: 'PartNum', label: 'Código', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcDtl', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Código]' },
+      { id: 'item_description', fieldKey: 'LineDesc', label: 'Descripción', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcDtl', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Descripción]' },
+      { id: 'item_quantity', fieldKey: 'InvcQty', label: 'Cantidad', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcDtl', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Cantidad]' },
+      { id: 'item_unit_price', fieldKey: 'DocUnitPrice', label: 'Valor Unitario', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcDtl', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Valor Unitario]' },
+      { id: 'item_total', fieldKey: 'DocExtPrice', label: 'Valor Total Línea', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcDtl', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Valor Total]' },
+      { id: 'item_discount', fieldKey: 'DocDiscount', label: 'Descuento', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcDtl', type: 'decimal', requiredTier: 'opcional', placeholder: '[Descuento]' },
+
+      // --- Impuestos por línea (InvcTax) ---
+      { id: 'tax_code', fieldKey: 'TaxCode', label: 'Código Impuesto', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcTax', type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[Cód Impuesto]' },
+      { id: 'tax_amount', fieldKey: 'DocTaxAmt', label: 'Valor Impuesto', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcTax', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Valor Impuesto]' },
+      { id: 'tax_rate', fieldKey: 'Rate', label: 'Tarifa Impuesto', category: 'detalle', section: 'detalle', origin: 'xml-mapping', sourceNode: 'InvcTax', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Tarifa %]' },
     ],
   },
+
+  // ============================================
+  // TOTALES — Montos agregados
+  // ============================================
   {
-    key: 'totals',
+    key: 'totales',
     label: 'Totales',
     fields: [
-      { id: 'subtotal', label: 'Subtotal', category: 'totals', placeholder: '[Subtotal]' },
-      { id: 'iva', label: 'IVA', category: 'totals', placeholder: '[IVA]' },
-      { id: 'retention', label: 'Retención', category: 'totals', placeholder: '[Retención]' },
-      { id: 'total', label: 'Total', category: 'totals', placeholder: '[Total]' },
+      { id: 'subtotal', fieldKey: 'DspDocSubTotal', label: 'Subtotal', category: 'totales', section: 'totales', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Subtotal]' },
+      { id: 'total_tax', fieldKey: 'DocTaxAmt', label: 'Total Impuestos', category: 'totales', section: 'totales', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Total Impuestos]' },
+      { id: 'wh_tax', fieldKey: 'DocWHTaxAmt', label: 'Retención en la Fuente', category: 'totales', section: 'totales', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Retención]' },
+      { id: 'discount_total', fieldKey: 'Discount', label: 'Descuento Total', category: 'totales', section: 'totales', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Descuento Total]' },
+      { id: 'grand_total', fieldKey: 'DspDocInvoiceAmt', label: 'Valor Total', category: 'totales', section: 'totales', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'decimal', requiredTier: 'obligatorio_siempre', placeholder: '[Valor Total]' },
+      { id: 'exchange_rate', fieldKey: 'CalculationRate_c', label: 'Tasa de Cambio', category: 'totales', section: 'totales', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'decimal', requiredTier: 'obligatorio_validacion', placeholder: '[Tasa Cambio]' },
+      { id: 'exchange_date', fieldKey: 'DateCalculationRate_c', label: 'Fecha Tasa Cambio', category: 'totales', section: 'totales', origin: 'xml-mapping', sourceNode: 'InvcHead', type: 'date', requiredTier: 'obligatorio_validacion', placeholder: '[Fecha Tasa Cambio]' },
     ],
   },
+
+  // ============================================
+  // PIE DE PÁGINA — Campos de sistema
+  // ============================================
   {
-    key: 'dates',
-    label: 'Fechas',
+    key: 'pie',
+    label: 'Pie de Página',
     fields: [
-      { id: 'issue_date', label: 'Fecha de Emisión', category: 'dates', placeholder: '[Fecha Emisión]' },
-      { id: 'due_date', label: 'Fecha de Vencimiento', category: 'dates', placeholder: '[Fecha Vencimiento]' },
-      { id: 'payment_method', label: 'Método de Pago', category: 'dates', placeholder: '[Método de Pago]' },
-    ],
-  },
-  {
-    key: 'qr',
-    label: 'Código QR',
-    fields: [
-      { id: 'qr_code', label: 'Código QR DIAN', category: 'qr', placeholder: '[QR]' },
-    ],
-  },
-  {
-    key: 'signature',
-    label: 'Firma',
-    fields: [
-      { id: 'signature_line', label: 'Línea de Firma', category: 'signature', placeholder: '[Firma]' },
+      { id: 'qr_code', fieldKey: 'QRCode', label: 'Código QR DIAN', category: 'pie', section: 'pie', origin: 'system', sourceNode: null, type: 'qrcode', requiredTier: 'obligatorio_siempre', placeholder: '[QR DIAN]', defaultWidthMm: 40, defaultHeightMm: 40 },
+      { id: 'cufe', fieldKey: 'CUFE', label: 'CUFE', category: 'pie', section: 'pie', origin: 'system', sourceNode: null, type: 'string', requiredTier: 'obligatorio_siempre', placeholder: '[CUFE]', defaultWidthMm: 120, defaultHeightMm: 15 },
+      { id: 'signature_line', fieldKey: 'SignatureLine', label: 'Línea de Firma', category: 'pie', section: 'pie', origin: 'system', sourceNode: null, type: 'text-block', requiredTier: 'obligatorio_siempre', placeholder: '[Firma]', defaultWidthMm: 80, defaultHeightMm: 20 },
+      { id: 'signing_time', fieldKey: 'SigningTime', label: 'Fecha/Hora Firma', category: 'pie', section: 'pie', origin: 'system', sourceNode: null, type: 'date', requiredTier: 'obligatorio_siempre', placeholder: '[Fecha Firma]' },
     ],
   },
 ];
+
+// ============================================
+// Utility: buscar campo por fieldKey
+// ============================================
+export function findFieldByKey(fieldKey: string): FieldDefinition | undefined {
+  for (const group of FIELD_CATEGORIES) {
+    const found = group.fields.find((f) => f.fieldKey === fieldKey);
+    if (found) return found;
+  }
+  return undefined;
+}
+
+// ============================================
+// Utility: obtener todos los campos de una sección
+// ============================================
+export function getFieldsBySection(section: FieldDefinition['section']): FieldDefinition[] {
+  return FIELD_CATEGORIES
+    .flatMap((g) => g.fields)
+    .filter((f) => f.section === section);
+}
+
+// ============================================
+// Utility: verificar si un campo es editable
+// ============================================
+export function isFieldEditable(field: FieldDefinition): boolean {
+  return field.requiredTier !== 'obligatorio_siempre';
+}

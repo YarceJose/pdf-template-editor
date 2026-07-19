@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { LucideAngularModule } from 'lucide-angular';
+import { MousePointer2, Lock, Trash2, Bold, Italic, Underline, AlertCircle, AlertTriangle } from 'lucide-angular';
 import { PropertiesPanel } from './properties-panel';
 
 describe('PropertiesPanel', () => {
@@ -8,9 +9,11 @@ describe('PropertiesPanel', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertiesPanel]
-    })
-    .compileComponents();
+      imports: [
+        PropertiesPanel,
+        LucideAngularModule.pick({ MousePointer2, Lock, Trash2, Bold, Italic, Underline, AlertCircle, AlertTriangle }),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PropertiesPanel);
     component = fixture.componentInstance;

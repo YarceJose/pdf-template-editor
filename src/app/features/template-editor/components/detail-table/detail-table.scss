@@ -1,0 +1,272 @@
+// ============================================
+// DETAIL TABLE — Canvas Detail Section
+// ============================================
+:host {
+  display: block;
+}
+
+.detail-table-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// Header
+.dt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #1E293B;
+  color: #fff;
+  border-radius: 4px 4px 0 0;
+  font-family: var(--font-family-base);
+}
+
+.dt-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dt-count {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+// Empty state
+.dt-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  border: 1px dashed #CBD5E1;
+  border-radius: 4px;
+  color: #94A3B8;
+  font-size: 11px;
+  gap: 6px;
+}
+
+.dt-empty-icon {
+  color: #CBD5E1;
+}
+
+.dt-empty-hint {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+// Table preview
+.dt-preview {
+  border: 1px solid #E2E8F0;
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+}
+
+.dt-preview-header {
+  display: flex;
+  background: #1E293B;
+}
+
+.dt-col-header {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 8px;
+  color: #fff;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  min-width: 40px;
+}
+
+.dt-col-name {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.dt-col-type {
+  font-size: 9px;
+  opacity: 0.6;
+  font-family: var(--font-family-mono);
+}
+
+.dt-preview-row {
+  display: flex;
+  background: #F8FAFC;
+}
+
+.dt-col-cell {
+  padding: 4px 8px;
+  border-right: 1px solid #E2E8F0;
+  min-height: 24px;
+}
+
+.dt-cell-placeholder {
+  font-size: 9px;
+  font-family: var(--font-family-mono);
+  color: #94A3B8;
+}
+
+// Column config list
+.dt-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.dt-col-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 4px;
+  gap: 8px;
+
+  &.dt-col-locked {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    opacity: 0.7;
+  }
+}
+
+.dt-col-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.dt-col-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #1E293B;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dt-col-binding {
+  font-size: 9px;
+  font-family: var(--font-family-mono);
+  color: #64748B;
+}
+
+.dt-col-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.dt-col-badge {
+  font-size: 9px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #E2E8F0;
+  color: #475569;
+  font-weight: 500;
+
+  &.dt-badge-required {
+    background: #FEE2E2;
+    color: #DC2626;
+  }
+}
+
+.dt-col-width-input {
+  width: 42px;
+  height: 22px;
+  padding: 0 4px;
+  border: 1px solid #E2E8F0;
+  border-radius: 3px;
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+  text-align: center;
+  background: #fff;
+
+  &:focus {
+    outline: none;
+    border-color: #2563EB;
+  }
+}
+
+.dt-col-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: #94A3B8;
+  cursor: pointer;
+
+  &:hover {
+    background: #FEE2E2;
+    color: #DC2626;
+  }
+}
+
+.dt-col-lock-icon {
+  color: #94A3B8;
+}
+
+// Add section
+.dt-add-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #E2E8F0;
+}
+
+.dt-add-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dt-add-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dt-add-group-label {
+  font-size: 9px;
+  font-family: var(--font-family-mono);
+  color: #94A3B8;
+}
+
+.dt-add-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.dt-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border: 1px solid #E2E8F0;
+  border-radius: 3px;
+  background: #fff;
+  font-size: 10px;
+  font-family: var(--font-family-base);
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: #2563EB;
+    color: #2563EB;
+    background: #EFF6FF;
+  }
+}

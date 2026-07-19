@@ -4,6 +4,7 @@ import {
   input,
   output,
 } from '@angular/core';
+import { LucideAngularModule } from 'lucide-angular';
 import { DESIGN_TEMPLATES, DesignTemplate } from '../../../../shared/models/design-templates.model';
 
 export type TextToolType = 'text' | 'heading' | 'label' | 'field' | 'number' | 'date';
@@ -12,7 +13,7 @@ export type AlignType = 'left' | 'center-horizontal' | 'right' | 'top' | 'center
 
 @Component({
   selector: 'app-toolbar',
-  imports: [],
+  imports: [LucideAngularModule],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +24,8 @@ export class Toolbar {
   canRedo = input(false);
   fieldCount = input(0);
   zoomPercent = input(100);
+  saveStatus = input<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  hasUnsavedChanges = input(false);
 
   undoClicked = output<void>();
   redoClicked = output<void>();
@@ -30,7 +33,9 @@ export class Toolbar {
   zoomOutClicked = output<void>();
   previewClicked = output<void>();
   exportClicked = output<void>();
+  saveClicked = output<void>();
   deleteFieldClicked = output<void>();
+  discardDraftClicked = output<void>();
   templateLoaded = output<DesignTemplate>();
 
   addTextClicked = output<TextToolType>();

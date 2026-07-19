@@ -25,22 +25,37 @@ export class FieldItem {
   fieldSelected = output<string>();
   fieldMoved = output<{ id: string; x: number; y: number }>();
 
-  styleLeft = computed(() => `${this.field().x * MM_TO_PX * this.zoom()}px`);
-  styleTop = computed(() => `${this.field().y * MM_TO_PX * this.zoom()}px`);
+  /**
+   * Single source of truth for position.
+   * CDK reads this to position the element via transform.
+   * After drag ends, we update state → this recomputes → CDK resets.
+   */
+  freePosition = computed(() => {
+    const f = this.field();
+    const z = this.zoom();
+    return { x: f.x * MM_TO_PX * z, y: f.y * MM_TO_PX * z };
+  });
+
   styleWidth = computed(() => `${this.field().width * MM_TO_PX * this.zoom()}px`);
   styleHeight = computed(() => `${this.field().height * MM_TO_PX * this.zoom()}px`);
   styleFontSize = computed(() => `${this.field().fontSize * this.zoom()}pt`);
+
+  isLocked = computed(() => this.field().requiredTier === 'obligatorio_siempre');
+  isSystem = computed(() => this.field().origin === 'system');
+  canDrag = computed(() => !this.isLocked() && !this.isSystem());
 
   onSelect(): void {
     this.fieldSelected.emit(this.field().id);
   }
 
   onDragEnded(event: CdkDragEnd): void {
-    const f = this.field();
-    const delta = event.distance;
+    if (!this.canDrag()) return;
+
     const scale = MM_TO_PX * this.zoom();
-    const newX = f.x + delta.x / scale;
-    const newY = f.y + delta.y / scale;
-    this.fieldMoved.emit({ id: f.id, x: Math.max(0, newX), y: Math.max(0, newY) });
+    const pos = event.source.getFreeDragPosition();
+    const newXMm = Math.max(0, Math.round((pos.x / scale) * 10) / 10);
+    const newYMm = Math.max(0, Math.round((pos.y / scale) * 10) / 10);
+
+    this.fieldMoved.emit({ id: this.field().id, x: newXMm, y: newYMm });
   }
 }

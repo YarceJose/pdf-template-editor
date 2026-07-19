@@ -1,0 +1,104 @@
+<div class="detail-table-wrapper">
+  <!-- Table Header -->
+  <div class="dt-header">
+    <span class="dt-title">Tabla de Detalle</span>
+    <span class="dt-count">{{ columns().length }} columnas</span>
+  </div>
+
+  @if (columns().length === 0) {
+    <div class="dt-empty">
+      <lucide-angular name="Table" [size]="20" class="dt-empty-icon"></lucide-angular>
+      <span>Sin columnas configuradas</span>
+      <span class="dt-empty-hint">Agrega columnas desde el panel de abajo</span>
+    </div>
+  } @else {
+    <!-- Table Preview -->
+    <div class="dt-preview">
+      <div class="dt-preview-header">
+        @for (col of columns(); track trackByColId($index, col)) {
+          <div class="dt-col-header" [style.width.px]="col.width * MM_TO_PX * 0.4">
+            <span class="dt-col-name">{{ col.header }}</span>
+            <span class="dt-col-type">{{ col.bindingDataType }}</span>
+          </div>
+        }
+      </div>
+      <div class="dt-preview-row">
+        @for (col of columns(); track trackByColId($index, col)) {
+          <div class="dt-col-cell" [style.width.px]="col.width * MM_TO_PX * 0.4">
+            <span class="dt-cell-placeholder">{{ col.bindingSource }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Column Config List -->
+    <div class="dt-columns">
+      @for (col of columns(); track trackByColId($index, col)) {
+        <div class="dt-col-item" [class.dt-col-locked]="col.requiredTier === 'obligatorio_siempre'">
+          <div class="dt-col-info">
+            <span class="dt-col-label">{{ col.header }}</span>
+            <span class="dt-col-binding">{{ col.bindingSource }}</span>
+          </div>
+          <div class="dt-col-meta">
+            <span class="dt-col-badge" [class.dt-badge-required]="col.requiredTier === 'obligatorio_siempre'">
+              {{ requiredBadge(col.requiredTier) }}
+            </span>
+            <span class="dt-col-badge">{{ alignLabel(col.align) }}</span>
+            <input
+              class="dt-col-width-input"
+              type="number"
+              [value]="col.width"
+              (change)="onWidthChange(col.id, $event)"
+              min="20"
+              max="200"
+              step="5"
+              title="Ancho de columna (mm)"
+            />
+            @if (col.requiredTier !== 'obligatorio_siempre') {
+              <button class="dt-col-remove" (click)="onRemoveColumn(col.id)" title="Eliminar columna">
+                <lucide-angular name="X" [size]="12"></lucide-angular>
+              </button>
+            } @else {
+              <lucide-angular name="Lock" [size]="12" class="dt-col-lock-icon"></lucide-angular>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Available Fields to Add -->
+  @if (invcDtlFields().length > 0 || invcTaxFields().length > 0) {
+    <div class="dt-add-section">
+      <span class="dt-add-label">Agregar columna desde:</span>
+
+      @if (invcDtlFields().length > 0) {
+        <div class="dt-add-group">
+          <span class="dt-add-group-label">InvcDtl</span>
+          <div class="dt-add-fields">
+            @for (field of invcDtlFields(); track trackByFieldId($index, field)) {
+              <button class="dt-add-btn" (click)="onAddColumn(field)" title="Agregar {{ field.label }}">
+                <lucide-angular name="Plus" [size]="10"></lucide-angular>
+                {{ field.label }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      @if (invcTaxFields().length > 0) {
+        <div class="dt-add-group">
+          <span class="dt-add-group-label">InvcTax</span>
+          <div class="dt-add-fields">
+            @for (field of invcTaxFields(); track trackByFieldId($index, field)) {
+              <button class="dt-add-btn" (click)="onAddColumn(field)" title="Agregar {{ field.label }}">
+                <lucide-angular name="Plus" [size]="10"></lucide-angular>
+                {{ field.label }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

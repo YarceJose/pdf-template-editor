@@ -1,0 +1,16 @@
+<div class="toast-container">
+  @for (toast of toasts(); track toast.id) {
+    <div class="toast-item" [class]="'toast-' + toast.type">
+      <lucide-angular [name]="getIcon(toast.type)" [size]="16" class="toast-icon"></lucide-angular>
+      <div class="toast-content">
+        <span class="toast-message">{{ toast.message }}</span>
+        @if (toast.detail) {
+          <span class="toast-detail">{{ toast.detail }}</span>
+        }
+      </div>
+      <button class="toast-close" (click)="onDismiss(toast.id)">
+        <lucide-angular name="X" [size]="12"></lucide-angular>
+      </button>
+    </div>
+  }
+</div>

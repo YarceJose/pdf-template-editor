@@ -18,8 +18,15 @@
       </div>
     }
 
-    <!-- Placed fields -->
-    @for (field of placedFields(); track trackByFieldId($index, field)) {
+    <!-- Detail Table (in the Detalle section) -->
+    @if (hasDetailTable()) {
+      <div [style]="detailTableStyle()">
+        <app-detail-table />
+      </div>
+    }
+
+    <!-- Placed fields (non-detalle sections only) -->
+    @for (field of nonDetalleFields(); track trackByFieldId($index, field)) {
       <app-field-item
         [field]="field"
         [selected]="isSelected(field.id)"

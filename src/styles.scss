@@ -1,55 +1,62 @@
 :root {
   // ============================================
-  // PALETA OLIMPIADAS BTW 2026
+  // ENTERPRISE DESIGN TOKENS
+  // Paleta profesional unificada
   // ============================================
 
-  // --- Tonos Cálidos ---
-  --btw-orange-main: #E35E14;
-  --btw-orange-light: #F17E38;
-  --btw-red-dark: #7D091B;
+  // --- Primary ---
+  --primary-color: #1E40AF;
+  --primary-hover: #1E3A8A;
+  --primary-light: #DBEAFE;
 
-  // --- Contrastes ---
-  --btw-white-card: #FFFFFF;
-  --btw-cream-bg: #FFF8F5;
-  --btw-text-dark: #1E1E1E;
+  // --- Accent ---
+  --accent-action: #2563EB;
+  --accent-hover: #1D4ED8;
 
-  // --- Semánticos ---
-  --primary-color: #7D091B;
-  --accent-action: #E35E14;
-  --brand-background: #2D3539;
-  --light-color: #FFF8F5;
-
-  // --- Superficies ---
-  --surface-base: #FFF8F5;
+  // --- Surfaces ---
+  --surface-base: #F1F5F9;
   --surface-panel: #FFFFFF;
-  --surface-panel-alt: #F0E6E2;
+  --surface-panel-alt: #E2E8F0;
 
-  // --- Fondos ---
-  --theme-background: #FFF8F5;
-  --white: #FFFFFF;
+  // --- Sidebar ---
+  --brand-background: #1E293B;
+  --brand-background-hover: #334155;
 
-  // --- Texto ---
-  --theme-font-color: #888;
-  --theme-heading-color: #1E1E1E;
+  // --- Text ---
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --text-inverse: #FFFFFF;
 
-  // --- Estados ---
+  // --- States ---
   --success-color: #16A34A;
-  --danger-color: #7D091B;
+  --success-bg: #DCFCE7;
+  --warning-color: #D97706;
+  --warning-bg: #FEF3C7;
+  --danger-color: #DC2626;
+  --danger-bg: #FEE2E2;
+  --info-color: #2563EB;
+  --info-bg: #DBEAFE;
 
-  // --- Bordes ---
-  --border-color: #F0E6E2;
+  // --- Borders ---
+  --border-color: #E2E8F0;
+  --border-focus: #2563EB;
 
-  // --- Bordes y sombras ---
-  --border-radius-sm: 4px;
-  --border-radius-md: 6px;
-  --border-radius-lg: 8px;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  // --- Border radius ---
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
 
-  // --- Tipografía ---
-  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  // --- Shadows ---
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+
+  // --- Typography ---
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
   --font-size-xs: 11px;
   --font-size-sm: 12px;
@@ -63,7 +70,7 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  // --- Espaciado ---
+  // --- Spacing ---
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -74,23 +81,32 @@
   // --- Layout ---
   --sidebar-width: 280px;
   --properties-panel-width: 320px;
-  --toolbar-height-1: 48px;
-  --toolbar-height-2: 36px;
-  --toolbar-height: 84px;
+  --toolbar-height-1: 44px;
+  --toolbar-height-2: 38px;
+  --toolbar-height: 82px;
 
-  // --- Campos ---
+  // --- Fields ---
   --field-min-width: 20mm;
   --field-max-width: 190mm;
   --field-min-height: 5mm;
   --field-max-height: 277mm;
 
-  // --- Paquetes ---
+  // --- Packages ---
   --basic-max-templates: 5;
+
+  // --- Transitions ---
+  --transition-fast: 120ms ease;
+  --transition-base: 180ms ease;
+  --transition-slow: 250ms ease;
 }
 
 // ============================================
-// ESTILOS GLOBALES
+// GLOBAL STYLES
 // ============================================
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 html, body {
   height: 100%;
@@ -102,22 +118,58 @@ body {
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
   line-height: 1.5;
-  color: var(--theme-font-color);
-  background-color: var(--theme-background);
+  color: var(--text-primary);
+  background-color: var(--surface-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 // ============================================
-// UTILIDADES GLOBALES
+// LUCIDE ICON OVERRIDES
+// ============================================
+
+lucide-angular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+}
+
+// ============================================
+// SCROLLBAR STYLES
+// ============================================
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 3px;
+
+  &:hover {
+    background-color: var(--text-muted);
+  }
+}
+
+// ============================================
+// UTILITY CLASSES
 // ============================================
 
 .text-primary { color: var(--primary-color); }
-.text-accent { color: var(--accent-action); }
-.text-dark { color: var(--btw-text-dark); }
-.text-muted { color: var(--theme-font-color); }
-
-.bg-primary { background-color: var(--primary-color); }
-.bg-accent { background-color: var(--accent-action); }
-.bg-surface { background-color: var(--white); }
-.bg-cream { background-color: var(--btw-cream-bg); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-success { color: var(--success-color); }
+.text-warning { color: var(--warning-color); }
+.text-danger { color: var(--danger-color); }

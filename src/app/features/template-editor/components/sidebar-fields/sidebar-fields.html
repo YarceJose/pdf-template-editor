@@ -1,8 +1,13 @@
 <div class="sidebar-inner">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <span class="sidebar-title">Campos</span>
+  </div>
+
   <!-- Search -->
   <div class="sidebar-search">
     <div class="search-wrapper">
-      <span class="search-icon">&#128269;</span>
+      <lucide-angular name="Search" [size]="14" class="search-icon"></lucide-angular>
       <input
         type="text"
         class="search-input"
@@ -12,17 +17,22 @@
     </div>
   </div>
 
-  <!-- Field groups -->
+  <!-- Field groups by source table -->
   <div class="sidebar-groups" cdkDropList id="sidebar-field-list" [cdkDropListConnectedTo]="['canvas-drop-list']">
-    @for (group of filteredCategories(); track trackByGroup($index, group)) {
+    @for (group of sourceGroups(); track trackByGroup($index, group)) {
       <div class="field-group">
         <button
           class="group-header"
           (click)="toggleSection(group.key)"
         >
-          <span class="group-arrow" [class.collapsed]="isSectionCollapsed(group.key)">&#9660;</span>
+          @if (isSectionCollapsed(group.key)) {
+            <lucide-angular name="ChevronRight" [size]="12" class="group-arrow"></lucide-angular>
+          } @else {
+            <lucide-angular name="ChevronDown" [size]="12" class="group-arrow"></lucide-angular>
+          }
           <span class="group-label">{{ group.label }}</span>
-          <span class="group-count">{{ group.fields.length }}</span>
+          <span class="group-count">{{ placedCount(group) }}/{{ group.fields.length }}</span>
+          <span class="group-mandatory-label">Mandatorio</span>
         </button>
 
         @if (!isSectionCollapsed(group.key)) {
@@ -30,14 +40,44 @@
             @for (field of group.fields; track trackByField($index, field)) {
               <div
                 class="field-item"
+                [class.field-locked]="field.requiredTier === 'obligatorio_siempre'"
+                [class.field-system]="field.origin === 'system'"
+                [class.field-placed]="isPlaced(field)"
                 cdkDrag
                 [cdkDragData]="field"
                 (cdkDragStarted)="onDragStarted($event)"
               >
-                <span class="field-drag-icon">&#8942;&#8942;</span>
+                <lucide-angular name="GripVertical" [size]="12" class="field-drag-icon"></lucide-angular>
                 <div class="field-info">
-                  <span class="field-label">{{ field.label }}</span>
-                  <span class="field-placeholder">{{ field.placeholder }}</span>
+                  <div class="field-top-row">
+                    <span class="field-label">{{ field.label }}</span>
+                    @if (isPlaced(field)) {
+                      <span class="field-placed-badge" title="Campo ya colocado en el canvas">
+                        <lucide-angular name="Check" [size]="10"></lucide-angular>
+                      </span>
+                    }
+                    <label class="field-required-check" [title]="isRequiredDisabled(field) ? 'Campo obligatorio — siempre requerido' : (isRequired(field) ? 'Desmarcar para hacer opcional' : 'Marcar como requerido')">
+                      <input
+                        type="checkbox"
+                        [checked]="isRequired(field)"
+                        [disabled]="isRequiredDisabled(field)"
+                        (change)="onToggleRequired(field)"
+                        (click)="$event.stopPropagation()"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                  <span class="field-placeholder-value">{{ field.placeholder }}</span>
+                  <span class="field-meta">
+                    @if (field.requiredTier === 'obligatorio_siempre') {
+                      <span class="field-tier-badge tier-locked">obligatorio</span>
+                    } @else if (isRequired(field)) {
+                      <span class="field-tier-badge tier-required">requerido</span>
+                    } @else {
+                      <span class="field-tier-badge tier-optional">opcional</span>
+                    }
+                    <span class="field-key-text">{{ field.fieldKey }}</span>
+                  </span>
                 </div>
               </div>
             }
@@ -46,9 +86,9 @@
       </div>
     }
 
-    @if (filteredCategories().length === 0) {
+    @if (sourceGroups().length === 0) {
       <div class="no-results">
-        <span class="no-results-icon">&#128270;</span>
+        <lucide-angular name="Search" [size]="20" class="no-results-icon"></lucide-angular>
         <span class="no-results-text">No se encontraron campos</span>
       </div>
     }

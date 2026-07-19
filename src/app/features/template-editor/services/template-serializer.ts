@@ -17,10 +17,15 @@ export interface TemplateDefinition {
 
 export interface SerializedField {
   id: string;
-  fieldId: string;
+  fieldKey: string;
   label: string;
+  placeholder: string;
   category: string;
   section: PageSection;
+  origin: 'xml-mapping' | 'system';
+  sourceNode: string | null;
+  type: 'string' | 'decimal' | 'date' | 'integer' | 'qrcode' | 'text-block' | 'image';
+  requiredTier: 'obligatorio_siempre' | 'obligatorio_validacion' | 'opcional';
   position: { x: number; y: number };
   size: { width: number; height: number };
   style: {
@@ -52,10 +57,15 @@ export class TemplateSerializerService {
   private serializeField(field: PlacedField): SerializedField {
     return {
       id: field.id,
-      fieldId: field.fieldId,
+      fieldKey: field.fieldKey,
       label: field.label,
+      placeholder: field.placeholder,
       category: field.category,
       section: field.section,
+      origin: field.origin,
+      sourceNode: field.sourceNode,
+      type: field.type,
+      requiredTier: field.requiredTier,
       position: { x: field.x, y: field.y },
       size: { width: field.width, height: field.height },
       style: {
@@ -70,11 +80,15 @@ export class TemplateSerializerService {
   deserialize(json: TemplateDefinition): PlacedField[] {
     return json.fields.map((sf) => ({
       id: sf.id,
-      fieldId: sf.fieldId,
+      fieldKey: sf.fieldKey,
       label: sf.label,
-      placeholder: `[${sf.label}]`,
+      placeholder: sf.placeholder,
       category: sf.category,
-      section: sf.section ?? 'body',
+      section: sf.section,
+      origin: sf.origin,
+      sourceNode: sf.sourceNode ?? null,
+      type: sf.type,
+      requiredTier: sf.requiredTier,
       x: sf.position.x,
       y: sf.position.y,
       width: sf.size.width,

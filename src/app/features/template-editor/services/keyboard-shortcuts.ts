@@ -1,10 +1,12 @@
 import { Injectable, NgZone, inject, OnDestroy } from '@angular/core';
 import { TemplateStateService } from './template-state';
+import { ToastNotificationService } from '../../../shared/services/toast-notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class KeyboardShortcutsService implements OnDestroy {
   private zone = inject(NgZone);
   private state = inject(TemplateStateService);
+  private toast = inject(ToastNotificationService);
   private handler: ((e: KeyboardEvent) => void) | null = null;
 
   init(): void {
@@ -27,7 +29,12 @@ export class KeyboardShortcutsService implements OnDestroy {
         const id = this.state.selectedFieldId();
         if (id && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement)) {
           e.preventDefault();
-          this.zone.run(() => this.state.deleteField(id));
+          this.zone.run(() => {
+            const result = this.state.deleteField(id);
+            if (!result.success && result.reason) {
+              this.toast.warning('No se pudo eliminar', result.reason);
+            }
+          });
         }
       }
     };
