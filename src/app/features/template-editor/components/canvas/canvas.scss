@@ -14,7 +14,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding: 24px 24px 24px 40px;
+  padding: 24px 24px 24px 32px;
   position: relative;
 
   &::-webkit-scrollbar {
@@ -37,54 +37,54 @@
 }
 
 // ============================================
-// RULERS — Slim Cartesian plane rulers
+// RULERS — Minimal Cartesian plane rulers
 // ============================================
 .ruler {
   position: absolute;
-  background: #1E293B;
+  background: var(--surface-panel, #F8FAFC);
   z-index: 10;
   overflow: hidden;
 }
 
 .ruler-top {
   top: 0;
-  left: 36px;
-  height: 16px;
-  border-bottom: 1px solid #334155;
+  left: 28px;
+  height: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .ruler-left {
-  top: 16px;
+  top: 14px;
   left: 0;
-  width: 36px;
-  border-right: 1px solid #334155;
+  width: 28px;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .ruler-mark {
   position: absolute;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.06);
 
   .ruler-top & {
     bottom: 0;
     width: 1px;
-    height: 4px;
+    height: 3px;
   }
 
   .ruler-left & {
     right: 0;
     height: 1px;
-    width: 4px;
+    width: 3px;
   }
 
   &.ruler-mark-major {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.12);
 
     .ruler-top & {
-      height: 7px;
+      height: 6px;
     }
 
     .ruler-left & {
-      width: 7px;
+      width: 6px;
     }
   }
 }
@@ -93,18 +93,18 @@
   position: absolute;
   font-size: 7px;
   font-family: var(--font-family-mono);
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.3);
   white-space: nowrap;
   user-select: none;
 
   .ruler-top & {
-    bottom: 8px;
-    left: 2px;
+    bottom: 6px;
+    left: 1px;
   }
 
   .ruler-left & {
-    right: 10px;
-    top: -3px;
+    right: 8px;
+    top: -2px;
   }
 }
 
