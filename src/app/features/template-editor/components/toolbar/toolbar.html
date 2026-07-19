@@ -113,36 +113,47 @@
 
     <!-- Agregar: Texto + Campos + Tablas + Elementos -->
     <div class="toolbar-section toolbar-add">
-      <button class="btn-tool-icon" (click)="addTextClicked.emit('text')" title="Texto plano">
+      <span class="tool-group-label">Agregar</span>
+      <button class="btn-tool-icon" (click)="addTextClicked.emit('text')" data-tooltip="Agregar texto plano libre en el canvas">
         <lucide-angular name="Type" [size]="14"></lucide-angular>
+        <span class="tool-label">Texto</span>
       </button>
-      <button class="btn-tool-icon" (click)="addTextClicked.emit('heading')" title="Encabezado">
+      <button class="btn-tool-icon" (click)="addTextClicked.emit('heading')" data-tooltip="Agregar encabezado de sección con estilo de título">
         <lucide-angular name="Heading" [size]="14"></lucide-angular>
+        <span class="tool-label">Título</span>
       </button>
-      <button class="btn-tool-icon" (click)="addTextClicked.emit('field')" title="Campo de datos">
+      <button class="btn-tool-icon" (click)="addTextClicked.emit('field')" data-tooltip="Agregar campo de datos vinculado al XML">
         <lucide-angular name="Variable" [size]="14"></lucide-angular>
+        <span class="tool-label">Campo</span>
       </button>
-      <button class="btn-tool-icon" (click)="addTextClicked.emit('number')" title="Campo numérico">
+      <button class="btn-tool-icon" (click)="addTextClicked.emit('number')" data-tooltip="Agregar campo numérico con formato de decimales">
         <lucide-angular name="Hash" [size]="14"></lucide-angular>
+        <span class="tool-label">Número</span>
       </button>
-      <button class="btn-tool-icon" (click)="addTextClicked.emit('date')" title="Campo fecha">
+      <button class="btn-tool-icon" (click)="addTextClicked.emit('date')" data-tooltip="Agregar campo de fecha con formato DD/MM/AAAA">
         <lucide-angular name="Calendar" [size]="14"></lucide-angular>
+        <span class="tool-label">Fecha</span>
       </button>
       <span class="tool-sep-v"></span>
-      <button class="btn-tool-icon" (click)="addTableClicked.emit({ cols: 3, rows: 3 })" title="Tabla 3×3">
+      <button class="btn-tool-icon" (click)="addTableClicked.emit({ cols: 3, rows: 3 })" data-tooltip="Insertar tabla editable de 3 columnas × 3 filas">
         <lucide-angular name="Table" [size]="14"></lucide-angular>
+        <span class="tool-label">Tabla</span>
       </button>
-      <button class="btn-tool-icon" (click)="addElementClicked.emit('line')" title="Línea">
+      <button class="btn-tool-icon" (click)="addElementClicked.emit('line')" data-tooltip="Dibiar una línea horizontal o vertical">
         <lucide-angular name="Minus" [size]="14"></lucide-angular>
+        <span class="tool-label">Línea</span>
       </button>
-      <button class="btn-tool-icon" (click)="addElementClicked.emit('rectangle')" title="Caja">
+      <button class="btn-tool-icon" (click)="addElementClicked.emit('rectangle')" data-tooltip="Agregar un rectángulo o caja decorativa">
         <lucide-angular name="Square" [size]="14"></lucide-angular>
+        <span class="tool-label">Caja</span>
       </button>
-      <button class="btn-tool-icon" (click)="addElementClicked.emit('image')" title="Imagen">
+      <button class="btn-tool-icon" (click)="addElementClicked.emit('image')" data-tooltip="Subir imagen local (PNG, JPG, SVG) al canvas">
         <lucide-angular name="Image" [size]="14"></lucide-angular>
+        <span class="tool-label">Imagen</span>
       </button>
-      <button class="btn-tool-icon" (click)="addElementClicked.emit('qr')" title="Código QR">
+      <button class="btn-tool-icon" (click)="addElementClicked.emit('qr')" data-tooltip="Insertar código QR dinámico con datos del XML">
         <lucide-angular name="QrCode" [size]="14"></lucide-angular>
+        <span class="tool-label">QR</span>
       </button>
     </div>
 
@@ -150,23 +161,24 @@
 
     <!-- Alineación -->
     <div class="toolbar-section toolbar-align">
-      <button class="btn-tool-icon" (click)="alignClicked.emit('left')" title="Alinear izquierda">
+      <span class="tool-group-label">Alinear</span>
+      <button class="btn-tool-icon" (click)="alignClicked.emit('left')" data-tooltip="Alinear campo seleccionado al borde izquierdo">
         <lucide-angular name="AlignLeft" [size]="14"></lucide-angular>
       </button>
-      <button class="btn-tool-icon" (click)="alignClicked.emit('center-horizontal')" title="Centrar horizontal">
+      <button class="btn-tool-icon" (click)="alignClicked.emit('center-horizontal')" data-tooltip="Centrar campo seleccionado horizontalmente">
         <lucide-angular name="AlignCenterHorizontal" [size]="14"></lucide-angular>
       </button>
-      <button class="btn-tool-icon" (click)="alignClicked.emit('right')" title="Alinear derecha">
+      <button class="btn-tool-icon" (click)="alignClicked.emit('right')" data-tooltip="Alinear campo seleccionado al borde derecho">
         <lucide-angular name="AlignRight" [size]="14"></lucide-angular>
       </button>
       <span class="tool-sep-v"></span>
-      <button class="btn-tool-icon" (click)="alignClicked.emit('top')" title="Alinear arriba">
+      <button class="btn-tool-icon" (click)="alignClicked.emit('top')" data-tooltip="Alinear campo seleccionado al borde superior">
         <lucide-angular name="AlignVerticalJustifyStart" [size]="14"></lucide-angular>
       </button>
-      <button class="btn-tool-icon" (click)="alignClicked.emit('center-vertical')" title="Centrar vertical">
+      <button class="btn-tool-icon" (click)="alignClicked.emit('center-vertical')" data-tooltip="Centrar campo seleccionado verticalmente">
         <lucide-angular name="AlignVerticalJustifyCenter" [size]="14"></lucide-angular>
       </button>
-      <button class="btn-tool-icon" (click)="alignClicked.emit('bottom')" title="Alinear abajo">
+      <button class="btn-tool-icon" (click)="alignClicked.emit('bottom')" data-tooltip="Alinear campo seleccionado al borde inferior">
         <lucide-angular name="AlignVerticalJustifyEnd" [size]="14"></lucide-angular>
       </button>
     </div>
@@ -175,18 +187,19 @@
 
     <!-- Grid + Snap + Zoom -->
     <div class="toolbar-section toolbar-view">
-      <button class="btn-tool-icon" (click)="gridToggleClicked.emit()" title="Cuadrícula">
+      <span class="tool-group-label">Vista</span>
+      <button class="btn-tool-icon" (click)="gridToggleClicked.emit()" data-tooltip="Mostrar u ocultar cuadrícula de referencia">
         <lucide-angular name="Grid3x3" [size]="14"></lucide-angular>
       </button>
-      <button class="btn-tool-icon" (click)="snapToggleClicked.emit()" title="Snap a cuadrícula">
+      <button class="btn-tool-icon" (click)="snapToggleClicked.emit()" data-tooltip="Activar o desactivar snap a la cuadrícula">
         <lucide-angular name="Magnet" [size]="14"></lucide-angular>
       </button>
       <span class="tool-sep-v"></span>
-      <button class="btn-icon-sm" (click)="zoomOutClicked.emit()" title="Alejar">
+      <button class="btn-icon-sm no-tooltip" (click)="zoomOutClicked.emit()">
         <lucide-angular name="ZoomOut" [size]="14"></lucide-angular>
       </button>
       <span class="zoom-value">{{ zoomPercent() }}%</span>
-      <button class="btn-icon-sm" (click)="zoomInClicked.emit()" title="Acercar">
+      <button class="btn-icon-sm no-tooltip" (click)="zoomInClicked.emit()">
         <lucide-angular name="ZoomIn" [size]="14"></lucide-angular>
       </button>
     </div>
