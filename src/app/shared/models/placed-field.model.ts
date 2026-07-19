@@ -14,10 +14,10 @@ export interface PageSectionZone {
 }
 
 export const PAGE_SECTIONS: PageSectionZone[] = [
-  { key: 'encabezado', label: 'Encabezado', yStart: 0, yEnd: 65, color: '#2563EB' },
-  { key: 'detalle',    label: 'Detalle',    yStart: 65, yEnd: 215, color: '#1E293B' },
+  { key: 'encabezado', label: 'Encabezado', yStart: 0, yEnd: 65, color: '#CB6120' },
+  { key: 'detalle',    label: 'Detalle',    yStart: 65, yEnd: 215, color: '#2E1A0E' },
   { key: 'totales',    label: 'Totales',    yStart: 215, yEnd: 260, color: '#D97706' },
-  { key: 'pie',        label: 'Pie de Página', yStart: 260, yEnd: 297, color: '#DC2626' },
+  { key: 'pie',        label: 'Pie de Página', yStart: 260, yEnd: 297, color: '#A01127' },
 ];
 
 export function getSectionForY(yMm: number): PageSection {

@@ -49,7 +49,7 @@
   transition: border-color var(--transition-fast);
 
   &:focus-within {
-    border-color: var(--accent-action);
+    border-color: var(--primary-color);
     background-color: rgba(0, 0, 0, 0.35);
   }
 }
@@ -180,15 +180,15 @@
     }
 
     .field-drag-icon {
-      color: var(--accent-action);
+      color: var(--primary-color);
       opacity: 1;
     }
   }
 
   &:active {
     cursor: grabbing;
-    background: rgba(37, 99, 235, 0.15);
-    border-color: rgba(37, 99, 235, 0.3);
+    background: rgba(203, 97, 32, 0.15);
+    border-color: rgba(203, 97, 32, 0.3);
   }
 
   &.field-locked {
@@ -201,7 +201,7 @@
 
   &.field-system {
     .field-drag-icon {
-      color: rgba(96, 165, 250, 0.4);
+      color: rgba(203, 97, 32, 0.4);
     }
   }
 
@@ -222,7 +222,7 @@
     background: var(--surface-panel);
     color: var(--text-primary);
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
-    border-color: var(--accent-action);
+    border-color: var(--primary-color);
     border-radius: var(--radius-md);
 
     .field-label {
@@ -241,8 +241,8 @@
 
   &.cdk-drag-placeholder {
     opacity: 0.25;
-    background: var(--accent-action);
-    border-color: var(--accent-action);
+    background: var(--primary-color);
+    border-color: var(--primary-color);
   }
 }
 
@@ -380,8 +380,8 @@
   }
 
   &.tier-required {
-    background: rgba(37, 99, 235, 0.2);
-    color: rgba(147, 197, 253, 0.9);
+    background: rgba(203, 97, 32, 0.2);
+    color: rgba(250, 229, 213, 0.9);
   }
 }
 
