@@ -25,7 +25,7 @@
 .sidebar-title {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -42,20 +42,20 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  background-color: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--radius-md);
   padding: 0 var(--spacing-sm);
   transition: border-color var(--transition-fast);
 
   &:focus-within {
     border-color: var(--primary-color);
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(255, 255, 255, 0.7);
   }
 }
 
 .search-icon {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(0, 0, 0, 0.4);
   flex-shrink: 0;
 }
 
@@ -64,13 +64,13 @@
   height: 32px;
   border: none;
   background: transparent;
-  color: #fff;
+  color: #1A0A0E;
   font-size: var(--font-size-sm);
   font-family: var(--font-family-base);
   outline: none;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(0, 0, 0, 0.35);
   }
 }
 
@@ -91,7 +91,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 2px;
   }
 }
@@ -107,7 +107,7 @@
   padding: 8px var(--spacing-md);
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(0, 0, 0, 0.55);
   font-size: 10px;
   font-weight: var(--font-weight-bold);
   font-family: var(--font-family-base);
@@ -117,8 +117,8 @@
   transition: all var(--transition-fast);
 
   &:hover {
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.04);
+    color: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.06);
   }
 }
 
@@ -135,9 +135,9 @@
 
 .group-count {
   font-size: 9px;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(0, 0, 0, 0.4);
   font-family: var(--font-family-mono);
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.08);
   padding: 1px 6px;
   border-radius: 10px;
   font-weight: var(--font-weight-medium);
@@ -145,7 +145,7 @@
 
 .group-mandatory-label {
   font-size: 8px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(0, 0, 0, 0.4);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-left: auto;
@@ -172,11 +172,11 @@
   transition: all var(--transition-fast);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.06);
 
     .field-label {
-      color: #fff;
+      color: #1A0A0E;
     }
 
     .field-drag-icon {
@@ -187,34 +187,34 @@
 
   &:active {
     cursor: grabbing;
-    background: rgba(203, 97, 32, 0.15);
-    border-color: rgba(203, 97, 32, 0.3);
+    background: rgba(138, 62, 18, 0.15);
+    border-color: rgba(138, 62, 18, 0.3);
   }
 
   &.field-locked {
     opacity: 0.7;
 
     .field-drag-icon {
-      color: rgba(252, 165, 165, 0.4);
+      color: rgba(160, 17, 39, 0.5);
     }
   }
 
   &.field-system {
     .field-drag-icon {
-      color: rgba(203, 97, 32, 0.4);
+      color: rgba(138, 62, 18, 0.5);
     }
   }
 
   &.field-placed {
-    background: rgba(34, 197, 94, 0.08);
-    border-color: rgba(34, 197, 94, 0.15);
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.2);
 
     .field-label {
-      color: rgba(134, 239, 172, 0.9);
+      color: rgba(22, 163, 74, 0.9);
     }
 
     .field-drag-icon {
-      color: rgba(34, 197, 94, 0.5);
+      color: rgba(34, 197, 94, 0.6);
     }
   }
 
@@ -263,7 +263,7 @@
 .field-label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.85);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -286,9 +286,9 @@
   .checkmark {
     width: 14px;
     height: 14px;
-    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border: 1.5px solid rgba(0, 0, 0, 0.3);
     border-radius: 3px;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -298,7 +298,7 @@
       display: none;
       width: 4px;
       height: 7px;
-      border: solid #fff;
+      border: solid #1A0A0E;
       border-width: 0 1.5px 1.5px 0;
       transform: rotate(45deg);
       margin-top: -1px;
@@ -306,8 +306,8 @@
   }
 
   input[type="checkbox"]:checked + .checkmark {
-    background: var(--success-color);
-    border-color: var(--success-color);
+    background: #1A0A0E;
+    border-color: #1A0A0E;
 
     &::after {
       display: block;
@@ -317,13 +317,13 @@
   input[type="checkbox"]:disabled + .checkmark {
     opacity: 0.5;
     cursor: not-allowed;
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.15);
   }
 
   input[type="checkbox"]:checked:disabled + .checkmark {
-    background: rgba(34, 197, 94, 0.4);
-    border-color: rgba(34, 197, 94, 0.4);
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -335,13 +335,13 @@
   height: 14px;
   border-radius: 50%;
   background: rgba(34, 197, 94, 0.2);
-  color: rgba(134, 239, 172, 0.9);
+  color: rgba(22, 163, 74, 0.9);
   flex-shrink: 0;
 }
 
 .field-placeholder-value {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(0, 0, 0, 0.5);
   font-family: var(--font-family-mono);
   white-space: nowrap;
   overflow: hidden;
@@ -365,29 +365,29 @@
   line-height: 1.3;
 
   &.tier-locked {
-    background: rgba(220, 38, 38, 0.2);
-    color: rgba(252, 165, 165, 0.9);
+    background: rgba(160, 17, 39, 0.15);
+    color: #A01127;
   }
 
   &.tier-conditional {
-    background: rgba(217, 119, 6, 0.2);
-    color: rgba(253, 186, 116, 0.9);
+    background: rgba(203, 97, 32, 0.15);
+    color: #CB6120;
   }
 
   &.tier-optional {
-    background: rgba(34, 197, 94, 0.15);
-    color: rgba(134, 239, 172, 0.8);
+    background: rgba(34, 197, 94, 0.12);
+    color: #16A34A;
   }
 
   &.tier-required {
-    background: rgba(203, 97, 32, 0.2);
-    color: rgba(250, 229, 213, 0.9);
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.7);
   }
 }
 
 .field-key-text {
   font-size: 9px;
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(0, 0, 0, 0.45);
   font-family: var(--font-family-mono);
   white-space: nowrap;
   overflow: hidden;
@@ -396,12 +396,12 @@
 
 .field-placeholder {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(0, 0, 0, 0.45);
   font-family: var(--font-family-mono);
 }
 
 .field-drag-icon {
-  color: rgba(255, 255, 255, 0.12);
+  color: rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
   opacity: 0.5;
   transition: all var(--transition-fast);
@@ -420,10 +420,10 @@
 }
 
 .no-results-icon {
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(0, 0, 0, 0.2);
 }
 
 .no-results-text {
   font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(0, 0, 0, 0.4);
 }
