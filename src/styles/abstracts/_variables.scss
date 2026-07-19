@@ -1,45 +1,48 @@
 // ============================================
 // ENTERPRISE DESIGN TOKENS (SCSS)
-// Sincronizados con CSS custom properties
+// Derived from logo: #A01127 (crimson) + #CB6120 (copper)
 // ============================================
 
-// --- Primary ---
-$primary-color: #1E40AF;
-$primary-hover: #1E3A8A;
-$primary-light: #DBEAFE;
+// --- Primary (copper orange) ---
+$primary-color: #CB6120;
+$primary-hover: #A84E1A;
+$primary-light: #FAE5D5;
+$primary-dark: #8A3E12;
 
-// --- Accent ---
-$accent-action: #2563EB;
-$accent-hover: #1D4ED8;
+// --- Accent (crimson red) ---
+$accent-color: #A01127;
+$accent-action: #A01127;
+$accent-hover: #8A0E20;
+$accent-light: #F5D0D5;
 
 // --- Surfaces ---
-$surface-base: #F1F5F9;
+$surface-base: #F7F5F4;
 $surface-panel: #FFFFFF;
-$surface-panel-alt: #E2E8F0;
+$surface-panel-alt: #EDE8E5;
 
 // --- Sidebar ---
-$brand-background: #1E293B;
-$brand-background-hover: #334155;
+$brand-background: #3D1520;
+$brand-background-hover: #5A1F2E;
 
 // --- Text ---
-$text-primary: #0F172A;
-$text-secondary: #64748B;
-$text-muted: #94A3B8;
+$text-primary: #1A0A0E;
+$text-secondary: #6B5055;
+$text-muted: #9A8085;
 $text-inverse: #FFFFFF;
 
 // --- States ---
 $success-color: #16A34A;
 $success-bg: #DCFCE7;
-$warning-color: #D97706;
-$warning-bg: #FEF3C7;
-$danger-color: #DC2626;
-$danger-bg: #FEE2E2;
-$info-color: #2563EB;
-$info-bg: #DBEAFE;
+$warning-color: #CB6120;
+$warning-bg: #FAE5D5;
+$danger-color: #A01127;
+$danger-bg: #F5D0D5;
+$info-color: #A01127;
+$info-bg: #F5D0D5;
 
 // --- Borders ---
-$border-color: #E2E8F0;
-$border-focus: #2563EB;
+$border-color: #E5DDD9;
+$border-focus: #CB6120;
 
 // --- Border radius ---
 $radius-sm: 4px;

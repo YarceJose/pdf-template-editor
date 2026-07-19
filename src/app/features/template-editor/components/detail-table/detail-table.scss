@@ -17,8 +17,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: #1E293B;
-  color: #fff;
+  background: var(--primary-dark);
+  color: var(--text-inverse);
   border-radius: 4px 4px 0 0;
   font-family: var(--font-family-base);
 }
@@ -42,15 +42,15 @@
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  border: 1px dashed #CBD5E1;
+  border: 1px dashed var(--border-color);
   border-radius: 4px;
-  color: #94A3B8;
+  color: var(--text-muted);
   font-size: 11px;
   gap: 6px;
 }
 
 .dt-empty-icon {
-  color: #CBD5E1;
+  color: var(--border-color);
 }
 
 .dt-empty-hint {
@@ -60,21 +60,21 @@
 
 // Table preview
 .dt-preview {
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border-color);
   border-radius: 0 0 4px 4px;
   overflow: hidden;
 }
 
 .dt-preview-header {
   display: flex;
-  background: #1E293B;
+  background: var(--primary-dark);
 }
 
 .dt-col-header {
   display: flex;
   flex-direction: column;
   padding: 4px 8px;
-  color: #fff;
+  color: var(--text-inverse);
   border-right: 1px solid rgba(255, 255, 255, 0.15);
   min-width: 40px;
 }
@@ -92,19 +92,19 @@
 
 .dt-preview-row {
   display: flex;
-  background: #F8FAFC;
+  background: var(--surface-base);
 }
 
 .dt-col-cell {
   padding: 4px 8px;
-  border-right: 1px solid #E2E8F0;
+  border-right: 1px solid var(--border-color);
   min-height: 24px;
 }
 
 .dt-cell-placeholder {
   font-size: 9px;
   font-family: var(--font-family-mono);
-  color: #94A3B8;
+  color: var(--text-muted);
 }
 
 // Column config list
@@ -120,29 +120,29 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
+  background: var(--surface-base);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   gap: 8px;
 
   &.dt-col-locked {
-    background: #F1F5F9;
-    border-color: #CBD5E1;
+    background: var(--surface-panel-alt);
+    border-color: var(--text-muted);
     opacity: 0.7;
   }
 
   &.cdk-drag-preview {
-    background: #fff;
+    background: var(--surface-panel);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-color: #2563EB;
+    border-color: var(--primary-color);
     border-radius: 4px;
     z-index: 1000;
   }
 
   &.cdk-drag-placeholder {
     opacity: 0.3;
-    background: #DBEAFE;
-    border-color: #2563EB;
+    background: var(--primary-light);
+    border-color: var(--primary-color);
   }
 
   &.cdk-drag-animating {
@@ -156,15 +156,15 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  color: #CBD5E1;
+  color: var(--text-muted);
   cursor: grab;
   flex-shrink: 0;
   border-radius: 2px;
   transition: all 0.15s;
 
   &:hover {
-    color: #64748B;
-    background: #E2E8F0;
+    color: var(--text-secondary);
+    background: var(--surface-panel-alt);
   }
 
   &:active {
@@ -181,12 +181,13 @@
   flex-direction: column;
   gap: 1px;
   min-width: 0;
+  flex: 1;
 }
 
 .dt-col-label {
   font-size: 11px;
   font-weight: 500;
-  color: #1E293B;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -195,7 +196,7 @@
 .dt-col-binding {
   font-size: 9px;
   font-family: var(--font-family-mono);
-  color: #64748B;
+  color: var(--text-secondary);
 }
 
 .dt-col-meta {
@@ -209,13 +210,13 @@
   font-size: 9px;
   padding: 1px 4px;
   border-radius: 3px;
-  background: #E2E8F0;
-  color: #475569;
+  background: var(--surface-panel-alt);
+  color: var(--text-secondary);
   font-weight: 500;
 
   &.dt-badge-required {
-    background: #FEE2E2;
-    color: #DC2626;
+    background: var(--danger-bg);
+    color: var(--danger-color);
   }
 }
 
@@ -223,16 +224,34 @@
   width: 42px;
   height: 22px;
   padding: 0 4px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border-color);
   border-radius: 3px;
   font-size: 10px;
   font-family: var(--font-family-mono);
   text-align: center;
-  background: #fff;
+  background: var(--surface-panel);
 
   &:focus {
     outline: none;
-    border-color: #2563EB;
+    border-color: var(--primary-color);
+  }
+}
+
+.dt-col-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--accent-light);
+    color: var(--accent-color);
   }
 }
 
@@ -245,17 +264,64 @@
   border: none;
   border-radius: 3px;
   background: transparent;
-  color: #94A3B8;
+  color: var(--text-muted);
   cursor: pointer;
 
   &:hover {
-    background: #FEE2E2;
-    color: #DC2626;
+    background: var(--danger-bg);
+    color: var(--danger-color);
   }
 }
 
 .dt-col-lock-icon {
-  color: #94A3B8;
+  color: var(--text-muted);
+}
+
+// Binding picker dropdown
+.dt-binding-picker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md);
+  z-index: 50;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dt-binding-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-family-base);
+  color: var(--text-primary);
+
+  &:hover {
+    background: var(--surface-panel-alt);
+  }
+
+  &.dt-binding-active {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+}
+
+.dt-binding-key {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  color: var(--text-secondary);
 }
 
 // Add section
@@ -265,13 +331,13 @@
   gap: 6px;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid #E2E8F0;
+  border-top: 1px solid var(--border-color);
 }
 
 .dt-add-label {
   font-size: 10px;
   font-weight: 600;
-  color: #64748B;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -285,7 +351,7 @@
 .dt-add-group-label {
   font-size: 9px;
   font-family: var(--font-family-mono);
-  color: #94A3B8;
+  color: var(--text-muted);
 }
 
 .dt-add-fields {
@@ -299,18 +365,18 @@
   align-items: center;
   gap: 3px;
   padding: 3px 8px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border-color);
   border-radius: 3px;
-  background: #fff;
+  background: var(--surface-panel);
   font-size: 10px;
   font-family: var(--font-family-base);
-  color: #475569;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s;
 
   &:hover {
-    border-color: #2563EB;
-    color: #2563EB;
-    background: #EFF6FF;
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background: var(--accent-light);
   }
 }

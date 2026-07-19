@@ -4,6 +4,7 @@ import {
   inject,
   output,
   computed,
+  signal,
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { LucideAngularModule } from 'lucide-angular';
@@ -26,11 +27,19 @@ export class DetailTableComponent {
 
   columns = this.state.detailTableColumns;
 
-  /** Available fields for adding columns (from InvcDtl and InvcTax) */
-  availableFields = computed(() => {
-    const detalleFields = FIELD_CATEGORIES
+  /** ID of column currently being edited (binding picker open) */
+  editingColId = signal<string | null>(null);
+
+  /** All detalle fields available for binding */
+  allDetalleFields = computed(() => {
+    return FIELD_CATEGORIES
       .flatMap((g) => g.fields)
       .filter((f) => f.section === 'detalle');
+  });
+
+  /** Available fields for adding columns (from InvcDtl and InvcTax) */
+  availableFields = computed(() => {
+    const detalleFields = this.allDetalleFields();
     const placedKeys = new Set(this.columns().map((c) => c.bindingSource));
     return detalleFields.filter((f) => !placedKeys.has(f.fieldKey));
   });
@@ -77,6 +86,18 @@ export class DetailTableComponent {
   onColumnDrop(event: CdkDragDrop<DetailTableColumn[]>): void {
     if (event.previousIndex === event.currentIndex) return;
     this.state.moveDetailColumn(event.previousIndex, event.currentIndex);
+  }
+
+  toggleBindingPicker(colId: string): void {
+    this.editingColId.set(this.editingColId() === colId ? null : colId);
+  }
+
+  onBindingChange(colId: string, field: FieldDefinition): void {
+    const dataType = field.type === 'decimal' ? 'Decimal' : field.type === 'date' ? 'DateTime' : 'String';
+    const align = field.type === 'decimal' ? 'Right' : 'Left';
+    const format = field.type === 'decimal' ? 'C2' : field.type === 'date' ? 'dd/MM/yyyy' : undefined;
+    this.state.updateColumnBinding(colId, field.fieldKey, field.label, dataType, align, format);
+    this.editingColId.set(null);
   }
 
   isDragDisabled(col: DetailTableColumn): boolean {

@@ -14,16 +14,16 @@ export interface PageSectionZone {
 }
 
 export const PAGE_SECTIONS: PageSectionZone[] = [
-  { key: 'encabezado', label: 'Encabezado', yStart: 0, yEnd: 50, color: '#2563EB' },
-  { key: 'detalle',    label: 'Detalle',    yStart: 50, yEnd: 180, color: '#1E293B' },
-  { key: 'totales',    label: 'Totales',    yStart: 180, yEnd: 247, color: '#D97706' },
-  { key: 'pie',        label: 'Pie de Página', yStart: 247, yEnd: 297, color: '#DC2626' },
+  { key: 'encabezado', label: 'Encabezado', yStart: 0, yEnd: 65, color: '#2563EB' },
+  { key: 'detalle',    label: 'Detalle',    yStart: 65, yEnd: 215, color: '#1E293B' },
+  { key: 'totales',    label: 'Totales',    yStart: 215, yEnd: 260, color: '#D97706' },
+  { key: 'pie',        label: 'Pie de Página', yStart: 260, yEnd: 297, color: '#DC2626' },
 ];
 
 export function getSectionForY(yMm: number): PageSection {
-  if (yMm < 50) return 'encabezado';
-  if (yMm < 180) return 'detalle';
-  if (yMm < 247) return 'totales';
+  if (yMm < 65) return 'encabezado';
+  if (yMm < 215) return 'detalle';
+  if (yMm < 260) return 'totales';
   return 'pie';
 }
 

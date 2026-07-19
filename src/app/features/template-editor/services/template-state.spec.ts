@@ -55,9 +55,9 @@ describe('TemplateStateService — Positioning', () => {
     it('should clamp Y to section end minus height', () => {
       state.addField(baseDef, 10, 10);
       const field = state.placedFields()[0];
-      // Move below section (encabezado ends at 50mm, height=8)
-      state.moveField(field.id, 10, 45);
-      expect(state.placedFields()[0].y).toBeLessThanOrEqual(42);
+      // Move below section (encabezado ends at 65mm, height=8)
+      state.moveField(field.id, 10, 60);
+      expect(state.placedFields()[0].y).toBeLessThanOrEqual(57);
     });
 
     it('should clamp X to page margins (10mm–160mm for 40mm field)', () => {

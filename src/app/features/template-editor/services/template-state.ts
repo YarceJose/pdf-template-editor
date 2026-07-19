@@ -487,4 +487,21 @@ export class TemplateStateService {
       return next;
     });
   }
+
+  /**
+   * Actualiza el binding (fieldKey) de una columna de detalle.
+   */
+  updateColumnBinding(colId: string, newFieldKey: string, newHeader: string, newDataType: string, newAlign: 'Left' | 'Right' | 'Center', newFormat?: string): void {
+    this.detailTableColumns.update((cols) =>
+      cols.map((c) => c.id === colId ? {
+        ...c,
+        bindingSource: newFieldKey,
+        fieldKey: newFieldKey,
+        header: newHeader,
+        bindingDataType: newDataType,
+        align: newAlign,
+        format: newFormat,
+      } : c)
+    );
+  }
 }

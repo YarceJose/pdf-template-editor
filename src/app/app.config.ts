@@ -7,10 +7,10 @@ import {
   Type, Heading, Tags, Variable, Hash, Calendar, Table, Minus, Square, Image as ImageIcon, QrCode,
   AlignLeft, AlignCenterHorizontal, AlignRight, AlignVerticalJustifyStart, AlignVerticalJustifyCenter, AlignVerticalJustifyEnd,
   Grid3x3, Magnet, ZoomIn, ZoomOut, Undo2, Redo2, Eye, Trash2, Download, X,
-  Building2, User, ShoppingCart, Calculator, PenTool,
+  Building2, User, ShoppingCart, Calculator, PenTool, Pencil,
   Copy, AlertTriangle, AlertCircle, FileText,
   ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock,
-  RotateCcw
+  RotateCcw, Check
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -28,10 +28,10 @@ export const appConfig: ApplicationConfig = {
         Type, Heading, Tags, Variable, Hash, Calendar, Table, Minus, Square, Image: ImageIcon, QrCode,
         AlignLeft, AlignCenterHorizontal, AlignRight, AlignVerticalJustifyStart, AlignVerticalJustifyCenter, AlignVerticalJustifyEnd,
         Grid3x3, Magnet, ZoomIn, ZoomOut, Undo2, Redo2, Eye, Trash2, Download, X,
-        Building2, User, ShoppingCart, Calculator, PenTool,
+        Building2, User, ShoppingCart, Calculator, PenTool, Pencil,
         Copy, AlertTriangle, AlertCircle, FileText,
         ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock,
-        RotateCcw
+        RotateCcw, Check
       })
     )
   ]
