@@ -54,6 +54,17 @@
   flex-shrink: 0;
 }
 
+.tool-group-label {
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 2px;
+  white-space: nowrap;
+  line-height: 1;
+}
+
 .toolbar-doc-name {
   gap: 6px;
 }
@@ -210,7 +221,7 @@
     color: var(--text-primary);
 
     &::after {
-      content: attr(title);
+      content: attr(data-tooltip);
       position: absolute;
       top: calc(100% + 6px);
       left: 50%;
@@ -264,11 +275,30 @@
   font-size: var(--font-size-xs);
   font-family: var(--font-family-base);
   cursor: pointer;
+  position: relative;
 
   &:hover {
     background-color: var(--surface-base);
     border-color: var(--primary-color);
     color: var(--primary-color);
+
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 3px 8px;
+      background: var(--brand-background);
+      color: #F8FAFC;
+      font-size: 10px;
+      font-family: var(--font-family-base);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      border-radius: 4px;
+      z-index: 100;
+      pointer-events: none;
+    }
   }
 
   &:focus-visible {
@@ -307,7 +337,7 @@
     color: var(--text-primary);
 
     &::after {
-      content: attr(title);
+      content: attr(data-tooltip);
       position: absolute;
       top: calc(100% + 6px);
       left: 50%;
@@ -350,6 +380,25 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all var(--transition-fast);
+  position: relative;
+
+  &:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 3px 8px;
+    background: var(--brand-background);
+    color: #F8FAFC;
+    font-size: 10px;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    border-radius: 4px;
+    z-index: 100;
+    pointer-events: none;
+  }
 
   &:focus-visible {
     outline: none;
