@@ -126,6 +126,21 @@ export class PropertiesPanel {
     if (f) this.updateProperty('underline', !f.underline);
   }
 
+  updateColorFromHex(key: 'color' | 'borderColor', raw: string): void {
+    const val = raw.trim();
+    if (!val) {
+      this.updateProperty(key, undefined);
+    } else if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+      this.updateProperty(key, val);
+    }
+  }
+
+  updateBorderWidth(raw: string): void {
+    const num = parseFloat(raw);
+    if (isNaN(num) || num < 0) return;
+    this.updateProperty('borderWidth', Math.min(5, num));
+  }
+
   onDelete(): void {
     const f = this.field();
     if (f) this.fieldDeleted.emit(f.id);

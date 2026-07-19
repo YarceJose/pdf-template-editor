@@ -39,6 +39,10 @@ export class FieldItem {
   styleHeight = computed(() => `${this.field().height * MM_TO_PX * this.zoom()}px`);
   styleFontSize = computed(() => `${this.field().fontSize * this.zoom()}pt`);
 
+  textColor = computed(() => this.field().color || null);
+  borderColor = computed(() => this.field().borderColor || null);
+  borderWidth = computed(() => this.field().borderWidth ?? null);
+
   isLocked = computed(() => this.field().requiredTier === 'obligatorio_siempre');
   isSystem = computed(() => this.field().origin === 'system');
   canDrag = computed(() => !this.isLocked() && !this.isSystem());

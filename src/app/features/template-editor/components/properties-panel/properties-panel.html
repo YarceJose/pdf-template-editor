@@ -216,6 +216,65 @@
       </div>
     </div>
 
+    <!-- Colores -->
+    <div class="props-section">
+      <span class="section-label">Colores</span>
+      <div class="props-grid-2">
+        <div class="props-field">
+          <label class="field-label">Texto</label>
+          <div class="color-picker-row">
+            <input
+              class="color-input"
+              type="color"
+              [value]="field()!.color || '#1E293B'"
+              (input)="updateProperty('color', $any($event.target).value)"
+              [disabled]="!isEditable()"
+            />
+            <input
+              class="field-input color-hex"
+              type="text"
+              [value]="field()!.color || ''"
+              (change)="updateColorFromHex('color', $any($event.target).value)"
+              [disabled]="!isEditable()"
+              placeholder="auto"
+            />
+          </div>
+        </div>
+        <div class="props-field">
+          <label class="field-label">Borde</label>
+          <div class="color-picker-row">
+            <input
+              class="color-input"
+              type="color"
+              [value]="field()!.borderColor || '#94A3B8'"
+              (input)="updateProperty('borderColor', $any($event.target).value)"
+              [disabled]="!isEditable()"
+            />
+            <input
+              class="field-input color-hex"
+              type="text"
+              [value]="field()!.borderColor || ''"
+              (change)="updateColorFromHex('borderColor', $any($event.target).value)"
+              [disabled]="!isEditable()"
+              placeholder="auto"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="props-field">
+        <label class="field-label">Grosor borde (px)</label>
+        <input
+          class="field-input"
+          type="number"
+          [value]="field()!.borderWidth ?? 1"
+          (change)="updateBorderWidth($any($event.target).value)"
+          min="0"
+          max="5"
+          step="0.5"
+        />
+      </div>
+    </div>
+
     <!-- Delete -->
     <div class="props-section props-section-footer">
       <button

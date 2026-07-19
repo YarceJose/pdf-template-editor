@@ -67,6 +67,12 @@ export interface PlacedField {
   bold: boolean;
   italic: boolean;
   underline: boolean;
+  /** Color del texto (hex) */
+  color?: string;
+  /** Color del borde (hex) */
+  borderColor?: string;
+  /** Ancho del borde (px) */
+  borderWidth?: number;
 
   /** Data URL de imagen local (solo para type=image) */
   imageUrl?: string;

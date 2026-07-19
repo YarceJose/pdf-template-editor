@@ -4,6 +4,8 @@
   [class.locked]="isLocked()"
   [class.system]="isSystem()"
   [class.field-image]="field().type === 'image' && field().imageUrl"
+  [class.has-custom-color]="textColor()"
+  [class.has-custom-border]="borderColor()"
   [style.transform]="transformStyle()"
   [style.width]="styleWidth()"
   [style.height]="styleHeight()"
@@ -11,6 +13,9 @@
   [style.fontWeight]="field().bold ? 'bold' : 'normal'"
   [style.fontStyle]="field().italic ? 'italic' : 'normal'"
   [style.textDecoration]="field().underline ? 'underline' : 'none'"
+  [style.color]="textColor() || null"
+  [style.borderColor]="borderColor() || null"
+  [style.borderWidth]="borderWidth() ? borderWidth() + 'px' : null"
   [title]="field().fieldKey + ': ' + sampleValue()"
   (click)="onSelect(); $event.stopPropagation()"
   cdkDrag
