@@ -5,6 +5,7 @@ import {
   output,
   computed,
 } from '@angular/core';
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { LucideAngularModule } from 'lucide-angular';
 import { TemplateStateService, DetailTableColumn } from '../../services/template-state';
 import { FIELD_CATEGORIES, FieldDefinition } from '../../../../shared/models/field.model';
@@ -12,7 +13,7 @@ import { MM_TO_PX } from '../field-item/field-item';
 
 @Component({
   selector: 'app-detail-table',
-  imports: [LucideAngularModule],
+  imports: [CdkDrag, CdkDropList, LucideAngularModule],
   templateUrl: './detail-table.html',
   styleUrl: './detail-table.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +72,15 @@ export class DetailTableComponent {
     if (!isNaN(val)) {
       this.state.updateColumnWidth(colId, val);
     }
+  }
+
+  onColumnDrop(event: CdkDragDrop<DetailTableColumn[]>): void {
+    if (event.previousIndex === event.currentIndex) return;
+    this.state.moveDetailColumn(event.previousIndex, event.currentIndex);
+  }
+
+  isDragDisabled(col: DetailTableColumn): boolean {
+    return col.requiredTier === 'obligatorio_siempre';
   }
 
   trackByColId(_index: number, col: DetailTableColumn): string {

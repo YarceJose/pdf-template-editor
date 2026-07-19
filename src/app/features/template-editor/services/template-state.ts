@@ -404,4 +404,17 @@ export class TemplateStateService {
       cols.map((c) => (c.id === colId ? { ...c, width: clamped } : c))
     );
   }
+
+  /**
+   * Reordena las columnas de la tabla de detalle.
+   * Mueve la columna en `fromIndex` a `toIndex`.
+   */
+  moveDetailColumn(fromIndex: number, toIndex: number): void {
+    this.detailTableColumns.update((cols) => {
+      const next = [...cols];
+      const [moved] = next.splice(fromIndex, 1);
+      next.splice(toIndex, 0, moved);
+      return next;
+    });
+  }
 }

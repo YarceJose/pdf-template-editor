@@ -31,13 +31,13 @@ const PT_TO_PX = 1.3333;
           </tr>
         </thead>
         <tbody>
-          @for (row of mockRows; track $index) {
+          @for (row of placeholderRows; track $index) {
             <tr [style.background]="rowBg($index)">
               @for (col of columns; track col.id) {
                 <td
                   [style.text-align]="col.align"
                   [ngStyle]="rowStyle()"
-                >{{ resolveCell(col) }}</td>
+                >{{ resolveCell(col, row) }}</td>
               }
             </tr>
           }
@@ -99,11 +99,18 @@ export class TableRenderer {
     return this.comp.columns;
   }
 
-  mockRows = [
-    { InvoiceLine: '1', PartNum: 'SRV-CONS-001', LineDesc: 'Consultoría en desarrollo de software', SellingShipQty: '10.00', UnitPrice: '250,000.00', ExtPrice: '2,500,000.00' },
-    { InvoiceLine: '2', PartNum: 'LIC-ANG-002', LineDesc: 'Licencia Angular Enterprise', SellingShipQty: '5.00', UnitPrice: '120,000.00', ExtPrice: '600,000.00' },
-    { InvoiceLine: '3', PartNum: 'HOS-AWS-003', LineDesc: 'Hosting AWS mensual', SellingShipQty: '1.00', UnitPrice: '350,000.00', ExtPrice: '350,000.00' },
-  ];
+  /** Design-time placeholder rows — show binding source names, not real data */
+  get placeholderRows(): Record<string, string>[] {
+    const placeholders: Record<string, string>[] = [];
+    for (let i = 0; i < 3; i++) {
+      const row: Record<string, string> = {};
+      for (const col of this.columns) {
+        row[col.binding?.source ?? ''] = `[${col.binding?.source ?? ''}]`;
+      }
+      placeholders.push(row);
+    }
+    return placeholders;
+  }
 
   left = () => `${(this.comp?.position?.x ?? 0) * PT_TO_PX * this.zoom()}px`;
   top = () => `${(this.comp?.position?.y ?? 0) * PT_TO_PX * this.zoom()}px`;
@@ -143,10 +150,8 @@ export class TableRenderer {
     return `${ratio * 100}%`;
   }
 
-  resolveCell(col: TableColumn): string {
+  resolveCell(col: TableColumn, row: Record<string, string>): string {
     if (!col.binding) return '';
-    const row = this.mockRows[0];
-    const rawValue = (row as Record<string, string>)[col.binding.source] ?? '';
-    return rawValue || `[${col.binding.source}]`;
+    return row[col.binding.source] ?? `[${col.binding.source}]`;
   }
 }

@@ -6,6 +6,7 @@ import { PropertiesPanel } from '../../components/properties-panel/properties-pa
 import { PreviewModal } from '../../components/preview-modal/preview-modal';
 import { TemplateStateService } from '../../services/template-state';
 import { TemplateSerializerService } from '../../services/template-serializer';
+import { TemplateApiService } from '../../services/template-api';
 import { KeyboardShortcutsService } from '../../services/keyboard-shortcuts';
 import { FieldDefinition } from '../../../../shared/models/field.model';
 import { PlacedField } from '../../../../shared/models/placed-field.model';
@@ -21,6 +22,7 @@ import { DesignTemplate } from '../../../../shared/models/design-templates.model
 export class EditorPage implements OnInit {
   private state = inject(TemplateStateService);
   private serializer = inject(TemplateSerializerService);
+  private api = inject(TemplateApiService);
   private keyboard = inject(KeyboardShortcutsService);
 
   placedFields = this.state.placedFields;
@@ -36,6 +38,8 @@ export class EditorPage implements OnInit {
   showPreview = signal(false);
   showGrid = signal(false);
   snapEnabled = signal(false);
+  saveStatus = signal<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  private currentTemplateId = signal<string | null>(null);
 
   ngOnInit(): void {
     this.keyboard.init();
@@ -115,6 +119,31 @@ export class EditorPage implements OnInit {
     a.download = 'template_definition.json';
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  onSave(): void {
+    const id = this.currentTemplateId();
+    const fields = this.placedFields();
+    const name = 'Factura Electrónica v1.0';
+
+    this.saveStatus.set('saving');
+
+    const request$ = id
+      ? this.api.updateTemplate(id, fields, name)
+      : this.api.saveTemplate(fields, name);
+
+    request$.subscribe({
+      next: (res) => {
+        if (res.id) this.currentTemplateId.set(res.id);
+        this.state.saveSnapshot();
+        this.saveStatus.set('saved');
+        setTimeout(() => this.saveStatus.set('idle'), 2000);
+      },
+      error: () => {
+        this.saveStatus.set('error');
+        setTimeout(() => this.saveStatus.set('idle'), 3000);
+      },
+    });
   }
 
   onTemplateLoaded(template: DesignTemplate): void {

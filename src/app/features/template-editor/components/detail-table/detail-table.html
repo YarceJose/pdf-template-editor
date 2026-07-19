@@ -12,7 +12,7 @@
       <span class="dt-empty-hint">Agrega columnas desde el panel de abajo</span>
     </div>
   } @else {
-    <!-- Table Preview -->
+    <!-- Table Preview (mirrors current column order) -->
     <div class="dt-preview">
       <div class="dt-preview-header">
         @for (col of columns(); track trackByColId($index, col)) {
@@ -31,10 +31,23 @@
       </div>
     </div>
 
-    <!-- Column Config List -->
-    <div class="dt-columns">
+    <!-- Column Config List — drag to reorder -->
+    <div
+      class="dt-columns"
+      cdkDropList
+      [cdkDropListData]="columns()"
+      (cdkDropListDropped)="onColumnDrop($event)"
+    >
       @for (col of columns(); track trackByColId($index, col)) {
-        <div class="dt-col-item" [class.dt-col-locked]="col.requiredTier === 'obligatorio_siempre'">
+        <div
+          class="dt-col-item"
+          [class.dt-col-locked]="col.requiredTier === 'obligatorio_siempre'"
+          cdkDrag
+          [cdkDragDisabled]="isDragDisabled(col)"
+        >
+          <div class="dt-col-drag-handle" cdkDragHandle>
+            <lucide-angular name="GripVertical" [size]="12"></lucide-angular>
+          </div>
           <div class="dt-col-info">
             <span class="dt-col-label">{{ col.header }}</span>
             <span class="dt-col-binding">{{ col.bindingSource }}</span>

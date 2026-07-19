@@ -9,7 +9,8 @@ import {
   Grid3x3, Magnet, ZoomIn, ZoomOut, Undo2, Redo2, Eye, Trash2, Download, X,
   Building2, User, ShoppingCart, Calculator, PenTool,
   Copy, AlertTriangle, AlertCircle, FileText,
-  ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock
+  ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock,
+  RotateCcw
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -29,7 +30,8 @@ export const appConfig: ApplicationConfig = {
         Grid3x3, Magnet, ZoomIn, ZoomOut, Undo2, Redo2, Eye, Trash2, Download, X,
         Building2, User, ShoppingCart, Calculator, PenTool,
         Copy, AlertTriangle, AlertCircle, FileText,
-        ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock
+        ChevronUp, Bold, Italic, Underline, MousePointer2, Plus, Save, CheckCircle, Loader2, Lock,
+        RotateCcw
       })
     )
   ]
