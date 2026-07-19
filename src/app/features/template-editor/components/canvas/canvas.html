@@ -46,7 +46,7 @@
 
     <!-- Section labels + dividers -->
     @for (section of sections; track trackBySection($index, section)) {
-      <div class="section-zone" [style]="sectionStyle(section)">
+      <div class="section-zone section-zone-{{ section.key }}" [style]="sectionStyle(section)">
         <div class="section-divider" [style.borderTopColor]="section.color + '40'"></div>
       </div>
       <div class="section-label-tag" [style]="sectionLabelStyle(section)" [style.backgroundColor]="section.color">

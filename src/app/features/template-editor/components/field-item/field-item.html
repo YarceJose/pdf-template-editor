@@ -15,8 +15,5 @@
   [cdkDragDisabled]="!canDrag()"
   (cdkDragEnded)="onDragEnded($event)"
 >
-  @if (isLocked()) {
-    <span class="field-lock-badge" title="Campo obligatorio — no se puede mover ni eliminar">🔒</span>
-  }
   <span class="field-label-text">{{ field().label }}</span>
 </div>

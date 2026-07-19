@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { PlacedField, getSectionForY, clampToSection, PageSection } from '../../../shared/models/placed-field.model';
+import { PlacedField, getSectionForY, clampToSection, PageSection, getSectionZone } from '../../../shared/models/placed-field.model';
 import { FieldDefinition } from '../../../shared/models/field.model';
 import { DesignTemplate } from '../../../shared/models/design-templates.model';
 import { TableComponent } from '../../../shared/models/template-json.model';
@@ -109,10 +109,9 @@ export class TemplateStateService {
 
   /**
    * Agrega un campo al canvas.
-   * Si el campo tiene section asignada, la usa. Si no, infiere por posición Y.
+   * Auto-ubica dentro de la sección para evitar overlaps.
    */
   addField(def: FieldDefinition, x: number, y: number): PlacedField | null {
-    // Validar que no se esté duplicando un campo obligatorio ya existente
     if (def.requiredTier === 'obligatorio_siempre') {
       const exists = this.placedFields().some((f) => f.fieldKey === def.fieldKey);
       if (exists) return null;
@@ -120,8 +119,17 @@ export class TemplateStateService {
 
     this.pushHistory();
 
-    // La sección viene del diccionario, no se infiere del nodo XML
     const targetSection = def.section;
+    const width = def.defaultWidthMm ?? 40;
+    const height = def.defaultHeightMm ?? 8;
+    const zone = getSectionZone(targetSection);
+
+    const PAGE_WIDTH = 210;
+
+    const position = this.findOpenPosition(targetSection, width, height, x, y);
+
+    const clampedX = Math.max(10, Math.min(position.x, PAGE_WIDTH - 10 - width));
+    const clampedY = clampToSection(position.y, height, targetSection);
 
     const newField: PlacedField = {
       id: `field_${nextId++}`,
@@ -134,10 +142,10 @@ export class TemplateStateService {
       sourceNode: def.sourceNode,
       type: def.type,
       requiredTier: def.requiredTier,
-      x,
-      y,
-      width: def.defaultWidthMm ?? 40,
-      height: def.defaultHeightMm ?? 8,
+      x: clampedX,
+      y: clampedY,
+      width,
+      height,
       fontSize: 10,
       bold: false,
       italic: false,
@@ -147,6 +155,58 @@ export class TemplateStateService {
     this.placedFields.update((f) => [...f, newField]);
     this.selectedFieldId.set(newField.id);
     return newField;
+  }
+
+  /**
+   * Finds the next open position within a section, avoiding overlaps with existing fields.
+   * Falls back to the requested position clamped within the section bounds.
+   */
+  private findOpenPosition(section: PageSection, widthMm: number, heightMm: number, requestedX: number, requestedY: number): { x: number; y: number } {
+    const zone = getSectionZone(section);
+    const existing = this.placedFields()
+      .filter((f) => f.section === section)
+      .map((f) => ({ x: f.x, y: f.y, w: f.width, h: f.height }));
+
+    const MARGIN = 3;
+    const LEFT_MARGIN = 10;
+    const RIGHT_MARGIN = 10;
+    const AVAIL_LEFT = LEFT_MARGIN;
+    const AVAIL_RIGHT = 210 - RIGHT_MARGIN;
+    const MAX_COL_WIDTH = AVAIL_RIGHT - AVAIL_LEFT;
+    const SECTION_TOP = zone.yStart + 4;
+
+    if (existing.length === 0) {
+      return { x: Math.max(LEFT_MARGIN, requestedX), y: Math.max(SECTION_TOP, requestedY) };
+    }
+
+    const hasOverlap = (testX: number, testY: number, testW: number, testH: number) =>
+      existing.some((e) =>
+        testX < e.x + e.w && testX + testW > e.x &&
+        testY < e.y + e.h && testY + testH > e.y
+      );
+
+    const testX = Math.max(LEFT_MARGIN, Math.min(requestedX, AVAIL_RIGHT - widthMm));
+    const testY = Math.max(SECTION_TOP, requestedY);
+
+    if (!hasOverlap(testX, testY, widthMm, heightMm)) {
+      return { x: testX, y: testY };
+    }
+
+    const STEP_Y = 10;
+    const positions: { x: number; y: number }[] = [];
+    for (let rowY = SECTION_TOP; rowY + heightMm <= zone.yEnd - 2; rowY += STEP_Y) {
+      for (let colX = AVAIL_LEFT; colX + widthMm <= AVAIL_RIGHT; colX += 5) {
+        positions.push({ x: colX, y: rowY });
+      }
+    }
+
+    for (const pos of positions) {
+      if (!hasOverlap(pos.x, pos.y, widthMm, heightMm)) {
+        return pos;
+      }
+    }
+
+    return { x: Math.max(LEFT_MARGIN, requestedX), y: Math.max(SECTION_TOP, requestedY) };
   }
 
   selectField(id: string | null): void {

@@ -94,7 +94,9 @@ export class Canvas {
     return {
       top: `${section.yStart * MM_TO_PX * z}px`,
       height: `${(section.yEnd - section.yStart) * MM_TO_PX * z}px`,
-      width: '100%',
+      left: `${4 * MM_TO_PX * z}px`,
+      right: `${4 * MM_TO_PX * z}px`,
+      width: 'auto',
     };
   }
 
