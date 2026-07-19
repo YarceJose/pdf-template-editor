@@ -1,6 +1,38 @@
 <div class="canvas-viewport">
+  <!-- Top Ruler -->
+  <div class="ruler ruler-top" [style.width.px]="pageWidthPx()">
+    @for (mark of topRulerMarks(); track mark.xMm) {
+      <div
+        class="ruler-mark"
+        [class.ruler-mark-major]="mark.label !== null"
+        [style.left]="mark.xMm * MM_TO_PX * zoom() + 'px'"
+      >
+        @if (mark.label !== null) {
+          <span class="ruler-label">{{ mark.label }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Left Ruler -->
+  <div class="ruler ruler-left" [style.height.px]="pageHeightPx()">
+    @for (mark of leftRulerMarks(); track mark.yMm) {
+      <div
+        class="ruler-mark"
+        [class.ruler-mark-major]="mark.label !== null"
+        [style.top]="mark.yMm * MM_TO_PX * zoom() + 'px'"
+      >
+        @if (mark.label !== null) {
+          <span class="ruler-label">{{ mark.label }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- A4 Page -->
   <div
     class="a4-page"
+    [class.show-grid]="showGrid()"
     [style.width.px]="pageWidthPx()"
     [style.height.px]="pageHeightPx()"
     cdkDropList
@@ -8,6 +40,8 @@
     (cdkDropListDropped)="onDrop($event)"
     (click)="onPageClick()"
   >
+    <!-- Grid overlay (CSS background) -->
+
     <!-- Section labels + dividers -->
     @for (section of sections; track trackBySection($index, section)) {
       <div class="section-zone" [style]="sectionStyle(section)">

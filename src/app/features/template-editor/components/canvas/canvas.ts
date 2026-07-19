@@ -23,9 +23,13 @@ import { TemplateStateService } from '../../services/template-state';
 export class Canvas {
   private state = inject(TemplateStateService);
 
+  protected readonly MM_TO_PX = MM_TO_PX;
+
   placedFields = input<PlacedField[]>([]);
   selectedFieldId = input<string | null>(null);
   zoom = input(1);
+  showGrid = input(false);
+  snapEnabled = input(false);
 
   fieldSelected = output<string>();
   fieldMoved = output<{ id: string; x: number; y: number }>();
@@ -35,6 +39,7 @@ export class Canvas {
 
   readonly A4_WIDTH_MM = 210;
   readonly A4_HEIGHT_MM = 297;
+  readonly GRID_STEP_MM = 5;
   sections = PAGE_SECTIONS;
 
   nonDetalleFields = computed(() => {
@@ -48,6 +53,37 @@ export class Canvas {
 
   pageWidthPx = computed(() => this.A4_WIDTH_MM * MM_TO_PX * this.zoom());
   pageHeightPx = computed(() => this.A4_HEIGHT_MM * MM_TO_PX * this.zoom());
+
+  /** Snap a mm value to the nearest grid step */
+  private snapMm(value: number): number {
+    if (!this.snapEnabled()) return Math.round(value * 10) / 10;
+    const step = this.GRID_STEP_MM;
+    return Math.round(value / step) * step;
+  }
+
+  /** Ruler marks for top edge (every 10mm, label every 50mm) */
+  topRulerMarks = computed(() => {
+    const marks: { xMm: number; label: string | null }[] = [];
+    for (let x = 0; x <= this.A4_WIDTH_MM; x += 5) {
+      marks.push({
+        xMm: x,
+        label: x % 50 === 0 ? `${x}` : null,
+      });
+    }
+    return marks;
+  });
+
+  /** Ruler marks for left edge (every 10mm, label every 50mm) */
+  leftRulerMarks = computed(() => {
+    const marks: { yMm: number; label: string | null }[] = [];
+    for (let y = 0; y <= this.A4_HEIGHT_MM; y += 5) {
+      marks.push({
+        yMm: y,
+        label: y % 50 === 0 ? `${y}` : null,
+      });
+    }
+    return marks;
+  });
 
   sectionStyle(section: PageSectionZone) {
     const z = this.zoom();
@@ -77,8 +113,8 @@ export class Canvas {
     const dropY = event.dropPoint.y - containerRect.top;
 
     const scale = MM_TO_PX * this.zoom();
-    const xMm = Math.max(0, Math.round((dropX / scale) * 10) / 10);
-    const yMm = Math.max(0, Math.round((dropY / scale) * 10) / 10);
+    const xMm = Math.max(0, this.snapMm(dropX / scale));
+    const yMm = Math.max(0, this.snapMm(dropY / scale));
 
     this.fieldDropped.emit({ def, x: xMm, y: yMm });
   }
@@ -88,7 +124,11 @@ export class Canvas {
   }
 
   onFieldMoved(event: { id: string; x: number; y: number }): void {
-    this.fieldMoved.emit(event);
+    this.fieldMoved.emit({
+      id: event.id,
+      x: this.snapMm(event.x),
+      y: this.snapMm(event.y),
+    });
   }
 
   onPageClick(): void {
