@@ -391,6 +391,17 @@ export class TemplateStateService {
     this.saveSnapshot();
   }
 
+  /**
+   * Carga campos directamente (desde JSON deserializado del back).
+   * No genera IDs nuevos — preserva los del JSON.
+   */
+  loadFields(fields: PlacedField[]): void {
+    this.pushHistory();
+    this.placedFields.set(fields);
+    this.selectedFieldId.set(null);
+    this.userRequiredKeys.set(new Set());
+  }
+
   reset(): void {
     this.pushHistory();
     this.placedFields.set([]);

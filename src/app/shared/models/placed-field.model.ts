@@ -67,6 +67,10 @@ export interface PlacedField {
   bold: boolean;
   italic: boolean;
   underline: boolean;
+  /** Alineación del texto dentro del contenedor */
+  textAlign?: 'left' | 'center' | 'right';
+  /** Mostrar etiqueta al lado del valor (formato "Etiqueta: Valor") */
+  showLabel?: boolean;
   /** Color del texto (hex) */
   color?: string;
   /** Color del borde (hex) */

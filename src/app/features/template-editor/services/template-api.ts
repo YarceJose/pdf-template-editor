@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { TemplateSerializerService, TemplateDefinition } from './template-serializer';
+import { TemplateSerializerService } from './template-serializer';
+import { TemplateDocument } from '../../../shared/models/template-json.model';
 import { PlacedField } from '../../../shared/models/placed-field.model';
 
 export interface SaveTemplatePayload {
-  template: TemplateDefinition;
+  template: TemplateDocument;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -47,14 +48,14 @@ export class TemplateApiService {
     );
   }
 
-  getTemplate(id: string): Observable<TemplateDefinition> {
-    return this.http.get<TemplateDefinition>(`${this.API_BASE}/${id}`).pipe(
+  getTemplate(id: string): Observable<TemplateDocument> {
+    return this.http.get<TemplateDocument>(`${this.API_BASE}/${id}`).pipe(
       catchError(this.handleError)
     );
   }
 
-  getTemplates(): Observable<{ templates: TemplateDefinition[] }> {
-    return this.http.get<{ templates: TemplateDefinition[] }>(this.API_BASE).pipe(
+  getTemplates(): Observable<{ templates: TemplateDocument[] }> {
+    return this.http.get<{ templates: TemplateDocument[] }>(this.API_BASE).pipe(
       catchError(this.handleError)
     );
   }
