@@ -14,7 +14,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding: 40px 24px 24px 56px;
+  padding: 24px 24px 24px 40px;
   position: relative;
 
   &::-webkit-scrollbar {
@@ -37,7 +37,7 @@
 }
 
 // ============================================
-// RULERS — Top and Left edges
+// RULERS — Slim Cartesian plane rulers
 // ============================================
 .ruler {
   position: absolute;
@@ -48,63 +48,63 @@
 
 .ruler-top {
   top: 0;
-  left: 50px;
-  height: 28px;
+  left: 36px;
+  height: 16px;
   border-bottom: 1px solid #334155;
 }
 
 .ruler-left {
-  top: 28px;
+  top: 16px;
   left: 0;
-  width: 50px;
+  width: 36px;
   border-right: 1px solid #334155;
 }
 
 .ruler-mark {
   position: absolute;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
 
   .ruler-top & {
     bottom: 0;
     width: 1px;
-    height: 6px;
+    height: 4px;
   }
 
   .ruler-left & {
     right: 0;
     height: 1px;
-    width: 6px;
+    width: 4px;
   }
 
   &.ruler-mark-major {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.2);
 
     .ruler-top & {
-      height: 10px;
+      height: 7px;
     }
 
     .ruler-left & {
-      width: 10px;
+      width: 7px;
     }
   }
 }
 
 .ruler-label {
   position: absolute;
-  font-size: 8px;
+  font-size: 7px;
   font-family: var(--font-family-mono);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
   white-space: nowrap;
   user-select: none;
 
   .ruler-top & {
-    bottom: 12px;
-    left: 3px;
+    bottom: 8px;
+    left: 2px;
   }
 
   .ruler-left & {
-    right: 14px;
-    top: -4px;
+    right: 10px;
+    top: -3px;
   }
 }
 
