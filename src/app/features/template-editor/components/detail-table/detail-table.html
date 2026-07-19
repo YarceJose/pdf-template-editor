@@ -67,6 +67,9 @@
               step="5"
               title="Ancho de columna (mm)"
             />
+            <button class="dt-col-edit-btn" (click)="toggleBindingPicker(col.id)" title="Cambiar binding del campo">
+              <lucide-angular name="Pencil" [size]="11"></lucide-angular>
+            </button>
             @if (col.requiredTier !== 'obligatorio_siempre') {
               <button class="dt-col-remove" (click)="onRemoveColumn(col.id)" title="Eliminar columna">
                 <lucide-angular name="X" [size]="12"></lucide-angular>
@@ -75,6 +78,20 @@
               <lucide-angular name="Lock" [size]="12" class="dt-col-lock-icon"></lucide-angular>
             }
           </div>
+          @if (editingColId() === col.id) {
+            <div class="dt-binding-picker">
+              @for (field of allDetalleFields(); track trackByFieldId($index, field)) {
+                <button
+                  class="dt-binding-option"
+                  [class.dt-binding-active]="field.fieldKey === col.bindingSource"
+                  (click)="onBindingChange(col.id, field)"
+                >
+                  <span>{{ field.label }}</span>
+                  <span class="dt-binding-key">{{ field.fieldKey }}</span>
+                </button>
+              }
+            </div>
+          }
         </div>
       }
     </div>

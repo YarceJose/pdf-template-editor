@@ -272,6 +272,16 @@ export class TemplateStateService {
   }
 
   /**
+   * Actualiza la imagen de un campo tipo image.
+   */
+  updateFieldImage(fieldId: string, imageUrl: string): void {
+    this.pushHistory();
+    this.placedFields.update((fields) =>
+      fields.map((f) => (f.id === fieldId ? { ...f, imageUrl } : f))
+    );
+  }
+
+  /**
    * Elimina un campo. Los campos obligatorios siempre no se pueden eliminar.
    */
   deleteField(id: string): { success: boolean; reason?: string } {
@@ -476,5 +486,22 @@ export class TemplateStateService {
       next.splice(toIndex, 0, moved);
       return next;
     });
+  }
+
+  /**
+   * Actualiza el binding (fieldKey) de una columna de detalle.
+   */
+  updateColumnBinding(colId: string, newFieldKey: string, newHeader: string, newDataType: string, newAlign: 'Left' | 'Right' | 'Center', newFormat?: string): void {
+    this.detailTableColumns.update((cols) =>
+      cols.map((c) => c.id === colId ? {
+        ...c,
+        bindingSource: newFieldKey,
+        fieldKey: newFieldKey,
+        header: newHeader,
+        bindingDataType: newDataType,
+        align: newAlign,
+        format: newFormat,
+      } : c)
+    );
   }
 }

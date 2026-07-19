@@ -323,6 +323,34 @@
 // ============================================
 // DELETE
 // ============================================
+
+.color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-input {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  cursor: pointer;
+  background: var(--surface-panel);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.color-hex {
+  flex: 1;
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+}
+
 .props-section-footer {
   border-bottom: none;
   margin-top: auto;

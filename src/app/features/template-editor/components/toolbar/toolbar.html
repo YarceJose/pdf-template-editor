@@ -1,8 +1,16 @@
 <div class="toolbar-wrapper">
   <!-- NIVEL 1: Document + Actions -->
   <div class="toolbar-level-1">
+    <!-- Logo + App Title -->
+    <div class="toolbar-section toolbar-brand">
+      <img src="images/logo.svg" alt="Logo" class="brand-logo" />
+      <span class="brand-title">PDF Template Editor</span>
+    </div>
+
+    <span class="toolbar-separator"></span>
+
     <div class="toolbar-section toolbar-doc-name">
-      <lucide-angular name="FileText" [size]="16" class="doc-icon"></lucide-angular>
+      <lucide-angular name="FileText" [size]="14" class="doc-icon"></lucide-angular>
       <span class="doc-name">{{ documentName() }}</span>
     </div>
 

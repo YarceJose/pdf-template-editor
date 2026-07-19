@@ -202,3 +202,87 @@ export function getFieldsBySection(section: FieldDefinition['section']): FieldDe
 export function isFieldEditable(field: FieldDefinition): boolean {
   return field.requiredTier !== 'obligatorio_siempre';
 }
+
+// ============================================
+// SAMPLE VALUES — Valores realistas para preview de factura colombiana
+// ============================================
+export const SAMPLE_VALUES: Record<string, string> = {
+  // Emisor
+  CompanyName: 'Distribuidora Nacional S.A.S.',
+  TaxID: '900123456-7',
+  Address1: 'Cra 7 # 40-62, Piso 5',
+  City: 'Bogotá D.C.',
+  Logo: '',
+
+  // Documento
+  InvoiceType: 'Factura electrónica',
+  InvoiceNum: 'FE-0001245',
+  LegalNumber: '1124567890123456789',
+  InvoiceDate: '18/07/2026',
+  DueDate: '17/08/2026',
+  Resolution1: 'RES-2024-0001234',
+  CurrencyCode: 'COP',
+  InvoiceComment: 'Servicio de consultoría IT',
+  InvoicePeriod: 'Julio 2026',
+  Legends1: 'Autorización DIAN 18012024',
+
+  // Pago
+  PaymentMeansID_c: 'Pago electrónico',
+  PaymentMeansDescription: 'Transferencia bancaria',
+  PaymentMeansCode_c: '1',
+  PaymentDurationMeasure: '30',
+  PaymentDueDate: '17/08/2026',
+
+  // NC/DC
+  CMReasonCode_c: '01',
+  CMReasonDesc_c: 'Anulación de la factura',
+  DMReasonCode_c: '02',
+  DMReasonDesc_c: 'Corrección del valor',
+
+  // Referencia
+  InvoiceRef: 'FE-0001200',
+  InvoiceRefCufe: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  InvoiceRefDate: '01/07/2026',
+
+  // Cliente
+  CustomerName: 'Comercializadora Andina Ltda.',
+  CustomerTaxID: '800987654-3',
+  CustomerAddress1: 'Calle 50 # 13-20, Of 301',
+  CustomerCity: 'Medellín',
+  PhoneNum: '+57 604 4567890',
+  EmailAddress: 'compras@andina.com.co',
+
+  // Detalle
+  PartNum: 'SERV-CONS-001',
+  LineDesc: 'Consultoría en implementación ERP',
+  InvcQty: '240.00',
+  DocUnitPrice: '150,000.00',
+  DocExtPrice: '36,000,000.00',
+  DocDiscount: '1,800,000.00',
+
+  // Impuestos
+  TaxCode: 'IVA',
+  DocTaxAmt: '6,120,000.00',
+  Rate: '19.00%',
+
+  // Totales
+  DspDocSubTotal: '36,000,000.00',
+  DocWHTaxAmt: '1,440,000.00',
+  Discount: '1,800,000.00',
+  DspDocInvoiceAmt: '38,880,000.00',
+  CalculationRate_c: '1.00',
+  DateCalculationRate_c: '18/07/2026',
+
+  // Pie
+  QRCode: '',
+  CUFE: 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0',
+  SignatureLine: '',
+  SigningTime: '18/07/2026 14:32:15',
+};
+
+/**
+ * Returns the realistic sample value for a given fieldKey.
+ */
+export function getSampleValue(fieldKey: string): string {
+  return SAMPLE_VALUES[fieldKey] ?? '';
+}
