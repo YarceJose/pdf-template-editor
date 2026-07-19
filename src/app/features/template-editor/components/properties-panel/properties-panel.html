@@ -33,13 +33,25 @@
       <span class="section-label">Identidad</span>
       <div class="props-field">
         <label class="field-label">fieldKey (mapeo XML)</label>
-        <input
-          class="field-input field-input-readonly"
-          type="text"
-          [value]="field()!.fieldKey"
-          readonly
-          title="Nombre técnico inmutable — no se puede editar"
-        />
+        @if (canChangeBinding()) {
+          <select
+            class="field-input field-input-select"
+            [value]="field()!.fieldKey"
+            (change)="updateProperty('fieldKey', $any($event.target).value)"
+          >
+            @for (fk of availableFieldKeys(); track fk.key) {
+              <option [value]="fk.key" [selected]="fk.key === field()!.fieldKey">{{ fk.label }} ({{ fk.key }})</option>
+            }
+          </select>
+        } @else {
+          <input
+            class="field-input field-input-readonly"
+            type="text"
+            [value]="field()!.fieldKey"
+            readonly
+            title="Nombre técnico inmutable — no se puede editar"
+          />
+        }
       </div>
       <div class="props-field">
         <label class="field-label">Label (visible en canvas)</label>
@@ -51,6 +63,25 @@
           [disabled]="!isEditable()"
           title="Título visible — editable"
         />
+      </div>
+      <div class="props-field">
+        <label class="field-label">Mostrar etiqueta</label>
+        <div class="toggle-row">
+          <button
+            class="btn-toggle"
+            [class.active]="field()!.showLabel"
+            (click)="updateProperty('showLabel', !field()!.showLabel)"
+            title="Mostrar label al lado del valor"
+          >
+            @if (field()!.showLabel) {
+              <lucide-angular name="Eye" [size]="14"></lucide-angular>
+              <span>Visible: {{ field()!.label }}: {{ field()!.placeholder }}</span>
+            } @else {
+              <lucide-angular name="EyeOff" [size]="14"></lucide-angular>
+              <span>Sin etiqueta visible</span>
+            }
+          </button>
+        </div>
       </div>
     </div>
 
@@ -188,6 +219,35 @@
           step="0.5"
         />
       </div>
+      <div class="props-field">
+        <label class="field-label">Alineación del texto</label>
+        <div class="align-row">
+          <button
+            class="btn-align"
+            [class.active]="!field()!.textAlign || field()!.textAlign === 'left'"
+            (click)="updateProperty('textAlign', 'left')"
+            title="Izquierda"
+          >
+            <lucide-angular name="AlignLeft" [size]="14"></lucide-angular>
+          </button>
+          <button
+            class="btn-align"
+            [class.active]="field()!.textAlign === 'center'"
+            (click)="updateProperty('textAlign', 'center')"
+            title="Centrar"
+          >
+            <lucide-angular name="AlignCenterHorizontal" [size]="14"></lucide-angular>
+          </button>
+          <button
+            class="btn-align"
+            [class.active]="field()!.textAlign === 'right'"
+            (click)="updateProperty('textAlign', 'right')"
+            title="Derecha"
+          >
+            <lucide-angular name="AlignRight" [size]="14"></lucide-angular>
+          </button>
+        </div>
+      </div>
       <div class="props-format-row">
         <button
           class="btn-format"
@@ -215,6 +275,44 @@
         </button>
       </div>
     </div>
+
+    <!-- Imagen (solo para campos tipo image) -->
+    @if (field()!.type === 'image') {
+      <div class="props-section">
+        <span class="section-label">Fuente de imagen</span>
+        <div class="props-field">
+          <label class="field-label">URL de imagen</label>
+          <div class="url-input-row">
+            <input
+              class="field-input url-input"
+              type="url"
+              [value]="field()!.imageUrl || ''"
+              (change)="onImageUrlChange($any($event.target).value)"
+              placeholder="https://ejemplo.com/logo.png"
+            />
+            <button class="btn-url-apply" (click)="onApplyUrl()" title="Aplicar URL">
+              <lucide-angular name="Check" [size]="12"></lucide-angular>
+            </button>
+          </div>
+          <span class="field-hint">Pega una URL de imagen (PNG, JPG, SVG)</span>
+        </div>
+        <div class="props-field">
+          <label class="field-label">O subir archivo local</label>
+          <button class="btn-upload" (click)="onUploadClick()">
+            <lucide-angular name="Upload" [size]="14"></lucide-angular>
+            Seleccionar archivo
+          </button>
+        </div>
+        @if (field()!.imageUrl) {
+          <div class="image-preview">
+            <img [src]="field()!.imageUrl" alt="Preview" class="image-preview-img" />
+            <button class="btn-remove-image" (click)="onRemoveImage()" title="Eliminar imagen">
+              <lucide-angular name="X" [size]="12"></lucide-angular>
+            </button>
+          </div>
+        }
+      </div>
+    }
 
     <!-- Colores -->
     <div class="props-section">

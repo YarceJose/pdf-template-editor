@@ -16,6 +16,7 @@
   [style.color]="textColor() || null"
   [style.borderColor]="borderColor() || null"
   [style.borderWidth]="borderWidth() ? borderWidth() + 'px' : null"
+  [style.textAlign]="field().textAlign || null"
   [title]="field().fieldKey + ': ' + sampleValue()"
   (click)="onSelect(); $event.stopPropagation()"
   cdkDrag
@@ -27,7 +28,11 @@
   } @else {
     <span class="field-key-label">{{ field().fieldKey }}</span>
     @if (sampleValue()) {
-      <span class="field-sample-value">{{ sampleValue() }}</span>
+      <span class="field-sample-value">
+        @if (field().showLabel) {
+          <span class="field-label-text">{{ field().label }}: </span>
+        }{{ sampleValue() }}
+      </span>
     }
   }
 </div>

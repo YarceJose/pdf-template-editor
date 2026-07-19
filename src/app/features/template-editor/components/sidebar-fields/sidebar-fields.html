@@ -4,6 +4,20 @@
     <span class="sidebar-title">Campos</span>
   </div>
 
+  <!-- Section Tabs -->
+  <div class="section-tabs">
+    @for (section of sections; track trackBySection($index, section)) {
+      <button
+        class="section-tab"
+        [class.active]="activeSection() === section"
+        (click)="setActiveSection(section)"
+      >
+        <span class="tab-label">{{ sectionLabels[section] }}</span>
+        <span class="tab-count">{{ sectionPlacedCount(section) }}/{{ sectionTotalCount(section) }}</span>
+      </button>
+    }
+  </div>
+
   <!-- Search -->
   <div class="sidebar-search">
     <div class="search-wrapper">

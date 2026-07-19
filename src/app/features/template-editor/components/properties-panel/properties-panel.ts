@@ -12,6 +12,7 @@ import { PlacedField, clampToSection, getSectionZone } from '../../../../shared/
 import { FieldValidationService, ValidationError } from '../../services/field-validation';
 import { TemplateStateService } from '../../services/template-state';
 import { DetailTableComponent } from '../detail-table/detail-table';
+import { FIELD_CATEGORIES } from '../../../../shared/models/field.model';
 
 const A4_W = 210;
 const A4_H = 297;
@@ -36,6 +37,7 @@ export class PropertiesPanel {
   isDetailTableSelected = input<boolean>(false);
   fieldUpdated = output<PlacedField>();
   fieldDeleted = output<string>();
+  uploadImage = output<void>();
 
   hasField = computed(() => this.field() !== null);
   isLocked = computed(() => this.field()?.requiredTier === 'obligatorio_siempre');
@@ -44,6 +46,30 @@ export class PropertiesPanel {
     const f = this.field();
     if (!f) return false;
     return f.requiredTier !== 'obligatorio_siempre';
+  });
+
+  /** Lista de fieldKeys disponibles del diccionario DIAN */
+  availableFieldKeys = computed(() => {
+    const currentKey = this.field()?.fieldKey;
+    const allFields = FIELD_CATEGORIES.flatMap((g) => g.fields);
+    const uniqueKeys = new Map<string, string>();
+    for (const f of allFields) {
+      if (!uniqueKeys.has(f.fieldKey)) {
+        uniqueKeys.set(f.fieldKey, f.label);
+      }
+    }
+    // Si el campo actual tiene un fieldKey no estándar, agregarlo
+    if (currentKey && !uniqueKeys.has(currentKey)) {
+      uniqueKeys.set(currentKey, currentKey);
+    }
+    return Array.from(uniqueKeys.entries()).map(([key, label]) => ({ key, label }));
+  });
+
+  /** Puede cambiar fieldKey solo si es editable (no obligatorio_siempre) */
+  canChangeBinding = computed(() => {
+    const f = this.field();
+    if (!f) return false;
+    return f.requiredTier !== 'obligatorio_siempre' && f.origin !== 'system';
   });
 
   sectionBounds = computed(() => {
@@ -67,8 +93,11 @@ export class PropertiesPanel {
     const f = this.field();
     if (!f) return;
 
-    // Bloquear cambios en fieldKey y origin
-    if (key === 'fieldKey' || key === 'origin') return;
+    // Bloquear cambios en origin (nunca)
+    if (key === 'origin') return;
+
+    // fieldKey: solo si canChangeBinding
+    if (key === 'fieldKey' && !this.canChangeBinding()) return;
 
     this.fieldUpdated.emit({ ...f, [key]: value });
   }
@@ -144,6 +173,27 @@ export class PropertiesPanel {
   onDelete(): void {
     const f = this.field();
     if (f) this.fieldDeleted.emit(f.id);
+  }
+
+  private pendingUrl = '';
+
+  onImageUrlChange(url: string): void {
+    this.pendingUrl = url.trim();
+  }
+
+  onApplyUrl(): void {
+    const f = this.field();
+    if (!f || !this.pendingUrl) return;
+    this.updateProperty('imageUrl', this.pendingUrl);
+    this.pendingUrl = '';
+  }
+
+  onUploadClick(): void {
+    this.uploadImage.emit();
+  }
+
+  onRemoveImage(): void {
+    this.updateProperty('imageUrl', undefined);
   }
 
   formatDateDisplay(dateStr: string): string {

@@ -130,6 +130,12 @@
     font-style: italic;
   }
 
+  &.field-input-select {
+    appearance: auto;
+    cursor: pointer;
+    padding-right: 6px;
+  }
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -140,6 +146,49 @@
   font-size: 10px;
   color: var(--text-muted);
   font-family: var(--font-family-mono);
+}
+
+// ============================================
+// TOGGLE ROW
+// ============================================
+.toggle-row {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-panel);
+  color: var(--text-secondary);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background: var(--surface-base);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+
+  &.active {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
 }
 
 // ============================================
@@ -289,6 +338,37 @@
   margin-top: var(--spacing-xs);
 }
 
+.align-row {
+  display: flex;
+  gap: 2px;
+}
+
+.btn-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-panel);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--surface-base);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+
+  &.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-inverse);
+  }
+}
+
 .btn-format {
   display: flex;
   align-items: center;
@@ -349,6 +429,108 @@
   flex: 1;
   font-family: var(--font-family-mono);
   font-size: 11px;
+}
+
+// ============================================
+// IMAGE SECTION
+// ============================================
+.url-input-row {
+  display: flex;
+  gap: 4px;
+}
+
+.url-input {
+  flex: 1;
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+}
+
+.btn-url-apply {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-panel);
+  color: var(--success-color);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--success-color);
+    color: var(--text-inverse);
+    border-color: var(--success-color);
+  }
+}
+
+.btn-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 32px;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-base);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: var(--primary-light);
+  }
+}
+
+.image-preview {
+  position: relative;
+  width: 100%;
+  max-height: 120px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface-base);
+}
+
+.image-preview-img {
+  width: 100%;
+  height: auto;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+.btn-remove-image {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: var(--danger-color);
+  color: var(--text-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.image-preview:hover .btn-remove-image {
+  opacity: 1;
 }
 
 .props-section-footer {
