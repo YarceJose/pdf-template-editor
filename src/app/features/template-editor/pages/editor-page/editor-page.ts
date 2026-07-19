@@ -4,17 +4,23 @@ import { SidebarFields } from '../../components/sidebar-fields/sidebar-fields';
 import { Canvas } from '../../components/canvas/canvas';
 import { PropertiesPanel } from '../../components/properties-panel/properties-panel';
 import { PreviewModal } from '../../components/preview-modal/preview-modal';
+import { SectionRenderer } from '../../components/section-renderer/section-renderer';
 import { TemplateStateService } from '../../services/template-state';
 import { TemplateSerializerService } from '../../services/template-serializer';
 import { TemplateApiService } from '../../services/template-api';
+import { TemplateJsonService } from '../../services/template-json.service';
 import { KeyboardShortcutsService } from '../../services/keyboard-shortcuts';
 import { FieldDefinition } from '../../../../shared/models/field.model';
 import { PlacedField } from '../../../../shared/models/placed-field.model';
 import { DesignTemplate } from '../../../../shared/models/design-templates.model';
+import { TemplateDocument } from '../../../../shared/models/template-json.model';
+import facturaEstandarArinvoice from '../../../../../assets/templates/factura-estandar-arinvoice.json';
+
+const PT_TO_PX = 1.3333;
 
 @Component({
   selector: 'app-editor-page',
-  imports: [Toolbar, SidebarFields, Canvas, PropertiesPanel, PreviewModal],
+  imports: [Toolbar, SidebarFields, Canvas, PropertiesPanel, PreviewModal, SectionRenderer],
   templateUrl: './editor-page.html',
   styleUrl: './editor-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +29,7 @@ export class EditorPage implements OnInit {
   private state = inject(TemplateStateService);
   private serializer = inject(TemplateSerializerService);
   private api = inject(TemplateApiService);
+  private templateJson = inject(TemplateJsonService);
   private keyboard = inject(KeyboardShortcutsService);
 
   @ViewChild('imageFileInput') imageFileInput!: ElementRef<HTMLInputElement>;
@@ -43,8 +50,27 @@ export class EditorPage implements OnInit {
   saveStatus = signal<'idle' | 'saving' | 'saved' | 'error'>('idle');
   private currentTemplateId = signal<string | null>(null);
 
+  // ============================================
+  // DISEÑO JSON AVANZADO — contrato TemplateDocument (secciones/componentes en pt)
+  // ============================================
+  showAdvancedJson = signal(false);
+  advancedSections = this.templateJson.sections;
+  advancedPageWidthPx = () => (this.templateJson.page()?.width ?? 0) * PT_TO_PX * this.zoom();
+  advancedPageHeightPx = () => (this.templateJson.page()?.height ?? 0) * PT_TO_PX * this.zoom();
+
   ngOnInit(): void {
     this.keyboard.init();
+  }
+
+  onToggleAdvancedJson(): void {
+    if (!this.templateJson.hasDocument()) {
+      this.templateJson.loadDocument(facturaEstandarArinvoice as unknown as TemplateDocument);
+    }
+    this.showAdvancedJson.update((v) => !v);
+  }
+
+  onAdvancedPageClicked(): void {
+    this.templateJson.selectComponent(null);
   }
 
   get zoomPercent(): number {
@@ -113,12 +139,14 @@ export class EditorPage implements OnInit {
   }
 
   onExport(): void {
-    const json = this.serializer.toJSON(this.placedFields(), 'template_definition');
+    const json = this.showAdvancedJson()
+      ? JSON.stringify(this.templateJson.exportDocument(), null, 2)
+      : this.serializer.toJSON(this.placedFields(), 'template_definition');
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'template_definition.json';
+    a.download = this.showAdvancedJson() ? 'template_definition_json.json' : 'template_definition.json';
     a.click();
     URL.revokeObjectURL(url);
   }
