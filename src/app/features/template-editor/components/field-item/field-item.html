@@ -3,6 +3,7 @@
   [class.selected]="selected()"
   [class.locked]="isLocked()"
   [class.system]="isSystem()"
+  [style.transform]="transformStyle()"
   [style.width]="styleWidth()"
   [style.height]="styleHeight()"
   [style.fontSize]="styleFontSize()"
@@ -12,7 +13,6 @@
   (click)="onSelect(); $event.stopPropagation()"
   cdkDrag
   [cdkDragDisabled]="!canDrag()"
-  [cdkDragFreeDragPosition]="freePosition()"
   (cdkDragEnded)="onDragEnded($event)"
 >
   @if (isLocked()) {

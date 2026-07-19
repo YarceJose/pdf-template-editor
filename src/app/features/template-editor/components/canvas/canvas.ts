@@ -54,6 +54,10 @@ export class Canvas {
   pageWidthPx = computed(() => this.A4_WIDTH_MM * MM_TO_PX * this.zoom());
   pageHeightPx = computed(() => this.A4_HEIGHT_MM * MM_TO_PX * this.zoom());
 
+  /** Grid spacing in px — zoom-aware, matches MM_TO_PX * zoom */
+  gridMinorPx = computed(() => 10 * MM_TO_PX * this.zoom());
+  gridMajorPx = computed(() => 50 * MM_TO_PX * this.zoom());
+
   /** Snap a mm value to the nearest grid step */
   private snapMm(value: number): number {
     if (!this.snapEnabled()) return Math.round(value * 10) / 10;

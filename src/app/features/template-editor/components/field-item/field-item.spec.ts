@@ -42,26 +42,27 @@ describe('FieldItem', () => {
     expect(component).toBeTruthy();
   });
 
-  it('freePosition should compute px from mm*zoom', () => {
+  it('transformStyle should produce translate from mm*zoom', () => {
     fixture.componentRef.setInput('zoom', 1);
-    const pos = component.freePosition();
-    expect(pos.x).toBeCloseTo(10 * MM_TO_PX, 1);
-    expect(pos.y).toBeCloseTo(10 * MM_TO_PX, 1);
+    const t = component.transformStyle();
+    const expectedX = 10 * MM_TO_PX;
+    const expectedY = 10 * MM_TO_PX;
+    expect(t).toContain(`translate(${expectedX}px, ${expectedY}px)`);
   });
 
-  it('freePosition should scale with zoom', () => {
+  it('transformStyle should scale with zoom', () => {
     fixture.componentRef.setInput('zoom', 1.5);
-    const pos = component.freePosition();
-    expect(pos.x).toBeCloseTo(10 * MM_TO_PX * 1.5, 1);
-    expect(pos.y).toBeCloseTo(10 * MM_TO_PX * 1.5, 1);
+    const t = component.transformStyle();
+    const expectedX = 10 * MM_TO_PX * 1.5;
+    const expectedY = 10 * MM_TO_PX * 1.5;
+    expect(t).toContain(`translate(${expectedX}px, ${expectedY}px)`);
   });
 
-  it('freePosition should have no residual transform — same position before/after state', () => {
+  it('transformStyle should be deterministic — same state gives same transform', () => {
     fixture.componentRef.setInput('zoom', 1);
-    const pos1 = component.freePosition();
-    const pos2 = component.freePosition();
-    expect(pos1.x).toBe(pos2.x);
-    expect(pos1.y).toBe(pos2.y);
+    const t1 = component.transformStyle();
+    const t2 = component.transformStyle();
+    expect(t1).toBe(t2);
   });
 
   it('should disable drag for locked fields', () => {

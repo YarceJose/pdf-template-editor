@@ -33,6 +33,8 @@
   <div
     class="a4-page"
     [class.show-grid]="showGrid()"
+    [style.--grid-minor]="gridMinorPx() + 'px'"
+    [style.--grid-major]="gridMajorPx() + 'px'"
     [style.width.px]="pageWidthPx()"
     [style.height.px]="pageHeightPx()"
     cdkDropList

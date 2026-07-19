@@ -7,8 +7,6 @@
   height: 100%;
 }
 
-$mm-to-px: 3.7795; // 1mm = 3.7795px at 96dpi (for CSS grid sizing)
-
 .canvas-viewport {
   display: flex;
   align-items: flex-start;
@@ -16,7 +14,7 @@ $mm-to-px: 3.7795; // 1mm = 3.7795px at 96dpi (for CSS grid sizing)
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding: 40px var(--spacing-xl) var(--spacing-xl) 50px;
+  padding: 40px 24px 24px 56px;
   position: relative;
 
   &::-webkit-scrollbar {
@@ -123,6 +121,7 @@ $mm-to-px: 3.7795; // 1mm = 3.7795px at 96dpi (for CSS grid sizing)
   overflow: hidden;
 
   // Grid overlay — visible when showGrid is true
+  // Uses CSS custom properties set from canvas component (zoom-aware)
   &.show-grid {
     background-image:
       // Major grid lines every 50mm
@@ -131,14 +130,14 @@ $mm-to-px: 3.7795; // 1mm = 3.7795px at 96dpi (for CSS grid sizing)
         rgba(37, 99, 235, 0.12) 0px,
         rgba(37, 99, 235, 0.12) 1px,
         transparent 1px,
-        transparent #{50 * $mm-to-px}
+        transparent var(--grid-major, 189px)
       ),
       repeating-linear-gradient(
         to bottom,
         rgba(37, 99, 235, 0.12) 0px,
         rgba(37, 99, 235, 0.12) 1px,
         transparent 1px,
-        transparent #{50 * $mm-to-px}
+        transparent var(--grid-major, 189px)
       ),
       // Minor grid lines every 10mm
       repeating-linear-gradient(
@@ -146,14 +145,14 @@ $mm-to-px: 3.7795; // 1mm = 3.7795px at 96dpi (for CSS grid sizing)
         rgba(37, 99, 235, 0.05) 0px,
         rgba(37, 99, 235, 0.05) 1px,
         transparent 1px,
-        transparent #{10 * $mm-to-px}
+        transparent var(--grid-minor, 38px)
       ),
       repeating-linear-gradient(
         to bottom,
         rgba(37, 99, 235, 0.05) 0px,
         rgba(37, 99, 235, 0.05) 1px,
         transparent 1px,
-        transparent #{10 * $mm-to-px}
+        transparent var(--grid-minor, 38px)
       );
   }
 }

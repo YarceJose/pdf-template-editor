@@ -25,15 +25,13 @@ export class FieldItem {
   fieldSelected = output<string>();
   fieldMoved = output<{ id: string; x: number; y: number }>();
 
-  /**
-   * Single source of truth for position.
-   * CDK reads this to position the element via transform.
-   * After drag ends, we update state → this recomputes → CDK resets.
-   */
-  freePosition = computed(() => {
+  /** Direct transform — single source of truth, no CDK free-position conflict */
+  transformStyle = computed(() => {
     const f = this.field();
     const z = this.zoom();
-    return { x: f.x * MM_TO_PX * z, y: f.y * MM_TO_PX * z };
+    const px = f.x * MM_TO_PX * z;
+    const py = f.y * MM_TO_PX * z;
+    return `translate(${px}px, ${py}px)`;
   });
 
   styleWidth = computed(() => `${this.field().width * MM_TO_PX * this.zoom()}px`);
