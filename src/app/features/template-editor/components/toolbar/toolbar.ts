@@ -46,6 +46,7 @@ export class Toolbar {
   alignClicked = output<AlignType>();
   gridToggleClicked = output<void>();
   snapToggleClicked = output<void>();
+  duplicateClicked = output<void>();
 
   templates = DESIGN_TEMPLATES;
 

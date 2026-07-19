@@ -62,6 +62,7 @@
 }
 
 .field-key-label {
+  width: 100%;
   font-size: 7px;
   font-weight: var(--font-weight-semibold);
   color: var(--primary-color);
@@ -79,12 +80,18 @@
 }
 
 .field-sample-value {
+  width: 100%;
   font-size: inherit;
   color: var(--text-primary);
   line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+}
+
+.field-label-text {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
 }
 
 .field-image {

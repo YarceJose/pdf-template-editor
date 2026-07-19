@@ -8,8 +8,9 @@ import { SectionRenderer } from '../../components/section-renderer/section-rende
 import { TemplateStateService } from '../../services/template-state';
 import { TemplateSerializerService } from '../../services/template-serializer';
 import { TemplateApiService } from '../../services/template-api';
-import { TemplateJsonService } from '../../services/template-json.service';
 import { KeyboardShortcutsService } from '../../services/keyboard-shortcuts';
+import { TemplateJsonService } from '../../services/template-json.service';
+import { TemplateLoaderService } from '../../services/template-loader';
 import { FieldDefinition } from '../../../../shared/models/field.model';
 import { PlacedField } from '../../../../shared/models/placed-field.model';
 import { DesignTemplate } from '../../../../shared/models/design-templates.model';
@@ -29,8 +30,9 @@ export class EditorPage implements OnInit {
   private state = inject(TemplateStateService);
   private serializer = inject(TemplateSerializerService);
   private api = inject(TemplateApiService);
-  private templateJson = inject(TemplateJsonService);
   private keyboard = inject(KeyboardShortcutsService);
+  private templateJson = inject(TemplateJsonService);
+  private loader = inject(TemplateLoaderService);
 
   @ViewChild('imageFileInput') imageFileInput!: ElementRef<HTMLInputElement>;
 
@@ -60,6 +62,7 @@ export class EditorPage implements OnInit {
 
   ngOnInit(): void {
     this.keyboard.init();
+    this.loader.loadIntoEditor().subscribe();
   }
 
   onToggleAdvancedJson(): void {
@@ -316,5 +319,9 @@ export class EditorPage implements OnInit {
 
   onSnapToggle(): void {
     this.snapEnabled.set(!this.snapEnabled());
+  }
+
+  onUploadImageFromProps(): void {
+    this.imageFileInput.nativeElement.click();
   }
 }

@@ -12,6 +12,7 @@ import {
   FieldDefinition,
 } from '../../../../shared/models/field.model';
 import { TemplateStateService } from '../../services/template-state';
+import { PageSection, PAGE_SECTIONS } from '../../../../shared/models/placed-field.model';
 
 interface SourceTableGroup {
   key: string;
@@ -28,6 +29,13 @@ const SOURCE_TABLE_LABELS: Record<string, string> = {
   'system': 'Sistema',
 };
 
+const SECTION_TAB_LABELS: Record<PageSection, string> = {
+  'encabezado': 'Encabezado',
+  'detalle': 'Detalle',
+  'totales': 'Totales',
+  'pie': 'Pie de Página',
+};
+
 @Component({
   selector: 'app-sidebar-fields',
   imports: [CdkDrag, CdkDropList, LucideAngularModule],
@@ -41,15 +49,25 @@ export class SidebarFields {
 
   searchQuery = signal('');
   collapsedSections = signal<Set<string>>(new Set());
+  activeSection = signal<PageSection>('encabezado');
 
-  /** Fields grouped by source table (sourceNode) */
+  sections: PageSection[] = ['encabezado', 'detalle', 'totales', 'pie'];
+  sectionLabels = SECTION_TAB_LABELS;
+
+  setActiveSection(section: PageSection): void {
+    this.activeSection.set(section);
+  }
+
+  /** Fields filtered by active section, then grouped by source table */
   sourceGroups = computed(() => {
     const allFields = FIELD_CATEGORIES.flatMap((g) => g.fields);
     const query = this.searchQuery().toLowerCase().trim();
+    const activeSection = this.activeSection();
 
     const grouped = new Map<string, FieldDefinition[]>();
 
     for (const field of allFields) {
+      if (field.section !== activeSection) continue;
       const node = field.origin === 'system' ? 'system' : (field.sourceNode ?? 'unknown');
       if (query && !field.label.toLowerCase().includes(query) && !field.fieldKey.toLowerCase().includes(query)) {
         continue;
@@ -68,7 +86,6 @@ export class SidebarFields {
       }
     }
 
-    // Any remaining groups not in order
     for (const [key, fields] of grouped) {
       if (!order.includes(key)) {
         groups.push({ key, label: SOURCE_TABLE_LABELS[key] ?? key, fields });
@@ -77,6 +94,16 @@ export class SidebarFields {
 
     return groups;
   });
+
+  /** Count of fields placed for a given section */
+  sectionPlacedCount(section: PageSection): number {
+    return this.state.placedFields().filter((f) => f.section === section).length;
+  }
+
+  /** Total fields available for a given section */
+  sectionTotalCount(section: PageSection): number {
+    return FIELD_CATEGORIES.flatMap((g) => g.fields).filter((f) => f.section === section).length;
+  }
 
   isRequired(field: FieldDefinition): boolean {
     if (field.requiredTier === 'obligatorio_siempre') return true;
@@ -135,5 +162,9 @@ export class SidebarFields {
 
   trackByField(_index: number, field: FieldDefinition): string {
     return field.id;
+  }
+
+  trackBySection(_index: number, section: PageSection): string {
+    return section;
   }
 }

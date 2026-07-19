@@ -6,7 +6,7 @@ import {
   computed,
 } from '@angular/core';
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
-import { PlacedField } from '../../../../shared/models/placed-field.model';
+import { PlacedField, clampToSection, getSectionZone } from '../../../../shared/models/placed-field.model';
 import { getSampleValue } from '../../../../shared/models/field.model';
 
 export const MM_TO_PX = 3.7795275591;
@@ -57,11 +57,23 @@ export class FieldItem {
   onDragEnded(event: CdkDragEnd): void {
     if (!this.canDrag()) return;
 
+    const f = this.field();
     const scale = MM_TO_PX * this.zoom();
     const pos = event.source.getFreeDragPosition();
-    const newXMm = Math.max(0, Math.round((pos.x / scale) * 10) / 10);
-    const newYMm = Math.max(0, Math.round((pos.y / scale) * 10) / 10);
+    let newXMm = Math.max(0, Math.round((pos.x / scale) * 10) / 10);
+    let newYMm = Math.max(0, Math.round((pos.y / scale) * 10) / 10);
 
-    this.fieldMoved.emit({ id: this.field().id, x: newXMm, y: newYMm });
+    // Snap to section: si el campo cae fuera de su sección, pegarlo al borde correcto
+    const zone = getSectionZone(f.section);
+    if (newYMm < zone.yStart || newYMm + f.height > zone.yEnd) {
+      newYMm = clampToSection(newYMm, f.height, f.section);
+    }
+
+    // Clamp X dentro de la página
+    const PAGE_W = 210;
+    const MARGIN = 10;
+    newXMm = Math.max(MARGIN, Math.min(newXMm, PAGE_W - f.width - MARGIN));
+
+    this.fieldMoved.emit({ id: f.id, x: newXMm, y: newYMm });
   }
 }

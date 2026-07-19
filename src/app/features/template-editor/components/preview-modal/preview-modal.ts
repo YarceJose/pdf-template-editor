@@ -7,7 +7,7 @@ import {
   inject,
 } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
-import { TemplateSerializerService, TemplateDefinition } from '../../services/template-serializer';
+import { TemplateSerializerService } from '../../services/template-serializer';
 import { FieldValidationService, ValidationError } from '../../services/field-validation';
 import { ToastNotificationService } from '../../../../shared/services/toast-notification.service';
 import { PlacedField } from '../../../../shared/models/placed-field.model';
