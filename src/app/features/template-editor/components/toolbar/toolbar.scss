@@ -302,6 +302,11 @@
   transition: all var(--transition-fast);
   position: relative;
 
+  &.btn-active {
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
+  }
+
   &:hover:not(:disabled) {
     background-color: var(--surface-panel-alt);
     color: var(--text-primary);

@@ -46,6 +46,14 @@
       <button class="btn-icon-sm" (click)="exportClicked.emit()" title="Exportar JSON">
         <lucide-angular name="Download" [size]="14"></lucide-angular>
       </button>
+      <button
+        class="btn-icon-sm"
+        [class.btn-active]="showAdvancedJson()"
+        (click)="advancedJsonToggleClicked.emit()"
+        title="Diseño JSON avanzado (arrastrar para reposicionar)"
+      >
+        <lucide-angular name="FileJson2" [size]="14"></lucide-angular>
+      </button>
       <button class="btn-icon-sm" (click)="deleteFieldClicked.emit()" title="Borrar campo seleccionado">
         <lucide-angular name="Trash2" [size]="14"></lucide-angular>
       </button>

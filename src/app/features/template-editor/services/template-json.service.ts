@@ -103,6 +103,23 @@ export class TemplateJsonService {
     });
   }
 
+  /**
+   * Desplaza un componente por un delta (en las mismas unidades del documento, normalmente pt).
+   * Para componentes tipo Line, desplaza también start/end para conservar la forma.
+   */
+  moveComponent(componentId: string, deltaX: number, deltaY: number): void {
+    this.mutateDocument((doc) => {
+      const result = findComponentById(doc.sections, componentId);
+      if (!result) return;
+      const comp = result.component;
+      comp.position = { x: comp.position.x + deltaX, y: comp.position.y + deltaY };
+      if (comp.type === 'Line') {
+        comp.start = { x: comp.start.x + deltaX, y: comp.start.y + deltaY };
+        comp.end = { x: comp.end.x + deltaX, y: comp.end.y + deltaY };
+      }
+    });
+  }
+
   /** Actualiza size de un componente */
   updateComponentSize(componentId: string, width: number, height: number): void {
     this.mutateDocument((doc) => {

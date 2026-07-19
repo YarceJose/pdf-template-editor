@@ -26,6 +26,7 @@ export class Toolbar {
   zoomPercent = input(100);
   saveStatus = input<'idle' | 'saving' | 'saved' | 'error'>('idle');
   hasUnsavedChanges = input(false);
+  showAdvancedJson = input(false);
 
   undoClicked = output<void>();
   redoClicked = output<void>();
@@ -36,6 +37,7 @@ export class Toolbar {
   saveClicked = output<void>();
   deleteFieldClicked = output<void>();
   discardDraftClicked = output<void>();
+  advancedJsonToggleClicked = output<void>();
   templateLoaded = output<DesignTemplate>();
 
   addTextClicked = output<TextToolType>();
