@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { PlacedField } from '../../../../shared/models/placed-field.model';
+import { getSampleValue } from '../../../../shared/models/field.model';
 
 export const MM_TO_PX = 3.7795275591;
 
@@ -41,6 +42,9 @@ export class FieldItem {
   isLocked = computed(() => this.field().requiredTier === 'obligatorio_siempre');
   isSystem = computed(() => this.field().origin === 'system');
   canDrag = computed(() => !this.isLocked() && !this.isSystem());
+
+  /** Realistic sample value based on fieldKey */
+  sampleValue = computed(() => getSampleValue(this.field().fieldKey));
 
   onSelect(): void {
     this.fieldSelected.emit(this.field().id);

@@ -272,6 +272,16 @@ export class TemplateStateService {
   }
 
   /**
+   * Actualiza la imagen de un campo tipo image.
+   */
+  updateFieldImage(fieldId: string, imageUrl: string): void {
+    this.pushHistory();
+    this.placedFields.update((fields) =>
+      fields.map((f) => (f.id === fieldId ? { ...f, imageUrl } : f))
+    );
+  }
+
+  /**
    * Elimina un campo. Los campos obligatorios siempre no se pueden eliminar.
    */
   deleteField(id: string): { success: boolean; reason?: string } {

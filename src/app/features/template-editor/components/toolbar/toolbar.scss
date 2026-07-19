@@ -183,11 +183,30 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
+  position: relative;
 
   &:hover {
     background-color: var(--surface-panel);
     border-color: var(--border-color);
     color: var(--text-primary);
+
+    &::after {
+      content: attr(title);
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 3px 8px;
+      background: #1E293B;
+      color: #F8FAFC;
+      font-size: 10px;
+      font-family: var(--font-family-base);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      border-radius: 4px;
+      z-index: 100;
+      pointer-events: none;
+    }
   }
 
   &:active {
@@ -262,10 +281,29 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
+  position: relative;
 
   &:hover:not(:disabled) {
     background-color: var(--surface-panel-alt);
     color: var(--text-primary);
+
+    &::after {
+      content: attr(title);
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 3px 8px;
+      background: #1E293B;
+      color: #F8FAFC;
+      font-size: 10px;
+      font-family: var(--font-family-base);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      border-radius: 4px;
+      z-index: 100;
+      pointer-events: none;
+    }
   }
 
   &:focus-visible {

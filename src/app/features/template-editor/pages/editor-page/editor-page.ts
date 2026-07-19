@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Toolbar, TextToolType, ElementToolType, AlignType } from '../../components/toolbar/toolbar';
 import { SidebarFields } from '../../components/sidebar-fields/sidebar-fields';
 import { Canvas } from '../../components/canvas/canvas';
@@ -24,6 +24,8 @@ export class EditorPage implements OnInit {
   private serializer = inject(TemplateSerializerService);
   private api = inject(TemplateApiService);
   private keyboard = inject(KeyboardShortcutsService);
+
+  @ViewChild('imageFileInput') imageFileInput!: ElementRef<HTMLInputElement>;
 
   placedFields = this.state.placedFields;
   selectedFieldId = this.state.selectedFieldId;
@@ -196,10 +198,13 @@ export class EditorPage implements OnInit {
   }
 
   onAddElement(type: ElementToolType): void {
-    const configMap: Record<ElementToolType, { label: string; w: number; h: number }> = {
+    if (type === 'image') {
+      this.imageFileInput.nativeElement.click();
+      return;
+    }
+    const configMap: Record<string, { label: string; w: number; h: number }> = {
       line: { label: 'Línea', w: 100, h: 1 },
       rectangle: { label: 'Caja', w: 50, h: 30 },
-      image: { label: 'Imagen', w: 40, h: 40 },
       qr: { label: 'Código QR', w: 25, h: 25 },
     };
     const cfg = configMap[type];
@@ -212,12 +217,43 @@ export class EditorPage implements OnInit {
       section: 'encabezado',
       origin: 'xml-mapping',
       sourceNode: null,
-      type: type === 'image' ? 'image' : type === 'qr' ? 'qrcode' : 'text-block',
+      type: type === 'qr' ? 'qrcode' : 'text-block',
       requiredTier: 'opcional',
       defaultWidthMm: cfg.w,
       defaultHeightMm: cfg.h,
     };
     this.state.addField(def, 10, 60);
+  }
+
+  onImageFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      const def: FieldDefinition = {
+        id: `image-${Date.now()}`,
+        fieldKey: `Image_${Date.now()}`,
+        label: file.name.replace(/\.[^.]+$/, ''),
+        placeholder: '[Imagen]',
+        category: 'element',
+        section: 'encabezado',
+        origin: 'xml-mapping',
+        sourceNode: null,
+        type: 'image',
+        requiredTier: 'opcional',
+        defaultWidthMm: 40,
+        defaultHeightMm: 30,
+      };
+      const placed = this.state.addField(def, 10, 60);
+      if (placed) {
+        this.state.updateFieldImage(placed.id, dataUrl);
+      }
+    };
+    reader.readAsDataURL(file);
+    input.value = '';
   }
 
   onAlign(alignment: AlignType): void {

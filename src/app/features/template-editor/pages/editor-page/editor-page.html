@@ -67,3 +67,12 @@
     (closed)="onClosePreview()"
   />
 }
+
+<!-- Hidden file input for image upload -->
+<input
+  #imageFileInput
+  type="file"
+  accept="image/*"
+  style="display: none"
+  (change)="onImageFileSelected($event)"
+/>

@@ -67,4 +67,7 @@ export interface PlacedField {
   bold: boolean;
   italic: boolean;
   underline: boolean;
+
+  /** Data URL de imagen local (solo para type=image) */
+  imageUrl?: string;
 }
